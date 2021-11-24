@@ -1,0 +1,54 @@
+.navBar {
+  width: 100%;
+  background-color: hsl(210deg 8% 98%);
+  border-top: 3px solid hsl(27deg 90% 55%);
+  height: 50px;
+  padding: 7px;
+  align-items: center;
+}
+.navBarContent {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.menuList {
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+  flex: 1;
+  font-size: 13px;
+}
+
+.searchBox {
+  width: 50%;
+  height: 100%;
+}
+
+.buttonList {
+  width: 140px;
+  display: flex;
+  justify-content: space-evenly;
+  height: 33px;
+}
+.navBarButton {
+  width: 58px;
+  border: 1px solid;
+  font-size: 12px;
+  border-radius: 3px;
+}
+.loginButton {
+  border-color: hsl(205deg 41% 63%);
+  background-color: hsl(205deg 46% 92%);
+  color: hsl(206deg 100% 52%);
+}
+
+.signupButton {
+  background-color: hsl(206deg 100% 52%);
+  color: white;
+  box-shadow: inset 0 1px 0 0 hsl(0deg 0% 100% / 40%);
+}
