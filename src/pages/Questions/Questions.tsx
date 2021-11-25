@@ -1,9 +1,10 @@
-import React from "react";
-import LeftBar from "../../Components/LeftBar/LeftBar";
+import React from 'react';
 
-import styles from "./Questions.module.scss";
+// import LeftBar from '../../Components/LeftBar/LeftBar';
 
-const Questions = () => {
+import styles from './Questions.module.scss';
+
+const Questions: React.FC = () => {
   return (
     //Todo
     <div className={styles.Questions}>

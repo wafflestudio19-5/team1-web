@@ -1,7 +1,8 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from 'react';
 
-import styles from "./LeftBar.module.scss";
+import { Link, useLocation } from 'react-router-dom';
+
+import styles from './LeftBar.module.scss';
 
 type LeftBarProps = {
   noLeftBarPage: Array<string>;
@@ -9,7 +10,7 @@ type LeftBarProps = {
 
 const LeftBar: React.FC<LeftBarProps> = ({ noLeftBarPage }) => {
   const location = useLocation();
-  const mode: string = location.pathname.split("/")[1];
+  const mode: string = location.pathname.split('/')[1];
 
   return noLeftBarPage.includes(mode) ? (
     <div></div>
@@ -25,10 +26,10 @@ const LeftBar: React.FC<LeftBarProps> = ({ noLeftBarPage }) => {
         <ul className={styles.subMenuList}>
           <li
             className={`${styles.subMenu} ${
-              mode === "questions" ? styles.selected : ""
+              mode === 'questions' ? styles.selected : ''
             }`}
           >
-            <Link to="/questions">Questions</Link>{" "}
+            <Link to="/questions">Questions</Link>{' '}
           </li>
           <li className={styles.subMenu}>Tags</li>
           <li className={styles.subMenu}>Users</li>

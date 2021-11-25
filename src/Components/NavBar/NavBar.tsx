@@ -1,7 +1,8 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from 'react';
 
-import styles from "./NavBar.module.scss";
+import { Link, useLocation } from 'react-router-dom';
+
+import styles from './NavBar.module.scss';
 
 type NavBarProps = {
   noLeftBarPage: Array<string>;
@@ -9,7 +10,7 @@ type NavBarProps = {
 
 const NavBar: React.FC<NavBarProps> = ({ noLeftBarPage }) => {
   const location = useLocation();
-  const mode: string = location.pathname.split("/")[1];
+  const mode: string = location.pathname.split('/')[1];
 
   return (
     <div className={styles.navBar}>
