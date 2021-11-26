@@ -17,18 +17,36 @@ const dummyResponse: QuestionQueryResponse = {
     {
       id: 1,
       title: "Lorem Ipsum",
+      summary: "Lorem Ipsum",
       votes: +5,
       answersCount: 0,
       tags: ["react", "react-dom"],
-      recentHistory: "asked 1 mins ago",
+      last_activity: {
+        action: "asked",
+        timestamp: "2021-11-25 20:45:00Z",
+        user: {
+          id: 1,
+          image: "",
+          name: "foobar",
+        },
+      },
     },
     {
       id: 2,
       title: "Foo Bar Baz",
+      summary: "Lorem Ipsum",
       votes: -2,
       answersCount: 1,
       tags: ["nodejs", "typescript"],
-      recentHistory: "asked 16 mins ago",
+      last_activity: {
+        action: "asked",
+        timestamp: "2021-11-26 20:45:00Z",
+        user: {
+          id: 2,
+          image: "",
+          name: "foobar",
+        },
+      },
     },
   ],
   page_num: 1,
@@ -50,6 +68,8 @@ const useQuery = () => {
   return useMemo(() => new URLSearchParams(search), [search]);
 };
 
+const FILTERS = ["Newest", "Active", "Unanswered", "Frequent", "Votes"];
+
 const Questions = () => {
   const query = useQuery();
   const filter = query.get("tab") ?? "Newest";
@@ -64,27 +84,28 @@ const Questions = () => {
 
   return (
     <div className={styles.Questions}>
-      <div className={styles.TopBar}>
-        <h1>All Questions</h1>
-        <Link to="/questions/ask" className={styles.AskQuestionButton}>
-          Ask Question
-        </Link>
-      </div>
-      <div className={styles.SecondBar}>
-        <div className={styles.Total}>
-          {questionResponse?.items_total} questions
+      <div className={styles.Header}>
+        <div className={styles.TopBar}>
+          <h1>All Questions</h1>
+          <Link to="/questions/ask" className={styles.AskQuestionButton}>
+            Ask Question
+          </Link>
         </div>
-        <ul className={styles.FilterList}>
-          <li>
-            <Link to={"/questions?tab=Newest"}>Newest</Link>
-          </li>
-          <li>
-            <Link to={"/questions?tab=Active"}>Active</Link>
-          </li>
-          <li>
-            <Link to={"/questions?tab=Unanswered"}>Unanswered</Link>
-          </li>
-        </ul>
+        <div className={styles.SecondBar}>
+          <div className={styles.Total}>
+            {questionResponse?.items_total} questions
+          </div>
+          <ul className={styles.FilterList}>
+            {FILTERS.map((value) => (
+              <li
+                className={value === filter ? styles.Selected : ""}
+                key={value}
+              >
+                <Link to={`/questions?tab=${value}`}>{value}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <div className={styles.QuestionList}>
         {questionResponse?.items?.map((question) => (

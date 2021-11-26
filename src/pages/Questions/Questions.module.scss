@@ -1,51 +1,78 @@
 .Questions {
   display: flex;
   flex-direction: column;
-  padding-right: 20px;
   box-sizing: initial;
   * {
     box-sizing: initial;
   }
 
+  .Header {
+    margin: 20px;
+  }
   .TopBar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 
     h1 {
       font-weight: normal;
+      margin: 0;
     }
 
     .AskQuestionButton {
-      display: inline-block;
+      display: block;
       color: white;
       background-color: rgb(10, 149, 255);
+      box-shadow: inset 0 1px 0 0 hsl(0deg 0% 100% / 40%);
       font-size: 13px;
       padding: 10px;
       border-radius: 3px;
+      line-height: 1.15;
     }
   }
 
-  .FilterList {
+  .SecondBar {
     display: flex;
-    list-style-type: none;
-    justify-content: flex-end;
-    li {
-      border: solid 1px;
-      padding: 5px;
-      border-right-style: none;
+    justify-content: space-between;
+    align-items: center;
 
-      &:first-child {
-        border-top-left-radius: 3px;
-        border-bottom-left-radius: 3px;
-      }
-      &:last-child {
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
-        border-right-style: solid;
+    .Total {
+      font-size: 17px;
+    }
+    .FilterList {
+      display: flex;
+      list-style-type: none;
+      justify-content: flex-end;
+      li {
+        border: solid 1px #9fa6ad;
+        color: #6a737c;
+        font-size: 12px;
+        border-right-style: none;
+        padding: 10px;
+
+        &.Selected {
+          background: #f3f3f3;
+          &:hover {
+            background: #f3f3f3;
+          }
+        }
+        &:hover {
+          background: #e9e9e9;
+        }
+        &:first-child {
+          border-top-left-radius: 3px;
+          border-bottom-left-radius: 3px;
+        }
+        &:last-child {
+          border-top-right-radius: 3px;
+          border-bottom-right-radius: 3px;
+          border-right-style: solid;
+        }
       }
     }
   }
+
 
   .QuestionList {
     border-top: solid 1px rgb(214, 217, 220);
