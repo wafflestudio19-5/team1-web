@@ -58,7 +58,24 @@ const Question: React.FC = () => {
                   </div>
                 </div>
                 <div className={`${styles.postCell} ${styles.postLayoutRight}`}>
-                  내용
+                  <div className={styles.postBody}>
+                    <p>
+                      Is there any way to revert or undo git pull so that my
+                      source/repos will come to old state that was before doing
+                      git pull ? I want to do this because it merged some files
+                      which I didnt want to do so, but only merge other
+                      remaining files. So, I want to get those files back, is
+                      that possible?
+                    </p>
+                  </div>
+                  <div className={styles.Tag}>
+                    <ul className={styles.tagList}>
+                      <li>git</li>
+                      <li>version-control</li>
+                      <li>git-merge</li>
+                    </ul>
+                  </div>
+                  <div className={styles.footer}></div>
                 </div>
                 <div className={styles.postComment}>
                   <div className={styles.Comments}>
