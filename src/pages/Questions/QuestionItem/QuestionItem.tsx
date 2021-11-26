@@ -1,9 +1,10 @@
 import styles from "./QuestionItem.module.scss";
-import { FC } from "react";
-import { Link } from "react-router-dom";
-import { Tag } from "../Tag/Tag";
+import {FC} from "react";
+import {Link} from "react-router-dom";
+import {Tag} from "../Tag/Tag";
+import {ActivityComponent} from "../ActivityComponent/ActivityComponent";
 
-interface RecentHistory {
+interface Activity {
   action: "asked" | "answered" | "modified";
   timestamp: string;
   user: {
@@ -20,7 +21,7 @@ export interface Question {
   votes: number;
   answersCount: number;
   tags: string[];
-  last_activity: RecentHistory;
+  last_activity: Activity;
 }
 
 interface QuestionItemProps {
@@ -55,38 +56,12 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
               <Tag key={tag} tag={tag} />
             ))}
           </div>
-          <LastActivityComponent question={question} />
+          <div className={styles.ActivityContainer}>
+            <ActivityComponent question={question} />
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-const LastActivityComponent: FC<{ question: Question }> = ({ question }) => {
-  const date = new Date(question.last_activity.timestamp);
-  return (
-    <div className={styles.LastActivityContainer}>
-      <div className={styles.LastActivity}>
-        <Link
-          to={`/questions/${question.id}/?lastactivity`}
-          className={styles.Action}
-        >
-          {question.last_activity.action} at {date.toDateString()}
-        </Link>
-        <div>
-          <img
-            src={question.last_activity.user.image}
-            alt={"profile image"}
-            className={styles.ProfileImage}
-          />
-          <Link
-            to={`/users/${question.last_activity.user.id}`}
-            className={styles.Name}
-          >
-            {question.last_activity.user.name}
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
