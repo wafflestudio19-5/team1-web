@@ -1,0 +1,29 @@
+.oAuthLogin{
+  display: flex;
+  flex-direction: column;
+}
+
+.oAuthLoginButton{
+  font-size: 13px;
+  line-height: 1.15384615;
+  cursor: pointer;
+  border-radius: 3px;
+  height: 37.8px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  &.google{
+    background-color: white;
+    border: 1px solid #e9e9e9;
+  }
+  &.github{
+    background-color: black;
+    color: white;
+  }
+  &.facebook{
+    background-color: #385499;
+    color: white;
+  }
+}
