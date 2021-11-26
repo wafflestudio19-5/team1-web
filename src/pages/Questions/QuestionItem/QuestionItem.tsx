@@ -21,16 +21,16 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
   return (
     <div className={styles.QuestionItem}>
       <div className={styles.NumberBox}>
-        <div>{question.votes}</div>
-        <div>votes</div>
+        <div className={styles.Number}>{question.votes}</div>
+        <div className={styles.Label}>votes</div>
       </div>
       <div
         className={`${styles.NumberBox} ${
           question.answersCount ? styles.GreenBorder : ""
         }`}
       >
-        <div>{question.answersCount}</div>
-        <div>answers</div>
+        <div className={styles.Number}>{question.answersCount}</div>
+        <div className={styles.Label}>answers</div>
       </div>
       <div className={styles.TitleBox}>
         <div className={styles.title}>{question.title}</div>
