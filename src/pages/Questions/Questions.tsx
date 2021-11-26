@@ -99,16 +99,17 @@ const Questions = () => {
           <div className={styles.total}>
             {questionResponse?.items_total} questions
           </div>
-          <ul className={styles.filterList}>
+          <div className={styles.filterList}>
             {FILTERS.map((value) => (
-              <li
-                className={value === filter ? styles.selected : ""}
+              <Link
+                className={`${styles.filterItem} ${value === filter ? styles.selected : ""}`}
                 key={value}
+                to={`/questions?tab=${value}`}
               >
-                <Link to={`/questions?tab=${value}`}>{value}</Link>
-              </li>
+                {value}
+              </Link>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
       <div className={styles.questionList}>
