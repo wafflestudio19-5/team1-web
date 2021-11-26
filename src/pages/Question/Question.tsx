@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import ButtonUnstyled from '@mui/base/ButtonUnstyled';
+
+import { ReactComponent as ArrowDown } from '../../icons/iconArrowDown.svg';
+import { ReactComponent as ArrowUp } from '../../icons/iconArrowUp.svg';
+import { ReactComponent as Bookmark } from '../../icons/iconBookmark.svg';
 
 import styles from './Question.module.scss';
 
 const Question: React.FC = () => {
+  const [vote, setVote] = useState<number>(0);
+  const onIncrease = () => setVote((prev) => prev + 1);
+  const onDecrease = () => setVote((prev) => prev - 1);
+
   return (
     <div className={styles.Question}>
       <div className={styles.Content}>
@@ -36,7 +44,18 @@ const Question: React.FC = () => {
             <div className={styles.questionSection}>
               <div className={styles.postLayout}>
                 <div className={`${styles.voteCell} ${styles.postLayoutLeft}`}>
-                  <div className={styles.voteBox}>투표</div>
+                  <div className={styles.voteBox}>
+                    <button className="vote-up" onClick={onIncrease}>
+                      <ArrowUp />
+                    </button>
+                    <div className={styles.voteCount}>{vote}</div>
+                    <button className="vote-down" onClick={onDecrease}>
+                      <ArrowDown />
+                    </button>
+                    <button className="bookmark">
+                      <Bookmark />
+                    </button>
+                  </div>
                 </div>
                 <div className={`${styles.postCell} ${styles.postLayoutRight}`}>
                   내용
@@ -51,7 +70,7 @@ const Question: React.FC = () => {
                       </li>
                     </ul>
                   </div>
-                  <div className={styles.addComment}>Add a comment</div>
+                  <div className={styles.CommentCell}>Add a comment</div>
                 </div>
               </div>
             </div>
