@@ -1,5 +1,6 @@
 import styles from "./QuestionItem.module.scss";
 import { FC } from "react";
+import { Link } from "react-router-dom";
 
 export interface Question {
   id: number;
@@ -15,7 +16,7 @@ interface QuestionItemProps {
 }
 
 export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
-  const recentHistory = (
+  const recentHistoryDom = (
     <div className={styles.RecentHistory}>{question.recentHistory}</div>
   );
   return (
@@ -26,21 +27,25 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
       </div>
       <div
         className={`${styles.NumberBox} ${
-          question.answersCount ? styles.GreenBorder : ""
+          question.answersCount ? styles.Answered : ""
         }`}
       >
         <div className={styles.Number}>{question.answersCount}</div>
         <div className={styles.Label}>answers</div>
       </div>
       <div className={styles.TitleBox}>
-        <div className={styles.title}>{question.title}</div>
-        <ul className={styles.TagList}>
-          {question.tags.map((tag) => (
-            <li key={tag}>{tag}</li>
-          ))}
-        </ul>
+        <h3>
+          <Link to={`/questions/${question.id}/`}>{question.title}</Link>
+        </h3>
+        <div className={styles.TitleBottom}>
+          <ul className={styles.TagList}>
+            {question.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
+          {recentHistoryDom}
+        </div>
       </div>
-      {recentHistory}
     </div>
   );
 };

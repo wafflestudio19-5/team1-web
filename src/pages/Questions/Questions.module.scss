@@ -1,3 +1,53 @@
 .Questions {
   display: flex;
+  flex-direction: column;
+  padding-right: 20px;
+  box-sizing: initial;
+  * {
+    box-sizing: initial;
+  }
+
+  .TopBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      font-weight: normal;
+    }
+
+    .AskQuestionButton {
+      display: inline-block;
+      color: white;
+      background-color: rgb(10, 149, 255);
+      font-size: 13px;
+      padding: 10px;
+      border-radius: 3px;
+    }
+  }
+
+  .FilterList {
+    display: flex;
+    list-style-type: none;
+    justify-content: flex-end;
+    li {
+      border: solid 1px;
+      padding: 5px;
+      border-right-style: none;
+
+      &:first-child {
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+      &:last-child {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        border-right-style: solid;
+      }
+    }
+  }
+
+  .QuestionList {
+    border-top: solid 1px rgb(214, 217, 220);
+  }
 }

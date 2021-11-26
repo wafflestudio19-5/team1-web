@@ -1,3 +1,71 @@
 .QuestionItem {
+  display: flex;
+  flex-direction: row;
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  border-color: rgb(241, 242, 243);
+  padding: 10px;
+  .NumberBox {
+    display: inline-block;
+    height: 38px;
+    min-width: 38px;
+    padding: 6px;
+    text-align: center;
+    margin-right: 10px;
+    color: rgb(131, 140, 149);
 
+    .Number {
+    }
+    .Label {
+      font-size: 11px;
+    }
+
+    &.Answered {
+      border: solid rgb(94, 186, 125) 1px;
+      border-radius: 3px;
+      color: rgb(94, 186, 125);
+    }
+  }
+
+  .TitleBox {
+    flex: 1;
+    h3 {
+      margin: 0;
+      font-weight: normal;
+      color: rgb(0, 116, 204);
+      :visited {
+        color: rgb(0, 99, 191);
+      }
+      :hover {
+        color: rgb(10, 149, 255);
+      }
+    }
+    .TitleBottom {
+      display: flex;
+      flex-wrap: wrap;
+      font-weight: normal;
+      .TagList {
+        list-style-type: none;
+        display: flex;
+        li {
+          background-color: rgb(225, 236, 244);
+          color: #39739d;
+          margin: 2px;
+          border-radius: 3px;
+          padding: 0.4em 0.5em;
+          white-space: nowrap;
+          text-align: center;
+          font-size: 12px;
+        }
+      }
+      .RecentHistory {
+        white-space: nowrap;
+        text-align: right;
+        flex: 1;
+        align-self: flex-end;
+        font-size: 12px;
+        color: #6a737c;
+      }
+    }
+  }
 }

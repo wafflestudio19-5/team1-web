@@ -10,7 +10,7 @@ const dummyQuestions: Question[] = [
     title: "Lorem Ipsum",
     votes: +5,
     answersCount: 0,
-    tags: ["react"],
+    tags: ["react", "react-dom"],
     recentHistory: "asked 1 mins ago",
   },
   {
@@ -18,7 +18,7 @@ const dummyQuestions: Question[] = [
     title: "Foo Bar Baz",
     votes: -2,
     answersCount: 1,
-    tags: ["nodejs"],
+    tags: ["nodejs", "typescript"],
     recentHistory: "asked 16 mins ago",
   },
 ];
