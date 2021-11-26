@@ -13,26 +13,6 @@
   padding: 24px;
   margin: 0;
   box-sizing: border-box;
-
-  &:before,
-  &:after {
-    content: '';
-    display: table;
-  }
-  &:after {
-    clear: both;
-  }
-}
-
-.innerContent {
-  .clearfix:before,
-  .clearfix:after {
-    content: '';
-    display: table;
-  }
-  .clearfix:after {
-    clear: both;
-  }
 }
 
 .questionHeader {
@@ -51,7 +31,8 @@
   }
 }
 
-.askButton {
+.askButton,
+.postButton {
   display: inline-block;
   position: relative;
   width: 145px;
@@ -105,45 +86,30 @@
   padding: 0;
 }
 
-.questionSection {
-  clear: both;
-}
-
 .postLayout {
   display: grid;
-  // grid-template-columns: max-content 1fr;
   grid-template-columns: 70px auto;
+  width: auto;
+  padding-right: 16px;
 
-  &Left {
-    width: auto;
-    padding-right: 16px;
+  .voteCell {
     grid-column: 1;
   }
 
-  &Right {
-    padding-right: 16px;
+  .postCell {
     grid-column: 2;
-    width: auto;
     min-width: 0;
   }
 }
 
-.voteCell,
-.postCell {
-  vertical-align: top;
-}
-
-.voteBox {
+.voteCell {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: center;
   margin: 0px;
   color: hsl(210, 8%, 75%);
 
   button {
-    // position: relative;
-    // display: inline-block;
     margin: 2px;
     padding: 0;
     border: none;
@@ -184,32 +150,50 @@
   }
 }
 
-.Tag {
-  margin-top: 24px;
-  margin-bottom: 12px;
+.tagList {
+  display: flex;
+  margin: 24px 0 12px 0;
+  clear: both;
 
-  .tagList {
+  li {
+    display: inline-block;
+    padding: 0.4em 0.5em;
+    margin: 2px 2px 2px 0;
+
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+    text-align: center;
+
+    color: hsl(205, 47%, 42%);
+    background-color: hsl(205, 46%, 92%);
+
+    border-style: solid;
+    border-radius: 3px;
+    border-color: transparent;
+    border-width: 1px;
+  }
+}
+
+.Footer {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+  margin: 16px 0 4px 0;
+
+  .postMenuList {
     display: flex;
-    margin: -2px 0 0 0;
-    clear: both;
+    // justify-content: space-evenly;
+    list-style: none;
+    flex: 1;
+    font-size: 13px;
+  }
+}
 
-    li {
-      display: inline-block;
-      padding: 0.4em 0.5em;
-      margin: 2px 2px 2px 0;
-
-      font-size: 12px;
-      line-height: 1;
-      white-space: nowrap;
-      text-align: center;
-
-      color: hsl(205, 47%, 42%);
-      background-color: hsl(205, 46%, 92%);
-
-      border-style: solid;
-      border-radius: 3px;
-      border-color: transparent;
-      border-width: 1px;
-    }
+.Answer {
+  h2 {
+    font-weight: 400;
+    padding-top: 20px;
   }
 }
