@@ -37,21 +37,17 @@ const Questions = () => {
           Ask Question
         </Link>
       </div>
-      <div className={styles.FilterBar}>
-        <ul className={styles.FilterList}>
-          <li>Interesting</li>
-          <li>Hot</li>
-          <li>Week</li>
-          <li>Month</li>
-        </ul>
-      </div>
-      <ul className={styles.QuestionList}>
-        {questions.map((question) => (
-          <li key={question.id} className={styles.QuestionItem}>
-            <QuestionItem question={question} />
-          </li>
-        ))}
+      <ul className={styles.FilterList}>
+        <li>Interesting</li>
+        <li>Hot</li>
+        <li>Week</li>
+        <li>Month</li>
       </ul>
+      <div className={styles.QuestionList}>
+        {questions.map((question) => (
+          <QuestionItem key={question.id} question={question} />
+        ))}
+      </div>
     </div>
   );
 };
