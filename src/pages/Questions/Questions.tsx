@@ -76,7 +76,12 @@ const Questions = () => {
     useState<QuestionQueryResponse>();
   useEffect(() => {
     const doIt = async () => {
-      setQuestionResponse(await getQuestions(1, 20, filter));
+      try {
+        setQuestionResponse(await getQuestions(1, 20, filter));
+      } catch (e) {
+        // prevent silent error while developing
+        console.log(e);
+      }
     };
     doIt().then();
   }, [filter]);
