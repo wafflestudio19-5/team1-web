@@ -87,22 +87,22 @@ const Questions = () => {
   }, [filter]);
 
   return (
-    <div className={styles.Questions}>
-      <div className={styles.Header}>
-        <div className={styles.TopBar}>
+    <div className={styles.questions}>
+      <div className={styles.header}>
+        <div className={styles.topBar}>
           <h1>All Questions</h1>
-          <Link to="/questions/ask" className={styles.AskQuestionButton}>
+          <Link to="/questions/ask" className={styles.askQuestionButton}>
             Ask Question
           </Link>
         </div>
-        <div className={styles.SecondBar}>
-          <div className={styles.Total}>
+        <div className={styles.secondBar}>
+          <div className={styles.total}>
             {questionResponse?.items_total} questions
           </div>
-          <ul className={styles.FilterList}>
+          <ul className={styles.filterList}>
             {FILTERS.map((value) => (
               <li
-                className={value === filter ? styles.Selected : ""}
+                className={value === filter ? styles.selected : ""}
                 key={value}
               >
                 <Link to={`/questions?tab=${value}`}>{value}</Link>
@@ -111,7 +111,7 @@ const Questions = () => {
           </ul>
         </div>
       </div>
-      <div className={styles.QuestionList}>
+      <div className={styles.questionList}>
         {questionResponse?.items?.map((question) => (
           <QuestionItem key={question.id} question={question} />
         ))}

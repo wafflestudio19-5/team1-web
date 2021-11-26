@@ -30,33 +30,33 @@ interface QuestionItemProps {
 
 export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
   return (
-    <div className={styles.QuestionItem}>
-      <div className={styles.SideBar}>
-        <div className={styles.NumberBox}>
-          <div className={styles.Number}>{question.votes}</div>
-          <div className={styles.Label}>votes</div>
+    <div className={styles.questionItem}>
+      <div className={styles.sideBar}>
+        <div className={styles.numberBox}>
+          <div className={styles.number}>{question.votes}</div>
+          <div className={styles.label}>votes</div>
         </div>
         <div
-          className={`${styles.NumberBox} ${
-            question.answersCount ? styles.Answered : ""
+          className={`${styles.numberBox} ${
+            question.answersCount ? styles.answered : ""
           }`}
         >
-          <div className={styles.Number}>{question.answersCount}</div>
-          <div className={styles.Label}>answers</div>
+          <div className={styles.number}>{question.answersCount}</div>
+          <div className={styles.label}>answers</div>
         </div>
       </div>
-      <div className={styles.TitleBox}>
+      <div className={styles.titleBox}>
         <h3>
           <Link to={`/questions/${question.id}`}>{question.title}</Link>
         </h3>
         <p>{question.summary}</p>
-        <div className={styles.ItemFooter}>
-          <div className={styles.TagList}>
+        <div className={styles.itemFooter}>
+          <div className={styles.tagList}>
             {question.tags.map((tag) => (
               <Tag key={tag} tag={tag} />
             ))}
           </div>
-          <div className={styles.ActivityContainer}>
+          <div className={styles.activityContainer}>
             <ActivityComponent question={question} />
           </div>
         </div>

@@ -1,4 +1,4 @@
-.Questions {
+.questions {
   display: flex;
   flex-direction: column;
   box-sizing: initial;
@@ -6,10 +6,10 @@
     box-sizing: initial;
   }
 
-  .Header {
+  .header {
     margin: 20px;
   }
-  .TopBar {
+  .topBar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -20,7 +20,7 @@
       margin: 0;
     }
 
-    .AskQuestionButton {
+    .askQuestionButton {
       display: block;
       color: white;
       background-color: rgb(10, 149, 255);
@@ -32,15 +32,15 @@
     }
   }
 
-  .SecondBar {
+  .secondBar {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    .Total {
+    .total {
       font-size: 17px;
     }
-    .FilterList {
+    .filterList {
       display: flex;
       list-style-type: none;
       justify-content: flex-end;
@@ -51,7 +51,7 @@
         border-right-style: none;
         padding: 10px;
 
-        &.Selected {
+        &.selected {
           background: #f3f3f3;
           &:hover {
             background: #f3f3f3;
@@ -74,7 +74,7 @@
   }
 
 
-  .QuestionList {
+  .questionList {
     border-top: solid 1px rgb(214, 217, 220);
   }
 }

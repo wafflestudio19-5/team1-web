@@ -1,17 +1,17 @@
-.Activity {
+.activity {
   text-align: left;
-  .Action {
+  .action {
     white-space: nowrap;
     font-size: 12px;
     color: #6a737c;
   }
-  .ProfileImage {
+  .profileImage {
     overflow: hidden;
     display: inline-block;
     width: 32px;
     height: 32px;
   }
-  .Name {
+  .name {
     font-size: 12px;
     color: rgb(0, 116, 204);
     :visited {

@@ -8,7 +8,7 @@ interface TagProps {
 
 export const Tag: FC<TagProps> = ({ tag }) => {
   return (
-    <div className={styles.Tag}>
+    <div className={styles.tag}>
       <Link to={`/questions/tagged/${tag}`}>{tag}</Link>
     </div>
   );
