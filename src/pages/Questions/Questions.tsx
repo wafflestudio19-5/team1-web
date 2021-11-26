@@ -59,7 +59,6 @@ const getQuestions = async (
   items_count: number,
   filter: string
 ) => {
-  console.log(filter);
   return dummyResponse;
 };
 
