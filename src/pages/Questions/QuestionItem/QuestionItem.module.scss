@@ -1,0 +1,62 @@
+.questionItem {
+  display: flex;
+  flex-direction: row;
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  border-color: rgb(241, 242, 243);
+  padding: 10px;
+  .sideBar {
+    display: flex;
+    flex-direction: column;
+    .numberBox {
+      display: inline-block;
+      height: 38px;
+      min-width: 38px;
+      padding: 6px;
+      text-align: center;
+      margin-right: 10px;
+      color: rgb(131, 140, 149);
+
+      .label {
+        font-size: 11px;
+      }
+
+      &.answered {
+        border: solid rgb(94, 186, 125) 1px;
+        border-radius: 3px;
+        color: rgb(94, 186, 125);
+      }
+    }
+
+  }
+  .titleBox {
+    flex: 1;
+    h3 {
+      margin: 0;
+      font-weight: normal;
+      color: rgb(0, 116, 204);
+      :visited {
+        color: rgb(0, 99, 191);
+      }
+      :hover {
+        color: rgb(10, 149, 255);
+      }
+    }
+    .itemFooter {
+      display: flex;
+      flex-wrap: wrap;
+      font-weight: normal;
+      .tagList {
+        list-style-type: none;
+        display: flex;
+      }
+      .activityContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: row-reverse;
+        align-self: flex-end;
+        margin: 10px;
+      }
+    }
+  }
+}
