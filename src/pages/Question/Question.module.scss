@@ -1,0 +1,199 @@
+.Question {
+  position: relative;
+  width: 100%;
+  flex: 1 0 auto;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.Content {
+  max-width: 1100px;
+  border-radius: 0;
+  border-width: 0 0 0 1px;
+  padding: 24px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.questionHeader {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+
+  h1 {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    font-size: 25px;
+    font-weight: normal;
+    color: hsl(210, 8%, 25%);
+    line-height: 1.35;
+    margin: 0 0 15px;
+  }
+}
+
+.askButton,
+.postButton {
+  display: inline-block;
+  position: relative;
+  width: 145px;
+  height: 40px;
+  margin-left: 12px;
+  background-color: hsl(206deg 100% 52%);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 0 hsl(0deg 0% 100% / 40%);
+
+  color: white;
+  text-align: center;
+  padding: 0 10px;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: hsl(209, 100%, 37.5%);
+  }
+}
+
+.postInfo {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+
+  border-color: hsl(210, 8%, 90%);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+
+  font-size: 13px;
+
+  li {
+    white-space: nowrap;
+    margin-bottom: 8px;
+    margin-right: 16px;
+  }
+
+  span {
+    color: hsl(210, 8%, 45%);
+    margin-right: 5px;
+  }
+}
+
+.main {
+  // 사이드바 있는 경우 width
+  //   width: calc(100% - 300px - 24px);
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+
+.postLayout {
+  display: grid;
+  grid-template-columns: 70px auto;
+  width: auto;
+  padding-right: 16px;
+
+  .voteCell {
+    grid-column: 1;
+  }
+
+  .postCell {
+    grid-column: 2;
+    min-width: 0;
+  }
+}
+
+.voteCell {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0px;
+  color: hsl(210, 8%, 75%);
+
+  button {
+    margin: 2px;
+    padding: 0;
+    border: none;
+    color: unset;
+    background: none;
+    box-shadow: none;
+    cursor: pointer;
+
+    svg {
+      vertical-align: bottom;
+      fill: currentColor;
+
+      &:hover {
+        color: hsl(27, 90%, 55%);
+      }
+    }
+  }
+
+  .voteCount {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 25px;
+    color: hsl(210, 8%, 45%);
+    margin: 0;
+  }
+}
+
+.postBody {
+  font-size: 15px;
+  line-height: 1.5;
+  word-wrap: break-word;
+
+  p {
+    clear: both;
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+}
+
+.tagList {
+  display: flex;
+  margin: 24px 0 12px 0;
+  clear: both;
+
+  li {
+    display: inline-block;
+    padding: 0.4em 0.5em;
+    margin: 2px 2px 2px 0;
+
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+    text-align: center;
+
+    color: hsl(205, 47%, 42%);
+    background-color: hsl(205, 46%, 92%);
+
+    border-style: solid;
+    border-radius: 3px;
+    border-color: transparent;
+    border-width: 1px;
+  }
+}
+
+.Footer {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+  margin: 16px 0 4px 0;
+
+  .postMenuList {
+    display: flex;
+    // justify-content: space-evenly;
+    list-style: none;
+    flex: 1;
+    font-size: 13px;
+  }
+}
+
+.Answer {
+  h2 {
+    font-weight: 400;
+    padding-top: 20px;
+  }
+}
