@@ -17,10 +17,6 @@ const Question: React.FC = () => {
     const onIncrease = () => setVote((prev) => prev + 1);
     const onDecrease = () => setVote((prev) => prev - 1);
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setAnswer(e.target.value);
-    };
-
     return (
         <div className={styles.Question}>
             <div className={styles.Content}>
@@ -93,19 +89,19 @@ const Question: React.FC = () => {
                         </div>
                     </div>
                     <div className={styles.Answer}>
-                        {answers !== undefined && answer.length > 0 ? (
+                        {answers && (
                             <>
                                 {answers.map((answer, id) => (
                                     <div key={id}>{answer}</div>
                                 ))}
                             </>
-                        ) : null}
+                        )}
                         <form>
                             <h2>Your Answer</h2>
                             <input
                                 className={styles.postAnswer}
                                 value={answer}
-                                onChange={onChange}
+                                onChange={(e) => setAnswer(e.target.value)}
                             />
                             <ButtonUnstyled
                                 className={styles.postButton}
