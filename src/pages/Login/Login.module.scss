@@ -1,0 +1,24 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 280px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.logoImage {
+  width: 50px;
+  height: 53px;
+  margin: 0 auto;
+}
+
+.additional {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.linkToRegister {
+  color: cornflowerblue;
+}
