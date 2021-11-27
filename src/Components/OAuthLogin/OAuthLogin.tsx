@@ -1,7 +1,6 @@
 import React from "react";
 
 import styles from "./OAuthLogin.module.scss";
-import Login from "../../pages/Login/Login";
 
 const OAuthLogin = () => {
   return (

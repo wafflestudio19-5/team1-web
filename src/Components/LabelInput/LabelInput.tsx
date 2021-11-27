@@ -6,7 +6,6 @@ type LabelInputProps = {
   title: string;
   name: string;
   isPassword: boolean;
-  isFirst: boolean;
   value: string;
   onChange(args: React.ChangeEvent<HTMLInputElement>): void;
 };
@@ -15,13 +14,12 @@ const LabelInput: React.FC<LabelInputProps> = ({
   title,
   name,
   isPassword,
-  isFirst,
   value,
   onChange,
 }) => {
   return (
-    <div className={`${styles.labelInput} ${isFirst ? null : styles.notFirst}`}>
-      <label className={styles.inputTitle} htmlFor={"email"}>
+    <div className={styles.labelInput}>
+      <label className={styles.inputTitle} htmlFor={name}>
         {title}
       </label>
       <input

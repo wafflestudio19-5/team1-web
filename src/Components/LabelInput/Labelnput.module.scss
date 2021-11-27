@@ -1,8 +1,9 @@
 .labelInput {
   display: flex;
   flex-direction: column;
-  &.notFirst {
-    margin-top: 15px;
+  margin-top: 15px;
+  &:first-child {
+    margin-top: 0;
   }
 }
 

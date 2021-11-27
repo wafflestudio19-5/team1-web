@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import styles from "./LoginBox.module.scss";
 import LabelInput from "../../../Components/LabelInput/LabelInput";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
-import * as events from "events";
 
 type LoginInfo = {
   [key: string]: string;
@@ -33,7 +32,6 @@ const LoginBox = () => {
         title={"Email"}
         name={"userName"}
         isPassword={false}
-        isFirst={true}
         value={loginInfo.userName}
         onChange={onChange}
       />
@@ -41,7 +39,6 @@ const LoginBox = () => {
         title={"Password"}
         name={"password"}
         isPassword={true}
-        isFirst={false}
         value={loginInfo.password}
         onChange={onChange}
       />

@@ -39,7 +39,6 @@ const Register = () => {
           title={"Display name"}
           name={"name"}
           isPassword={false}
-          isFirst={true}
           value={registerInfo.name}
           onChange={onChange}
         />
@@ -47,7 +46,6 @@ const Register = () => {
           title={"Email"}
           name={"email"}
           isPassword={false}
-          isFirst={false}
           value={registerInfo.email}
           onChange={onChange}
         />
@@ -55,7 +53,6 @@ const Register = () => {
           title={"Password"}
           name={"password"}
           isPassword={true}
-          isFirst={false}
           value={registerInfo.password}
           onChange={onChange}
         />
@@ -69,7 +66,6 @@ const Register = () => {
       </div>
     </div>
   );
-  //Todo
 };
 
 export default Register;

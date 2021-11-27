@@ -3,7 +3,7 @@ import styles from "./BlueButton.module.scss";
 
 type BlueButtonProps = {
   text: string;
-  onClick(args: React.MouseEvent<HTMLElement>): void;
+  onClick(event: React.MouseEvent<HTMLElement>): void;
 };
 
 const BlueButton: React.FC<BlueButtonProps> = ({ text, onClick }) => {
