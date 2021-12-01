@@ -22,7 +22,7 @@ const App = () => {
               <Route path="/questions" element={<Questions />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/question/:id" element={<Question />} />
+              <Route path="/questions/:id/:title" element={<Question />} />
               {/* <Route exact path="/question/ask" element={} /> */}
             </Routes>
           </div>
