@@ -1,0 +1,11 @@
+.container {
+  position: relative;
+  max-width: 1200px;
+  flex: 1 0 auto;
+  text-align: left;
+  margin: 30px;
+
+  .editor {
+    margin-bottom: 30px;
+  }
+}
