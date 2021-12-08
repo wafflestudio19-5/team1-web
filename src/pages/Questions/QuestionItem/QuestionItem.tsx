@@ -28,11 +28,11 @@ interface QuestionItemProps {
   question: Question;
 }
 
-// stackoverflow question url
-const replace = (url: string) => {
-  url = url.replaceAll(" ", "-").toLowerCase();
-  if (url.length > 80) return url.substring(0, 80);
-  else return url;
+const makeTitleUrl = (title: string) => {
+  return title
+    .toLowerCase()
+    .replaceAll(/[^\w]+/g, "-")
+    .substring(0, 80);
 };
 
 export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
@@ -54,7 +54,9 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
       </div>
       <div className={styles.titleBox}>
         <h3>
-          <Link to={`/questions/${question.id}/${replace(question.title)}`}>
+          <Link
+            to={`/questions/${question.id}/${makeTitleUrl(question.title)}`}
+          >
             {question.title}
           </Link>
         </h3>
