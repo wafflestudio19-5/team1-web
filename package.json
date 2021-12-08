@@ -24,7 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "aws s3 sync --delete ./build s3://waffle-19.5-team-1-frontend"
+    "deploy": "aws s3 sync --delete ./build s3://waffle-19.5-team-1-frontend && aws cloudfront create-invalidation --distribution-id E3592MMV0KE7P8 --paths \"/*\""
   },
   "eslintConfig": {
     "extends": [
