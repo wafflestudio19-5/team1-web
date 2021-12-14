@@ -1,6 +1,6 @@
 import React from "react";
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import LeftBar from "./Components/LeftBar/LeftBar";
 import NavBar from "./Components/NavBar/NavBar";
@@ -27,6 +27,7 @@ const App: React.FC = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/questions/:id/:title" element={<Question />} />
               <Route path="/questions/ask" element={<Ask />} />
+              <Route path="/*" element={<Navigate to="/questions" />} />
             </Routes>
           </div>
         </div>

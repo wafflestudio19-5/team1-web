@@ -25,7 +25,7 @@ const Question: React.FC = () => {
             in Chrome 96 dev tools - do I miss a setting?
           </h1>
           <button className={styles.askButton}>
-            <Link to="/question/ask">Ask Question</Link>
+            <Link to="/questions/ask">Ask Question</Link>
           </button>
         </section>
         <ul className={styles.postInfo}>
