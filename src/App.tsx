@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
@@ -10,10 +10,18 @@ import Question from "./pages/Question/Question";
 import Questions from "./pages/Questions/Questions";
 import Register from "./pages/Register/Register";
 import "./App.css";
+import { api } from "./api/api";
 
 const noLeftBarPage = ["register", "login"];
 
 const App: React.FC = () => {
+  // TODO: remove this on release
+  useEffect(() => {
+    api
+      .ping()
+      .then((r) => console.log(r))
+      .catch((e) => console.log(e));
+  });
   return (
     <div className="App">
       <BrowserRouter>

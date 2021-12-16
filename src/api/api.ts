@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Answer, Comment, QuestionInterface } from "../interface/interface";
 
-const API_ENDPOINT = "https://waffleoverflow.shop/";
+const API_ENDPOINT =
+  process.env.NODE_ENV === "development" ? "/" : "https://waffleoverflow.shop/";
 
 const instance = axios.create({
   baseURL: API_ENDPOINT,
@@ -33,8 +34,9 @@ setHeaderToken(loadToken());
 
 export interface EmptyBody {}
 
-export const ping = () => instance.get("/api/v1/pingpong/");
 export const api = {
+  ping: async () => (await instance.get<string>("/api/v1/pingpong/")).data,
+
   // TODO: signin api must return jwt token
   signin: async (email: string, password: string) =>
     (
