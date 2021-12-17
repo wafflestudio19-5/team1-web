@@ -1,5 +1,9 @@
 import axios from "axios";
-import { Answer, Comment, QuestionInterface } from "../interface/interface";
+import {
+  Answer,
+  QuestionComment,
+  QuestionInterface,
+} from "../interface/interface";
 
 const API_ENDPOINT =
   process.env.NODE_ENV === "development" ? "/" : "https://waffleoverflow.shop/";
@@ -37,14 +41,15 @@ export interface EmptyBody {}
 export const api = {
   ping: async () => (await instance.get<string>("/api/v1/pingpong/")).data,
 
-  // TODO: signin api must return jwt token
-  signin: async (email: string, password: string) =>
-    (
+  // returns jwt token
+  signin: async (email: string, password: string) => {
+    return (
       await instance.post<EmptyBody>("/api/user/signin/", {
         email: email,
         password: password,
       })
-    ).data,
+    ).headers["Authentication"];
+  },
   signup: async (name: string, email: string, password: string) =>
     (
       await instance.post<EmptyBody>("/api/user/signup/", {
@@ -52,7 +57,7 @@ export const api = {
         email: email,
         password: password,
       })
-    ).data,
+    ).headers["Authentication"],
   getQuestionList: async () =>
     (await instance.get<QuestionInterface[]>("/api/question/")).data,
   postQuestion: async (title: string, body: string) =>
@@ -74,13 +79,19 @@ export const api = {
   deleteQuestion: async (id: number) =>
     (await instance.delete<EmptyBody>(`/api/question/${id}/`)).data,
   getQuestionCommentList: async (questionId: number) =>
-    (await instance.get<Comment[]>(`/api/question/${questionId}/comment/`))
-      .data,
+    (
+      await instance.get<QuestionComment[]>(
+        `/api/question/${questionId}/comment/`
+      )
+    ).data,
   postQuestionComment: async (questionId: number, body: string) =>
     (
-      await instance.post<Comment>(`/api/question/${questionId}/comment/`, {
-        body: body,
-      })
+      await instance.post<QuestionComment>(
+        `/api/question/${questionId}/comment/`,
+        {
+          body: body,
+        }
+      )
     ).data,
   editQuestionComment: async (
     questionId: number,
@@ -88,7 +99,7 @@ export const api = {
     body: string
   ) =>
     (
-      await instance.put<Comment>(
+      await instance.put<QuestionComment>(
         `/api/question/${questionId}/comment/${commentId}/`,
         {
           body: body,
@@ -119,12 +130,8 @@ export const api = {
     (await instance.delete<EmptyBody>(`/api/answer/${answerId}`)).data,
 
   // TODO: need up/down parameter
-  voteUpQuestion: async (questionId: number) =>
+  voteQuestion: async (questionId: number, vote: -1 | 1) =>
     (await instance.post<EmptyBody>(`/api/question/${questionId}/vote/`)).data,
-  voteDownQuestion: async (questionId: number) =>
-    (await instance.post<EmptyBody>(`/api/question/${questionId}/vote/`)).data,
-  voteUpAnswer: async (answerId: number) =>
-    (await instance.post(`/api/answer/${answerId}/vote/`)).data,
-  voteDownAnswer: async (answerId: number) =>
+  voteAnswer: async (answerId: number, vote: -1 | 1) =>
     (await instance.post(`/api/answer/${answerId}/vote/`)).data,
 };

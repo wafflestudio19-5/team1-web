@@ -1,6 +1,7 @@
 export interface User {
   id: number;
   name: string;
+  email: string;
   profile: string;
 }
 
@@ -13,26 +14,32 @@ export interface Tag {
 export interface Vote {
   id: number;
   user: User;
-  status: string;
-  questionId: number;
-  answerId: number;
+  status: -1 | 1;
+  articleId: number;
 }
 
-export interface Comment {
+export interface QuestionComment {
   id: number;
   user: User;
   body: string;
   questionId: number;
+}
+
+export interface AnswerComment {
+  id: number;
+  user: User;
+  body: string;
   answerId: number;
 }
 
 export interface Answer {
   id: number;
   user: User;
+  title: string;
   body: string;
-  votes: number;
-  comments: Comment[];
-  accpedted: boolean;
+  votes: Vote[];
+  comments: AnswerComment[];
+  accepted: boolean;
 }
 
 export interface QuestionInterface {
@@ -40,8 +47,8 @@ export interface QuestionInterface {
   user: User;
   title: string;
   body: string;
-  votes: number;
-  comments: Comment[];
+  votes: Vote[];
+  comments: QuestionComment[];
   tags: Tag[];
   answers: Answer[];
   createdAt: string;
