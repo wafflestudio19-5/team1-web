@@ -26,9 +26,92 @@ export const setCurrentUser = (user: User | null) => {
 };
 export const getCurrentUser = () => currentUser;
 
-const dummyUsers: UserData[] = [];
-const dummyQuestions: QuestionInterface[] = [];
-let lastId = 0;
+const dummyUsers: UserData[] = [
+  {
+    id: 0,
+    name: "alice",
+    email: "alice@example.com",
+    profile: "",
+    password: "password",
+  },
+  {
+    id: 1,
+    name: "bob",
+    email: "bob@example.com",
+    profile: "",
+    password: "baseball",
+  },
+];
+const dummyQuestions: QuestionInterface[] = [
+  {
+    id: 101,
+    title: "Lorem Ipsum",
+    votes: [],
+    tags: [],
+    user: {
+      id: 0,
+      profile: "",
+      name: "alice",
+      email: "alice@example.com",
+    },
+    answers: [
+      {
+        id: 301,
+        user: {
+          id: 1,
+          name: "bob",
+          email: "bob@example.com",
+          profile: "",
+        },
+        body: "yes",
+        title: "no?",
+        votes: [
+          {
+            id: 501,
+            user: {
+              id: 0,
+              profile: "",
+              name: "alice",
+              email: "alice@example.com",
+            },
+            status: -1,
+            articleId: 301,
+          },
+        ],
+        comments: [
+          {
+            id: 201,
+            user: {
+              id: 0,
+              profile: "",
+              name: "alice",
+              email: "alice@example.com",
+            },
+            body: "no!",
+            answerId: 301,
+          },
+        ],
+        accepted: false,
+      },
+    ],
+    createdAt: new Date(2021, 12, 1).toISOString(),
+    comments: [
+      {
+        id: 201,
+        user: {
+          id: 1,
+          name: "bob",
+          email: "bob@example.com",
+          profile: "",
+        },
+        body: "hello world!",
+        questionId: 101,
+      },
+    ],
+    body: "lorem ipsum foo bar baz",
+  },
+];
+let lastId = 1000;
 
 export class DummyApiError extends Error {
   public statusCode: number;
