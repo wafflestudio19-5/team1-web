@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "./LoginBox.module.scss";
 import LabelInput from "../../../Components/LabelInput/LabelInput";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
+import { useNavigate } from "react-router";
 
 type LoginInfo = {
   [key: string]: string;
@@ -11,6 +12,7 @@ type LoginInfo = {
 };
 
 const LoginBox = () => {
+  const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState<LoginInfo>({
     userName: "",
     password: "",
@@ -23,7 +25,7 @@ const LoginBox = () => {
   };
 
   const submit = (e: React.MouseEvent<HTMLElement>) => {
-    // submit
+    navigate("/mypage?tab=profile");
   };
 
   return (

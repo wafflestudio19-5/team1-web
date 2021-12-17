@@ -11,6 +11,7 @@ import Questions from "./pages/Questions/Questions";
 import Register from "./pages/Register/Register";
 import "./App.css";
 import { api } from "./api/api";
+import MyPage from "./pages/MyPage/MyPage";
 
 const noLeftBarPage = ["register", "login"];
 
@@ -35,6 +36,7 @@ const App: React.FC = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/questions/:id/:title" element={<Question />} />
               <Route path="/questions/ask" element={<Ask />} />
+              <Route path="/mypage" element={<MyPage />} />
               <Route path="/*" element={<Navigate to="/questions" />} />
             </Routes>
           </div>
