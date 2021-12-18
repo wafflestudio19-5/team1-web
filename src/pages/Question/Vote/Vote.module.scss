@@ -1,0 +1,28 @@
+button {
+  margin: 2px;
+  padding: 0;
+  border: none;
+  color: unset;
+  background: none;
+  box-shadow: none;
+  cursor: pointer;
+
+  svg {
+    vertical-align: bottom;
+    fill: currentColor;
+
+    &:hover {
+      color: hsl(27, 90%, 55%);
+    }
+  }
+}
+
+.voteCount,
+.answerChecked {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-size: 25px;
+  color: hsl(210, 8%, 45%);
+  margin: 0;
+}

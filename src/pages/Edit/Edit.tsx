@@ -2,24 +2,39 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import Markdown from "../../Components/Markdown/Markdown";
+import { dummyApi } from "../../api/dummyApi";
 
-import styles from "./Ask.module.scss";
+import styles from "./Edit.module.scss";
 
-interface EditProps {
-  title?: string;
-  body: string;
-  isQuestion: boolean;
-}
+// interface EditProps {
+//   title?: string;
+//   body: string;
+//   isQuestion: boolean;
+// }
 
-const Ask: React.FC<EditProps> = ({ title, body, isQuestion }) => {
-  const [editedTitle, setEditedTitle] = useState<string>("");
+const QuestionEdit: React.FC = () => {
+  const [editedTitle, setEditedTitle] = useState<string | undefined>("");
   const [editedBody, setEditedBody] = useState<string | undefined>("");
+
   //   const [editedTags, setEditedTags] = useState<Array<string>>([]);
 
   useEffect(() => {
-    setEditedTitle(title ? title : "");
-    setEditedBody(body ? body : "");
+    const doIt = async () => {
+      try {
+        const response = await dummyApi.getQuestion(101);
+        setEditedTitle(response.title);
+        setEditedBody(response.body);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    doIt().then();
   }, []);
+
+  // useEffect(() => {
+  //   setEditedTitle(title ? title : "");
+  //   setEditedBody(body ? body : "");
+  // }, []);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEditedTitle(e.target.value);
@@ -36,6 +51,7 @@ const Ask: React.FC<EditProps> = ({ title, body, isQuestion }) => {
             onChange={handleTitleChange}
           />
         </div>
+
         <div className={styles.body}>
           <label>Body</label>
           <Markdown state={editedBody} setState={setEditedBody} />
@@ -58,4 +74,4 @@ const Ask: React.FC<EditProps> = ({ title, body, isQuestion }) => {
   );
 };
 
-export default Ask;
+export default QuestionEdit;
