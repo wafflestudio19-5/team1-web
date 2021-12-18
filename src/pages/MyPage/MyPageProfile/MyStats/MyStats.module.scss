@@ -1,0 +1,23 @@
+.myStats {
+  display: flex;
+  flex-direction: column;
+  width: calc(25% - 24px);
+  .title {
+    font-size: 21px;
+  }
+  .statBox {
+    display: flex;
+    height: 125px;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid hsl(210deg 8% 85%);
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 8px;
+
+    .statLine {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
