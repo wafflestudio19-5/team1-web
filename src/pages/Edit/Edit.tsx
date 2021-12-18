@@ -1,45 +1,44 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import Markdown from "../../Components/Markdown/Markdown";
 
 import styles from "./Ask.module.scss";
 
-const Ask: React.FC = () => {
-  const [title, setTitle] = useState<string>("");
-  const [body, setBody] = useState<string | undefined>("");
+interface EditProps {
+  title?: string;
+  body: string;
+  isQuestion: boolean;
+}
+
+const Ask: React.FC<EditProps> = ({ title, body, isQuestion }) => {
+  const [editedTitle, setEditedTitle] = useState<string>("");
+  const [editedBody, setEditedBody] = useState<string | undefined>("");
+  //   const [editedTags, setEditedTags] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    setEditedTitle(title ? title : "");
+  }, []);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setEditedTitle(e.target.value);
   };
 
   return (
     <>
       <div className={styles.ask}>
-        <div className={styles.header}>
-          <h1>Ask a public question</h1>
-        </div>
-
         <div className={styles.content}>
           <div className={styles.title}>
             <label>Title</label>
-            <p className={styles.tip}>
-              Be specific and imagine you’re asking a question to another person
-            </p>
             <input
-              value={title}
               maxLength={300}
-              placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
+              value={editedTitle}
               onChange={handleTitleChange}
             />
           </div>
           <div className={styles.body}>
             <label>Body</label>
-            <p className={styles.tip}>
-              Include all the information someone would need to answer your
-              question
-            </p>
-            <Markdown state={body} setState={setBody} />
+            <Markdown state={editedBody} setState={setEditedBody} />
           </div>
           <div className={styles.tags}>
             <label>Tags</label>
