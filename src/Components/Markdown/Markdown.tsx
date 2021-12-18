@@ -29,7 +29,7 @@ const Markdown: React.FC = () => {
     <div className={styles.container}>
       <MDEditor
         className={styles.editor}
-        height={350}
+        height={300}
         preview={"edit"}
         extraCommands={[]}
         value={state}
