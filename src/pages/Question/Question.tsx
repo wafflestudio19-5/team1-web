@@ -1,32 +1,51 @@
-import React, { useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import { ReactComponent as ArrowDown } from "./icons/iconArrowDown.svg";
-import { ReactComponent as ArrowUp } from "./icons/iconArrowUp.svg";
-import { ReactComponent as Bookmark } from "./icons/iconBookmark.svg";
+import BlueButton from "../../Components/BlueButton/BlueButton";
+import Markdown from "../../Components/Markdown/Markdown";
+import { dummyApi } from "../../api/dummyApi";
+import { QuestionInterface } from "../../interface/interface";
+
+import AnswerPost from "./Post/AnswerPost";
+import QuestionPost from "./Post/QuestionPost";
 
 import styles from "./Question.module.scss";
 
-const Question: React.FC = () => {
-  const [vote, setVote] = useState<number>(0);
-  const [answers, setAnswers] = useState<Array<string>>();
-  const [answer, setAnswer] = useState<string>("");
+const FILTERS = ["Active", "Oldest", "Votes"];
 
-  const onIncrease = () => setVote((prev) => prev + 1);
-  const onDecrease = () => setVote((prev) => prev - 1);
+const useQuery = () => {
+  const { search } = useLocation();
+  return useMemo(() => new URLSearchParams(search), [search]);
+};
+
+const Question: React.FC = () => {
+  const [questionData, setQuestionData] = useState<QuestionInterface>();
+  const query = useQuery();
+  const filter = query.get("answertab") ?? "Votes";
+  const location = useLocation();
+
+  useEffect(() => {
+    const doIt = async () => {
+      try {
+        const response = await dummyApi.getQuestion(101);
+        setQuestionData(response);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    doIt().then();
+  }, [filter]);
 
   return (
     <div className={styles.Question}>
       <div className={styles.Content}>
         <section className={styles.questionHeader}>
-          <h1>
-            Cannot chagne the dorm in the elements panel while source is paused
-            in Chrome 96 dev tools - do I miss a setting?
-          </h1>
-          <button className={styles.askButton}>
-            <Link to="/questions/ask">Ask Question</Link>
-          </button>
+          <h1>{questionData?.title}</h1>
+          <Link to="/questions/ask">
+            <BlueButton text={"Ask Question"} />
+          </Link>
         </section>
         <ul className={styles.postInfo}>
           <li>
@@ -43,65 +62,37 @@ const Question: React.FC = () => {
         </ul>
 
         <section className={styles.main}>
-          <div className={styles.postLayout}>
-            <div className={styles.voteCell}>
-              <button className="vote-up" onClick={onIncrease}>
-                <ArrowUp />
-              </button>
-              <div className={styles.voteCount}>{vote}</div>
-              <button className="vote-down" onClick={onDecrease}>
-                <ArrowDown />
-              </button>
-              <button className="bookmark">
-                <Bookmark />
-              </button>
-            </div>
-            <div className={styles.postCell}>
-              <div className={styles.postBody}>
-                <p>
-                  Is there any way to revert or undo git pull so that my
-                  source/repos will come to old state that was before doing git
-                  pull ? I want to do this because it merged some files which I
-                  didnt want to do so, but only merge other remaining files. So,
-                  I want to get those files back, is that possible?
-                </p>
-              </div>
-              <ul className={styles.tagList}>
-                <li>git</li>
-                <li>version-control</li>
-                <li>git-merge</li>
-              </ul>
-
-              <div className={styles.Footer}>
-                <ul className={styles.postMenuList}>
-                  <button>Share</button>
-                  <button>Edit</button>
-                  <button>Follow</button>
-                </ul>
-                <div className={styles.postSignature}>User Info</div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.Answer}>
-            {answers && (
-              <>
-                {answers.map((answer, id) => (
-                  <div key={id}>{answer}</div>
+          <QuestionPost question={questionData} />
+          <div className={styles.Answers}>
+            <div className={styles.answerBar}>
+              <h2>
+                {questionData?.answers
+                  ? `${questionData.answers.length} Answers`
+                  : "Your Answer"}
+              </h2>
+              <div className={styles.filterList}>
+                {FILTERS.map((value) => (
+                  <Link
+                    className={`${styles.filterItem} ${
+                      value === filter ? styles.selected : ""
+                    }`}
+                    key={value}
+                    to={`${location.pathname}?answertab=${value}`}
+                  >
+                    {value}
+                  </Link>
                 ))}
-              </>
-            )}
-            <form>
-              <h2>Your Answer</h2>
-              <input
-                className={styles.postAnswer}
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-              />
-              <button className={styles.postButton} type="submit">
-                Post Your Answer
-              </button>
-            </form>
+              </div>
+            </div>
+            {questionData?.answers.map((answer) => (
+              <AnswerPost key={answer.id} answer={answer} />
+            ))}
           </div>
+          <div className={styles.writeAnswer}>
+            <h2>Your Answer</h2>
+            <Markdown />
+          </div>
+          <BlueButton text={"Post Your Answer"} />
         </section>
       </div>
     </div>

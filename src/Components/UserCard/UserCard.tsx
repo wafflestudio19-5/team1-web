@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 import { User } from "../../interface/interface";
 
-import styles from "./UserInfo.module.scss";
+import styles from "./UserCard.module.scss";
 
-const UserInfo: React.FC<{ user: User; timestamp: string }> = ({
+const UserCard: React.FC<{ user: User; timestamp: string }> = ({
   user,
   timestamp,
 }) => {
@@ -14,23 +14,23 @@ const UserInfo: React.FC<{ user: User; timestamp: string }> = ({
   return (
     <div className={styles.activity}>
       <Link
-        to={`/questions/${user.id}/?lastactivity`}
+        to={`/questions/${user?.id}/?lastactivity`}
         className={styles.action}
       >
         asked at {date.toDateString()}
       </Link>
       <div>
         <img
-          src={user.profile}
-          alt="profile image"
+          src={user?.profile}
+          alt="profile_image"
           className={styles.profileImage}
         />
-        <Link to={`/users/${user.id}`} className={styles.name}>
-          {user.name}
+        <Link to={`/users/${user?.id}`} className={styles.name}>
+          {user?.name}
         </Link>
       </div>
     </div>
   );
 };
 
-export default UserInfo;
+export default UserCard;

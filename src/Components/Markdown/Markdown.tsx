@@ -21,15 +21,19 @@ const markdown = `
 
 > 인용문
 `;
+interface MarkdownProps {
+  state?: string | undefined;
+  setState?: (state: string | undefined) => void;
+}
 
-const Markdown: React.FC = () => {
-  const [state, setState] = useState<string | undefined>(markdown);
+const Markdown: React.FC<MarkdownProps> = ({ state, setState }) => {
+  // const [state, setState] = useState<string | undefined>(markdown);
 
   return (
     <div className={styles.container}>
       <MDEditor
         className={styles.editor}
-        height={350}
+        height={300}
         preview={"edit"}
         extraCommands={[]}
         value={state}

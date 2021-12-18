@@ -9,7 +9,7 @@
 .Content {
   max-width: 1100px;
   border-radius: 0;
-  border-width: 0 0 0 1px;
+  border: 0 0 0 1px;
   padding: 24px;
   margin: 0;
   box-sizing: border-box;
@@ -28,29 +28,6 @@
     color: hsl(210, 8%, 25%);
     line-height: 1.35;
     margin: 0 0 15px;
-  }
-}
-
-.askButton,
-.postButton {
-  display: inline-block;
-  position: relative;
-  width: 145px;
-  height: 40px;
-  margin-left: 12px;
-  background-color: hsl(206deg 100% 52%);
-  border: 1px solid transparent;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 0 0 hsl(0deg 0% 100% / 40%);
-
-  color: white;
-  text-align: center;
-  padding: 0 10px;
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: hsl(209, 100%, 37.5%);
   }
 }
 
@@ -80,120 +57,63 @@
 
 .main {
   // 사이드바 있는 경우 width
-  //   width: calc(100% - 300px - 24px);
+  // width: calc(100% - 10px);
+  width: 100%;
   float: left;
   margin: 0;
   padding: 0;
 }
 
-.postLayout {
-  display: grid;
-  grid-template-columns: 70px auto;
-  width: auto;
-  padding-right: 16px;
+.Answers {
+  .answerBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 
-  .voteCell {
-    grid-column: 1;
-  }
+    h2 {
+      font-weight: 400;
+    }
 
-  .postCell {
-    grid-column: 2;
-    min-width: 0;
-  }
-}
+    .filterList {
+      display: flex;
+      align-items: center;
+      list-style-type: none;
+      justify-content: flex-end;
 
-.voteCell {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin: 0px;
-  color: hsl(210, 8%, 75%);
+      .filterItem {
+        border: solid 1px #9fa6ad;
+        color: #6a737c;
+        font-size: 12px;
+        border-right-style: none;
+        padding: 10px;
 
-  button {
-    margin: 2px;
-    padding: 0;
-    border: none;
-    color: unset;
-    background: none;
-    box-shadow: none;
-    cursor: pointer;
+        &.selected {
+          background: #f3f3f3;
+          &:hover {
+            background: #f3f3f3;
+          }
+        }
 
-    svg {
-      vertical-align: bottom;
-      fill: currentColor;
-
-      &:hover {
-        color: hsl(27, 90%, 55%);
+        &:hover {
+          background: #e9e9e9;
+        }
+        &:first-child {
+          border-top-left-radius: 3px;
+          border-bottom-left-radius: 3px;
+        }
+        &:last-child {
+          border-top-right-radius: 3px;
+          border-bottom-right-radius: 3px;
+          border-right-style: solid;
+        }
       }
     }
   }
-
-  .voteCount {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    font-size: 25px;
-    color: hsl(210, 8%, 45%);
-    margin: 0;
-  }
 }
 
-.postBody {
-  font-size: 15px;
-  line-height: 1.5;
-  word-wrap: break-word;
-
-  p {
-    clear: both;
-    margin-top: 0;
-    margin-bottom: 16px;
-  }
-}
-
-.tagList {
-  display: flex;
-  margin: 24px 0 12px 0;
-  clear: both;
-
-  li {
-    display: inline-block;
-    padding: 0.4em 0.5em;
-    margin: 2px 2px 2px 0;
-
-    font-size: 12px;
-    line-height: 1;
-    white-space: nowrap;
-    text-align: center;
-
-    color: hsl(205, 47%, 42%);
-    background-color: hsl(205, 46%, 92%);
-
-    border-style: solid;
-    border-radius: 3px;
-    border-color: transparent;
-    border-width: 1px;
-  }
-}
-
-.Footer {
-  margin-bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  padding-top: 4px;
-  margin: 16px 0 4px 0;
-
-  .postMenuList {
-    display: flex;
-    // justify-content: space-evenly;
-    list-style: none;
-    flex: 1;
-    font-size: 13px;
-  }
-}
-
-.Answer {
-  h2 {
-    font-weight: 400;
-    padding-top: 20px;
-  }
+.writeAnswer {
+  margin-left: 12px;
+  margin-bottom: 25px;
 }

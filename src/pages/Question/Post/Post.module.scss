@@ -1,0 +1,122 @@
+.questionPostLayout,
+.answerPostLayout {
+  display: grid;
+  grid-template-columns: 70px auto;
+  width: auto;
+  padding-right: 16px;
+
+  .voteCell {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 0px;
+    color: hsl(210, 8%, 75%);
+  }
+
+  .postCell {
+    grid-column: 2;
+    min-width: 0;
+    margin-left: 5px;
+  }
+}
+
+.answerPostLayout {
+  margin-bottom: 20px;
+  border-color: hsl(210, 8%, 90%);
+  border-bottom-style: solid;
+  border-bottom-width: 1.5px;
+}
+
+.postBody {
+  font-size: 15px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  width: 100%;
+
+  body {
+    clear: both;
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+}
+
+%button {
+  margin-top: 20px;
+  flex-direction: row;
+  align-self: flex-start;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  background-color: white;
+
+  color: hsl(210, 8%, 55%);
+  opacity: 0.6;
+  padding: 0 3px 2px;
+  cursor: pointer;
+
+  &:hover {
+    color: hsl(206, 100%, 52%);
+  }
+}
+
+.itemFooter {
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: normal;
+  justify-content: space-between;
+  margin-top: 20px;
+
+  button {
+    @extend %button;
+  }
+
+  .activityContainer {
+    flex-direction: row-reverse;
+    align-self: flex-end;
+    margin: 10px;
+    margin-bottom: 20px;
+  }
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: normal;
+  list-style-type: none;
+  margin-top: 20px;
+}
+
+.commentList {
+  border-color: hsl(210, 8%, 90%);
+  border-top-style: solid;
+  border-top-width: 1px;
+
+  .addComment {
+    @extend %button;
+    margin-bottom: 10px;
+  }
+
+  form {
+    display: flex;
+    margin-top: 10px;
+    // margin-bottom: 20px;
+
+    button {
+      height: 30px;
+      margin-left: 12px;
+    }
+
+    textarea {
+      height: 50px;
+      width: 500px;
+    }
+  }
+
+  .cancelComment {
+    margin: 0;
+    margin-bottom: 20px;
+    @extend %button;
+    // margin-bottom: 20px;
+  }
+}
