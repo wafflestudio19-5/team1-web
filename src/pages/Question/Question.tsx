@@ -91,8 +91,8 @@ const Question: React.FC = () => {
           <div className={styles.writeAnswer}>
             <h2>Your Answer</h2>
             <Markdown />
+            <BlueButton text={"Post Your Answer"} />
           </div>
-          <BlueButton text={"Post Your Answer"} />
         </section>
       </div>
     </div>
