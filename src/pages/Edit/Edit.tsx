@@ -5,36 +5,32 @@ import Markdown from "../../Components/Markdown/Markdown";
 import { dummyApi } from "../../api/dummyApi";
 
 import styles from "./Edit.module.scss";
+import { useLocation } from "react-router";
 
-// interface EditProps {
-//   title?: string;
-//   body: string;
-//   isQuestion: boolean;
-// }
-
-const QuestionEdit: React.FC = () => {
+const Edit: React.FC = () => {
+  const location = useLocation();
+  const { title, body, isQuestion } = location.state;
   const [editedTitle, setEditedTitle] = useState<string | undefined>("");
   const [editedBody, setEditedBody] = useState<string | undefined>("");
-
-  //   const [editedTags, setEditedTags] = useState<Array<string>>([]);
-
-  useEffect(() => {
-    const doIt = async () => {
-      try {
-        const response = await dummyApi.getQuestion(101);
-        setEditedTitle(response.title);
-        setEditedBody(response.body);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    doIt().then();
-  }, []);
+  //const [editedTags, setEditedTags] = useState<Array<string>>([]);
 
   // useEffect(() => {
-  //   setEditedTitle(title ? title : "");
-  //   setEditedBody(body ? body : "");
+  //   const doIt = async () => {
+  //     try {
+  //       const response = await dummyApi.getQuestion(101);
+  //       setEditedTitle(response.title);
+  //       setEditedBody(response.body);
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   doIt().then();
   // }, []);
+
+  useEffect(() => {
+    setEditedTitle(title ? title : "");
+    setEditedBody(body ? body : "");
+  }, []);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEditedTitle(e.target.value);
@@ -42,18 +38,28 @@ const QuestionEdit: React.FC = () => {
 
   return (
     <div className={styles.ask}>
+      {isQuestion ? <h1>Ask a public question</h1> : <h1>Answer</h1>}
       <div className={styles.content}>
-        <div className={styles.title}>
-          <label>Title</label>
-          <input
-            maxLength={300}
-            value={editedTitle}
-            onChange={handleTitleChange}
-          />
-        </div>
+        {isQuestion && (
+          <div className={styles.title}>
+            <label>Title</label>
+            <p className={styles.tip}>
+              Be specific and imagine you’re asking a question to another person
+            </p>
+            <input
+              maxLength={300}
+              value={editedTitle}
+              onChange={handleTitleChange}
+            />
+          </div>
+        )}
 
         <div className={styles.body}>
           <label>Body</label>
+          <p className={styles.tip}>
+            Include all the information someone would need to answer your
+            question
+          </p>
           <Markdown state={editedBody} setState={setEditedBody} />
         </div>
         <div className={styles.tags}>
@@ -67,11 +73,12 @@ const QuestionEdit: React.FC = () => {
           />
         </div>
       </div>
-      <div className={styles.postButton}>
-        <BlueButton text={"Post your question"} />
+      <div className={styles.postButtons}>
+        <BlueButton text={"Save edits"} />
+        <button className={styles.cancelButton}>Cancel</button>
       </div>
     </div>
   );
 };
 
-export default QuestionEdit;
+export default Edit;
