@@ -1,7 +1,7 @@
 import styles from "./QuestionItem.module.scss";
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import TagItem from "../../../Components/TagItem/TagItem";
+import { Tag } from "../../../Components/Tag/Tag";
 import { ActivityComponent } from "../ActivityComponent/ActivityComponent";
 
 interface Activity {
@@ -64,7 +64,7 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
         <div className={styles.itemFooter}>
           <div className={styles.tagList}>
             {question.tags.map((tag) => (
-              <TagItem key={tag} tag={tag} />
+              <Tag key={tag} tag={tag} />
             ))}
           </div>
           <div className={styles.activityContainer}>

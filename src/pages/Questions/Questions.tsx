@@ -4,7 +4,6 @@ import styles from "./Questions.module.scss";
 import { Link } from "react-router-dom";
 import { Question, QuestionItem } from "./QuestionItem/QuestionItem";
 import { useLocation } from "react-router";
-import BlueButton from "../../Components/BlueButton/BlueButton";
 
 interface QuestionQueryResponse {
   items: Question[];
@@ -92,8 +91,8 @@ const Questions = () => {
       <div className={styles.header}>
         <div className={styles.topBar}>
           <h1>All Questions</h1>
-          <Link to="/questions/ask">
-            <BlueButton text={"Ask Question"} />
+          <Link to="/questions/ask" className={styles.askQuestionButton}>
+            Ask Question
           </Link>
         </div>
         <div className={styles.secondBar}>
@@ -103,9 +102,7 @@ const Questions = () => {
           <div className={styles.filterList}>
             {FILTERS.map((value) => (
               <Link
-                className={`${styles.filterItem} ${
-                  value === filter ? styles.selected : ""
-                }`}
+                className={`${styles.filterItem} ${value === filter ? styles.selected : ""}`}
                 key={value}
                 to={`/questions?tab=${value}`}
               >

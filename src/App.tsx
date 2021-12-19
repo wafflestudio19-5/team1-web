@@ -5,7 +5,6 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import LeftBar from "./Components/LeftBar/LeftBar";
 import NavBar from "./Components/NavBar/NavBar";
 import Ask from "./pages/Ask/Ask";
-import Edit from "./pages/Edit/Edit";
 import Login from "./pages/Login/Login";
 import Question from "./pages/Question/Question";
 import Questions from "./pages/Questions/Questions";
@@ -37,7 +36,6 @@ const App: React.FC = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/questions/:id/:title" element={<Question />} />
               <Route path="/questions/ask" element={<Ask />} />
-              <Route path="/posts/:id/edit" element={<Edit />} />
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/*" element={<Navigate to="/questions" />} />
             </Routes>
