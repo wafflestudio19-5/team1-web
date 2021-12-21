@@ -2,12 +2,12 @@ import styles from "./QuestionItem.module.scss";
 import { FC, useMemo } from "react";
 import { Link } from "react-router-dom";
 import TagItem from "../../../Components/TagItem/TagItem";
-import { ActivityComponent } from "../ActivityComponent/ActivityComponent";
 import {
   countVotes,
   isAnswered,
   QuestionInterface,
 } from "../../../interface/interface";
+import UserCard from "../../../Components/UserCard/UserCard";
 
 interface QuestionItemProps {
   question: QuestionInterface;
@@ -57,7 +57,7 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
             ))}
           </div>
           <div className={styles.activityContainer}>
-            <ActivityComponent question={question} />
+            <UserCard user={question.user} timestamp={question.createdAt} />
           </div>
         </div>
       </div>
