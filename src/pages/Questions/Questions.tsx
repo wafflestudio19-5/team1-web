@@ -2,66 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import styles from "./Questions.module.scss";
 import { Link } from "react-router-dom";
-import { Question, QuestionItem } from "./QuestionItem/QuestionItem";
+import { QuestionItem } from "./QuestionItem/QuestionItem";
 import { useLocation } from "react-router";
 import BlueButton from "../../Components/BlueButton/BlueButton";
-
-interface QuestionQueryResponse {
-  items: Question[];
-  page_num: number;
-  items_count: number;
-  items_total: number;
-}
-
-const dummyResponse: QuestionQueryResponse = {
-  items: [
-    {
-      id: 1,
-      title: "Lorem Ipsum",
-      summary: "Lorem Ipsum",
-      votes: +5,
-      answersCount: 0,
-      tags: ["react", "react-dom"],
-      last_activity: {
-        action: "asked",
-        timestamp: "2021-11-25 20:45:00Z",
-        user: {
-          id: 1,
-          image: "",
-          name: "foobar",
-        },
-      },
-    },
-    {
-      id: 2,
-      title: "Foo Bar Baz",
-      summary: "Lorem Ipsum",
-      votes: -2,
-      answersCount: 1,
-      tags: ["nodejs", "typescript"],
-      last_activity: {
-        action: "asked",
-        timestamp: "2021-11-26 20:45:00Z",
-        user: {
-          id: 2,
-          image: "",
-          name: "foobar",
-        },
-      },
-    },
-  ],
-  page_num: 1,
-  items_count: 20,
-  items_total: 2,
-};
-
-const getQuestions = async (
-  page_num: number,
-  items_count: number,
-  filter: string
-) => {
-  return dummyResponse;
-};
+import { QuestionInterface } from "../../interface/interface";
+import { dummyApi } from "../../api/dummyApi";
 
 const useQuery = () => {
   const { search } = useLocation();
@@ -73,12 +18,11 @@ const FILTERS = ["Newest", "Active", "Unanswered", "Frequent", "Votes"];
 const Questions = () => {
   const query = useQuery();
   const filter = query.get("tab") ?? "Newest";
-  const [questionResponse, setQuestionResponse] =
-    useState<QuestionQueryResponse>();
+  const [questionList, setQuestionList] = useState<QuestionInterface[]>([]);
   useEffect(() => {
     const doIt = async () => {
       try {
-        setQuestionResponse(await getQuestions(1, 20, filter));
+        setQuestionList(await dummyApi.getQuestionList());
       } catch (e) {
         // prevent silent error while developing
         console.log(e);
@@ -97,9 +41,7 @@ const Questions = () => {
           </Link>
         </div>
         <div className={styles.secondBar}>
-          <div className={styles.total}>
-            {questionResponse?.items_total} questions
-          </div>
+          <div className={styles.total}>{questionList.length} questions</div>
           <div className={styles.filterList}>
             {FILTERS.map((value) => (
               <Link
@@ -116,7 +58,7 @@ const Questions = () => {
         </div>
       </div>
       <div className={styles.questionList}>
-        {questionResponse?.items?.map((question) => (
+        {questionList.map((question) => (
           <QuestionItem key={question.id} question={question} />
         ))}
       </div>

@@ -1,31 +1,16 @@
 import styles from "./QuestionItem.module.scss";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { Link } from "react-router-dom";
 import TagItem from "../../../Components/TagItem/TagItem";
 import { ActivityComponent } from "../ActivityComponent/ActivityComponent";
-
-interface Activity {
-  action: "asked" | "answered" | "modified";
-  timestamp: string;
-  user: {
-    id: number;
-    image: string;
-    name: string;
-  };
-}
-
-export interface Question {
-  id: number;
-  title: string;
-  summary: string;
-  votes: number;
-  answersCount: number;
-  tags: string[];
-  last_activity: Activity;
-}
+import {
+  countVotes,
+  isAnswered,
+  QuestionInterface,
+} from "../../../interface/interface";
 
 interface QuestionItemProps {
-  question: Question;
+  question: QuestionInterface;
 }
 
 const makeTitleUrl = (title: string) => {
@@ -36,19 +21,23 @@ const makeTitleUrl = (title: string) => {
 };
 
 export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
+  const questionSummary = useMemo(
+    () => question.body.substring(0, 100),
+    [question]
+  );
   return (
     <div className={styles.questionItem}>
       <div className={styles.sideBar}>
         <div className={styles.numberBox}>
-          <div className={styles.number}>{question.votes}</div>
+          <div className={styles.number}>{countVotes(question)}</div>
           <div className={styles.label}>votes</div>
         </div>
         <div
           className={`${styles.numberBox} ${
-            question.answersCount ? styles.answered : ""
+            isAnswered(question) ? styles.answered : ""
           }`}
         >
-          <div className={styles.number}>{question.answersCount}</div>
+          <div className={styles.number}>{question.answers.length}</div>
           <div className={styles.label}>answers</div>
         </div>
       </div>
@@ -60,11 +49,11 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
             {question.title}
           </Link>
         </h3>
-        <p>{question.summary}</p>
+        <p>{questionSummary}</p>
         <div className={styles.itemFooter}>
           <div className={styles.tagList}>
             {question.tags.map((tag) => (
-              <TagItem key={tag} tag={tag} />
+              <TagItem key={tag.id} tag={tag.name} />
             ))}
           </div>
           <div className={styles.activityContainer}>
