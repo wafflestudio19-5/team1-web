@@ -13,12 +13,13 @@ export const Settings: FC<SettingsProps> = ({}) => {
   const [aboutMe, setAboutMe] = useState("");
   const [websiteLink, setWebsiteLink] = useState("");
   const [githubLink, setGithubLink] = useState("");
-  const [fullName, setFullName] = useState("");
   const saveProfile = useCallback(() => {
-    // save profile
+    // TODO
+    console.log("save profile");
   }, []);
   const cancel = useCallback(() => {
-    // cancel
+    // TODO
+    console.log("cancel profile edit");
   }, []);
 
   return (
@@ -83,22 +84,6 @@ export const Settings: FC<SettingsProps> = ({}) => {
               value={githubLink}
               onInput={(e) => setGithubLink(e.currentTarget.value)}
             />
-          </div>
-        </div>
-        <h3 className={styles.notShownPublicly}>Private information</h3>
-        <div className={styles.box}>
-          <label htmlFor={"full-name"}>Full name</label>
-          <input
-            id={"full-name"}
-            value={fullName}
-            onInput={(e) => setFullName(e.currentTarget.value)}
-            placeholder={"Shown to employers only if opt-in"}
-          />
-          {/* TODO: there's no `Developer Story` */}
-          <div className={styles.warning}>
-            Updates to your <b>Full name</b> will be reflected within your
-            Developer Story. Within Developer Story, your name is seen by
-            employers and visitors to your public CV/story.
           </div>
         </div>
         <BlueButton text={"Save profile"} onClick={saveProfile} />
