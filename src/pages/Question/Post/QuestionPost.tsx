@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 import MDEditor from "@uiw/react-md-editor";
 
-import Edit from "../../Edit/Edit";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import TagItem from "../../../Components/TagItem/TagItem";
 import UserCard from "../../../Components/UserCard/UserCard";
@@ -39,7 +38,14 @@ const QuestionPost: React.FC<PostProps> = ({ question }) => {
         </div>
 
         <div className={styles.itemFooter}>
-          <Link to={`/posts/${question?.id}/edit`}>
+          <Link
+            to={`/posts/${question?.id}/edit`}
+            state={{
+              title: question?.title,
+              body: question?.body,
+              isQuestion: true,
+            }}
+          >
             <button>Edit</button>
           </Link>
 

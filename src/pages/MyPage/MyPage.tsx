@@ -6,6 +6,7 @@ import MyPageTab from "./MyPageTab/MyPageTab";
 import { useLocation } from "react-router";
 import ProfileButtons from "./ProfileButtons/ProfileButtons";
 import { Settings } from "./Settings/Settings";
+import MyPageProfile from "./MyPageProfile/MyPageProfile";
 
 const MyPage = () => {
   const qs = new URLSearchParams(useLocation().search);
@@ -15,8 +16,8 @@ const MyPage = () => {
       <ProfileButtons />
       <MyInfo />
       <MyPageTab mode={tab} />
-
       {tab === "settings" && <Settings />}
+      {tab === "profile" && <MyPageProfile />}
     </div>
   );
 };

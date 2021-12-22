@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { Link } from "react-router-dom";
+
 import MDEditor from "@uiw/react-md-editor";
 
 import BlueButton from "../../../Components/BlueButton/BlueButton";
@@ -29,7 +31,12 @@ const AnswerPost: React.FC<PostProps> = ({ answer }) => {
         </div>
 
         <div className={styles.itemFooter}>
-          <button>Edit</button>
+          <Link
+            to={`/posts/${answer?.id}/edit`}
+            state={{ body: answer?.body, isQuestion: false }}
+          >
+            <button>Edit</button>
+          </Link>
           <div className={styles.activityContainer}>
             <UserCard user={answer?.user!} timestamp="2021-11-26 20:45:00Z" />
           </div>
