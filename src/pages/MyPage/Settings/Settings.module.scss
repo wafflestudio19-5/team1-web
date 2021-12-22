@@ -1,0 +1,48 @@
+.Settings {
+  display: flex;
+  h2 {
+    font-size: 27px;
+    font-weight: normal;
+  }
+  h3 {
+    font-size: 21px;
+    font-weight: normal;
+  }
+  label {
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .profileImgContainer {
+    position: relative;
+    width: fit-content;
+    .changePicture {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgb(82, 89, 96);
+      border-radius: 0 0 3px 3px;
+      width: 100%;
+      margin: 0;
+      color: white;
+      padding: 8px 0;
+    }
+  }
+  input {
+    max-width: 390px;
+    display: block;
+  }
+  .box {
+    padding: 24px;
+    border-radius: 5px;
+    border: 1px solid #e3e6e8;
+    margin-bottom: 48px;
+  }
+  .profileImgContainer,
+  input {
+    margin-bottom: 15px;
+  }
+  section {
+    width: 100%;
+  }
+}
