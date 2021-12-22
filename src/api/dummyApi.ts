@@ -21,10 +21,14 @@ function unbox<T>(l: T[]) {
   return l.length ? l[0] : undefined;
 }
 
-export const setCurrentUser = (user: User | null) => {
-  currentUser = user;
+export type AccessToken = User;
+
+// used only in SessionContext.tsx
+export const _setCurrentUser = (token: AccessToken | null) => {
+  currentUser = token;
 };
-export const getCurrentUser = () => currentUser;
+// used only in SessionContext.tsx
+export const _getCurrentUser = () => currentUser;
 
 const dummyUsers: UserData[] = [
   {
@@ -126,14 +130,18 @@ export const dummyApi = {
   ping: async () => "pingpong",
 
   // returns jwt token
-  signin: async (email: string, password: string): Promise<User> => {
+  signin: async (email: string, password: string): Promise<AccessToken> => {
     const userData = dummyUsers.find((user) => user.email === email);
     if (!userData || userData.password !== password)
       throw new DummyApiError(401, "Unauthorized");
     const { password: _, ...user } = userData;
     return user;
   },
-  signup: async (name: string, email: string, password: string) => {
+  signup: async (
+    name: string,
+    email: string,
+    password: string
+  ): Promise<AccessToken> => {
     const already = dummyUsers.find((user) => user.email === email);
     if (already) throw new DummyApiError(400, "user already exists");
     const userData: UserData = {

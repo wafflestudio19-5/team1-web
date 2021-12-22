@@ -29,11 +29,15 @@ const storeToken = (newToken: string | null) => {
   }
 };
 
-export const setAccessToken = (token: string | null) => {
+export type AccessToken = string;
+
+// used only in SessionContext.tsx
+export const _setAccessToken = (token: AccessToken | null) => {
   setHeaderToken(token);
   storeToken(token);
 };
-export const getAccessToken = () => loadToken();
+// used only in SessionContext.tsx
+export const _getAccessToken = () => loadToken();
 setHeaderToken(loadToken());
 
 export interface EmptyBody {}
@@ -42,7 +46,7 @@ export const api = {
   ping: async () => (await instance.get<string>("/api/v1/pingpong/")).data,
 
   // returns jwt token
-  signin: async (email: string, password: string) => {
+  signin: async (email: string, password: string): Promise<AccessToken> => {
     return (
       await instance.post<EmptyBody>("/api/user/signin/", {
         email: email,
@@ -50,7 +54,11 @@ export const api = {
       })
     ).headers["Authentication"];
   },
-  signup: async (name: string, email: string, password: string) =>
+  signup: async (
+    name: string,
+    email: string,
+    password: string
+  ): Promise<AccessToken> =>
     (
       await instance.post<EmptyBody>("/api/user/signup/", {
         name: name,

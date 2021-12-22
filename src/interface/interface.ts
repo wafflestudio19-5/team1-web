@@ -53,3 +53,13 @@ export interface QuestionInterface {
   answers: Answer[];
   createdAt: string;
 }
+
+export const countVotes = (question: QuestionInterface) => {
+  return question.votes.length
+    ? question.votes.map<number>((vote) => vote.status).reduce((a, b) => a + b)
+    : 0;
+};
+
+export const isAnswered = (question: QuestionInterface) => {
+  return question.answers.some((answer) => answer.accepted);
+};
