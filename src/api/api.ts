@@ -60,11 +60,14 @@ export const api = {
     password: string
   ): Promise<AccessToken> =>
     (
-      await instance.post<EmptyBody>("/api/user/signup/", {
-        name: name,
-        email: email,
-        password: password,
-      })
+      await instance.post<EmptyBody>(
+        "https://waffleoverflow.shop/api/user/signup/",
+        {
+          name: name,
+          email: email,
+          password: password,
+        }
+      )
     ).headers["Authentication"],
   getQuestionList: async () =>
     (await instance.get<QuestionInterface[]>("/api/question/")).data,
