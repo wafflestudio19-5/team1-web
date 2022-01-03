@@ -4,6 +4,7 @@ import {
   AnswerComment,
   QuestionComment,
   QuestionInterface,
+  UserInfoResponse,
 } from "../interface/interface";
 
 const API_ENDPOINT =
@@ -21,7 +22,7 @@ const setHeaderToken = (newToken: string | null) => {
   }
 };
 const ACCESS_TOKEN_KEY = "accessToken";
-const loadToken = () => localStorage.getItem(ACCESS_TOKEN_KEY);
+const loadToken = (): string | null => localStorage.getItem(ACCESS_TOKEN_KEY);
 const storeToken = (newToken: string | null) => {
   if (newToken) {
     localStorage.setItem(ACCESS_TOKEN_KEY, newToken);
@@ -46,28 +47,35 @@ export interface EmptyBody {}
 export const api = {
   ping: async () => (await instance.get<string>("/api/v1/pingpong/")).data,
 
-  // returns jwt token
-  signin: async (email: string, password: string): Promise<AccessToken> => {
-    return (
-      await instance.post<EmptyBody>("/api/user/signin/", {
+  _signin: async (email: string, password: string) => {
+    const response = await instance.post<UserInfoResponse>(
+      "/api/user/signin/",
+      {
         email: email,
         password: password,
-      })
-    ).headers["Authentication"];
+      }
+    );
+    return {
+      token: response.headers["Authentication"],
+      userInfo: response.data,
+    };
   },
-  signup: async (
-    username: string,
-    email: string,
-    password: string
-  ): Promise<AccessToken> =>
-    (
-      await instance.post<EmptyBody>("/api/user/signup/", {
+  _signup: async (username: string, email: string, password: string) => {
+    const response = await instance.post<UserInfoResponse>(
+      "/api/user/signup/",
+      {
         username: username,
         email: email,
         password: password,
-      })
-    ).headers["Authentication"],
-  getMyProfile: async () => (await instance.get("/api/user/me/")).data,
+      }
+    );
+    return {
+      token: response.headers["Authentication"],
+      userInfo: response.data,
+    };
+  },
+  getMyProfile: async () =>
+    (await instance.get<UserInfoResponse>("/api/user/me/")).data,
   getQuestionList: async () =>
     (await instance.get<{ questions: QuestionInterface[] }>("/api/question/"))
       .data.questions,
