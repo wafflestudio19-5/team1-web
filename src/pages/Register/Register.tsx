@@ -5,6 +5,7 @@ import OAuthLogin from "../../Components/OAuthLogin/OAuthLogin";
 import LabelInput from "../../Components/LabelInput/LabelInput";
 import { Link } from "react-router-dom";
 import BlueButton from "../../Components/BlueButton/BlueButton";
+import { dummyApi } from "../../api/dummyApi";
 
 type RegisterInfo = {
   [key: string]: string;
@@ -27,8 +28,16 @@ const Register = () => {
     setRegisterInfo(newRegisterInfo);
   };
 
-  const submit = (e: React.MouseEvent<HTMLElement>) => {
-    // submit
+  const submit = async (e: React.MouseEvent<HTMLElement>) => {
+    try {
+      await dummyApi.signup(
+        registerInfo.name,
+        registerInfo.email,
+        registerInfo.password
+      );
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
