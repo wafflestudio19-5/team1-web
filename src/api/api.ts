@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   Answer,
+  AnswerComment,
   QuestionComment,
   QuestionInterface,
 } from "../interface/interface";
@@ -55,19 +56,21 @@ export const api = {
     ).headers["Authentication"];
   },
   signup: async (
-    name: string,
+    username: string,
     email: string,
     password: string
   ): Promise<AccessToken> =>
     (
       await instance.post<EmptyBody>("/api/user/signup/", {
-        name: name,
+        username: username,
         email: email,
         password: password,
       })
     ).headers["Authentication"],
+  getMyProfile: async () => (await instance.get("/api/user/me/")).data,
   getQuestionList: async () =>
-    (await instance.get<QuestionInterface[]>("/api/question/")).data,
+    (await instance.get<{ questions: QuestionInterface[] }>("/api/question/"))
+      .data.questions,
   postQuestion: async (title: string, body: string) =>
     (
       await instance.post<QuestionInterface>("/api/question/", {
@@ -120,26 +123,56 @@ export const api = {
         `/api/question/${questionId}/comment/${commentId}/`
       )
     ).data,
-  postAnswer: async (questionId: number, title: string, body: string) =>
+  postAnswer: async (questionId: number, body: string) =>
     (
       await instance.post<Answer>(`/api/question/${questionId}/answer/`, {
-        title: title,
         body: body,
       })
     ).data,
-  editAnswer: async (answerId: number, title: string, body: string) =>
+  editAnswer: async (answerId: number, body: string) =>
     (
-      await instance.put<Answer>(`/api/answer/${answerId}`, {
-        title: title,
+      await instance.put<Answer>(`/api/answer/${answerId}/`, {
         body: body,
       })
     ).data,
   deleteAnswer: async (answerId: number) =>
-    (await instance.delete<EmptyBody>(`/api/answer/${answerId}`)).data,
+    (await instance.delete<EmptyBody>(`/api/answer/${answerId}/`)).data,
+  getAnswerCommentList: async (answerId: number) =>
+    (await instance.get<Answer[]>(`/api/answer/${answerId}/comment/`)).data,
+  postAnswerComment: async (answerId: number, body: string) =>
+    (
+      await instance.post<AnswerComment>(`/api/answer/${answerId}/comment/`, {
+        body: body,
+      })
+    ).data,
+  editAnswerComment: async (
+    answerId: number,
+    commentId: number,
+    body: string
+  ) =>
+    (
+      await instance.post<AnswerComment>(
+        `/api/answer/${answerId}/comment/${commentId}/`,
+        { body: body }
+      )
+    ).data,
+  deleteAnswerComment: async (answerId: number, commentId: number) =>
+    (
+      await instance.delete<EmptyBody>(
+        `/api/answer/${answerId}/comment/${commentId}/`
+      )
+    ).data,
 
-  // TODO: need up/down parameter
   voteQuestion: async (questionId: number, vote: -1 | 1) =>
-    (await instance.post<EmptyBody>(`/api/question/${questionId}/vote/`)).data,
+    (
+      await instance.post<EmptyBody>(`/api/question/${questionId}/vote/`, {
+        status: vote > 0 ? "Up" : "Down",
+      })
+    ).data,
   voteAnswer: async (answerId: number, vote: -1 | 1) =>
-    (await instance.post(`/api/answer/${answerId}/vote/`)).data,
+    (
+      await instance.post(`/api/answer/${answerId}/vote/`, {
+        status: vote > 0 ? "Up" : "Down",
+      })
+    ).data,
 };
