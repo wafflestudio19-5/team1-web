@@ -5,6 +5,8 @@ import LabelInput from "../../../Components/LabelInput/LabelInput";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import { Navigate } from "react-router";
 import { useSessionContext } from "../../../contexts/SessionContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 type LoginInfo = {
   [key: string]: string;
@@ -18,7 +20,7 @@ const LoginBox = () => {
     email: "",
     password: "",
   });
-  const { userId, signin } = useSessionContext();
+  const { userInfo, signin } = useSessionContext();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -29,13 +31,21 @@ const LoginBox = () => {
   const submit = async () => {
     try {
       await signin(loginInfo.email, loginInfo.password);
-      // navigate("/mypage?tab=profile");
     } catch (e) {
-      console.log(e);
+      if (axios.isAxiosError(e)) {
+        if (e.response) {
+          console.log(e.response.data);
+          if (e.response.status === 401) {
+            toast.error("Invalid email or password");
+          }
+        }
+      } else {
+        console.log(e);
+      }
     }
   };
 
-  if (userId !== null) return <Navigate to={"/questions"} />;
+  if (userInfo) return <Navigate to={"/questions"} />;
 
   return (
     <form

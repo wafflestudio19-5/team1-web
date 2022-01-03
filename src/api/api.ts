@@ -16,9 +16,9 @@ const instance = axios.create({
 
 const setHeaderToken = (newToken: string | null) => {
   if (newToken) {
-    instance.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
+    instance.defaults.headers.common["Authentication"] = newToken;
   } else {
-    delete instance.defaults.headers.common["Authorization"];
+    delete instance.defaults.headers.common["Authentication"];
   }
 };
 const ACCESS_TOKEN_KEY = "accessToken";
@@ -47,18 +47,12 @@ export interface EmptyBody {}
 export const api = {
   ping: async () => (await instance.get<string>("/api/v1/pingpong/")).data,
 
-  _signin: async (email: string, password: string) => {
-    const response = await instance.post<UserInfoResponse>(
-      "/api/user/signin/",
-      {
-        email: email,
-        password: password,
-      }
-    );
-    return {
-      token: response.headers["Authentication"],
-      userInfo: response.data,
-    };
+  _signin: async (email: string, password: string): Promise<AccessToken> => {
+    const response = await instance.post<EmptyBody>("/api/user/signin/", {
+      email: email,
+      password: password,
+    });
+    return response.headers["authentication"];
   },
   _signup: async (username: string, email: string, password: string) => {
     const response = await instance.post<UserInfoResponse>(
@@ -70,7 +64,7 @@ export const api = {
       }
     );
     return {
-      token: response.headers["Authentication"],
+      token: response.headers["authentication"],
       userInfo: response.data,
     };
   },

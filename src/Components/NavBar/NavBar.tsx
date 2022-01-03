@@ -11,7 +11,7 @@ type NavBarProps = {
 const NavBar: React.FC<NavBarProps> = ({ noLeftBarPage }) => {
   const location = useLocation();
   const mode: string = location.pathname.split("/")[1];
-  const { userId, signout } = useSessionContext();
+  const { signout, userInfo } = useSessionContext();
 
   return (
     <div className={styles.navBar}>
@@ -26,7 +26,7 @@ const NavBar: React.FC<NavBarProps> = ({ noLeftBarPage }) => {
           </li>
         </ul>
         <input className={styles.searchBox} />
-        {userId === null ? (
+        {!userInfo ? (
           <div className={styles.buttonList}>
             <button className={`${styles.navBarButton} ${styles.loginButton}`}>
               <Link to="/login">Log in</Link>
@@ -37,6 +37,11 @@ const NavBar: React.FC<NavBarProps> = ({ noLeftBarPage }) => {
           </div>
         ) : (
           <div className={styles.buttonList}>
+            <button
+              className={`${styles.navBarButton} ${styles.profileButton}`}
+            >
+              <Link to={"/mypage"}>{userInfo.username}</Link>
+            </button>
             <button
               className={`${styles.navBarButton} ${styles.signoutButton}`}
               onClick={signout}

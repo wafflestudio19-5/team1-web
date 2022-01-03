@@ -20,7 +20,7 @@ const Register = () => {
     email: "",
     password: "",
   });
-  const { userId, signup } = useSessionContext();
+  const { userInfo, signup } = useSessionContext();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,7 +41,7 @@ const Register = () => {
     }
   };
 
-  if (userId !== null) return <Navigate to={"/questions"} />;
+  if (userInfo) return <Navigate to={"/questions"} />;
 
   return (
     <div className={styles.register}>

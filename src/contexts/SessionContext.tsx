@@ -7,30 +7,32 @@ import {
   useState,
 } from "react";
 import { _getAccessToken, _setAccessToken, api } from "../api/api";
+import { UserInfoResponse } from "../interface/interface";
 
 interface SessionContextProps {
-  isAuthorized: boolean | null;
   signin: (email: string, password: string) => Promise<void>;
   signup: (username: string, email: string, password: string) => Promise<void>;
   signout: () => Promise<void>;
-  userId: number | null;
+  userInfo: UserInfoResponse | null;
 }
 const defaultValue: SessionContextProps = {
   signin: async () => {},
   signout: async () => {},
   signup: async () => {},
-  isAuthorized: null,
-  userId: null,
+  userInfo: null,
 };
 const SessionContext = createContext<SessionContextProps>(defaultValue);
 
 export const SessionProvider: FC = ({ children }) => {
-  const [userId, setUserId] = useState<number | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfoResponse | null>(null);
   useEffect(() => {
     const doIt = async () => {
       try {
         const token = _getAccessToken();
-        if (token) setUserId((await api.getMyProfile()).id);
+        if (token) {
+          const newUserInfo = await api.getMyProfile();
+          setUserInfo(newUserInfo);
+        }
       } catch (e) {
         console.log(e);
       }
@@ -38,43 +40,32 @@ export const SessionProvider: FC = ({ children }) => {
     doIt().then();
   }, []);
   const signin = useCallback(async (email: string, password: string) => {
-    try {
-      const { token, userInfo } = await api._signin(email, password);
-      _setAccessToken(token);
-      setUserId(userInfo.id);
-    } catch (e) {
-      console.log(e);
-    }
+    const token = await api._signin(email, password);
+    console.log(token);
+    _setAccessToken(token);
+    const userInfo = await api.getMyProfile();
+    setUserInfo(userInfo);
   }, []);
   const signup = useCallback(
     async (username: string, email: string, password: string) => {
-      try {
-        const { token, userInfo } = await api._signup(
-          username,
-          email,
-          password
-        );
-        _setAccessToken(token);
-        setUserId(userInfo.id);
-      } catch (e) {
-        console.log(e);
-      }
+      const { token, userInfo } = await api._signup(username, email, password);
+      _setAccessToken(token);
+      setUserInfo(userInfo);
     },
     []
   );
   const signout = useCallback(async () => {
     _setAccessToken(null);
-    setUserId(null);
+    setUserInfo(null);
   }, []);
 
   return (
     <SessionContext.Provider
       value={{
-        isAuthorized: userId === null ? null : !!userId,
-        userId,
         signin,
         signup,
         signout,
+        userInfo,
       }}
     >
       {children}
