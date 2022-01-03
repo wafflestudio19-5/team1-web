@@ -23,7 +23,9 @@ const LabelInput: React.FC<LabelInputProps> = ({
         {title}
       </label>
       <input
-        className={styles.loginInput}
+        className={`${styles.loginInput} ${
+          isPassword ? styles.passwordInput : ""
+        }`}
         type={isPassword ? "password" : "text"}
         id={name}
         name={name}

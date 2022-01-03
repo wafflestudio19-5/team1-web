@@ -11,9 +11,6 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  &.passwordInput {
-    margin-top: 15px;
-  }
 }
 
 .loginInput {
@@ -24,4 +21,7 @@
   height: 35px;
   margin-top: 5px;
   border-radius: 3px;
+  &.passwordInput {
+    font-family: arial, serif;
+  }
 }

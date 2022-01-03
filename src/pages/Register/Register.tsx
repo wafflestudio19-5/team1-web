@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import styles from "./Register.module.scss";
 import OAuthLogin from "../../Components/OAuthLogin/OAuthLogin";
 import LabelInput from "../../Components/LabelInput/LabelInput";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import BlueButton from "../../Components/BlueButton/BlueButton";
-import { dummyApi } from "../../api/dummyApi";
+import { useSessionContext } from "../../contexts/SessionContext";
 
 type RegisterInfo = {
   [key: string]: string;
@@ -20,6 +20,7 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const { userId, signup } = useSessionContext();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,9 +29,9 @@ const Register = () => {
     setRegisterInfo(newRegisterInfo);
   };
 
-  const submit = async (e: React.MouseEvent<HTMLElement>) => {
+  const submit = async () => {
     try {
-      await dummyApi.signup(
+      await signup(
         registerInfo.name,
         registerInfo.email,
         registerInfo.password
@@ -39,6 +40,8 @@ const Register = () => {
       console.log(e);
     }
   };
+
+  if (userId !== null) return <Navigate to={"/questions"} />;
 
   return (
     <div className={styles.register}>

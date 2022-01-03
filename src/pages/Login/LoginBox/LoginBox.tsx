@@ -3,21 +3,22 @@ import React, { useState } from "react";
 import styles from "./LoginBox.module.scss";
 import LabelInput from "../../../Components/LabelInput/LabelInput";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
-import { useNavigate } from "react-router";
-import { dummyApi } from "../../../api/dummyApi";
+import { Navigate } from "react-router";
+import { useSessionContext } from "../../../contexts/SessionContext";
 
 type LoginInfo = {
   [key: string]: string;
-  userName: string;
+  email: string;
   password: string;
 };
 
 const LoginBox = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState<LoginInfo>({
-    userName: "",
+    email: "",
     password: "",
   });
+  const { userId, signin } = useSessionContext();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,14 +26,16 @@ const LoginBox = () => {
     setLoginInfo(newLoginInfo);
   };
 
-  const submit = async (e: React.MouseEvent<HTMLElement>) => {
+  const submit = async () => {
     try {
-      await dummyApi.signin(loginInfo.userName, loginInfo.password);
-      navigate("/mypage?tab=profile");
+      await signin(loginInfo.email, loginInfo.password);
+      // navigate("/mypage?tab=profile");
     } catch (e) {
       console.log(e);
     }
   };
+
+  if (userId !== null) return <Navigate to={"/questions"} />;
 
   return (
     <form
@@ -43,9 +46,9 @@ const LoginBox = () => {
     >
       <LabelInput
         title={"Email"}
-        name={"userName"}
+        name={"email"}
         isPassword={false}
-        value={loginInfo.userName}
+        value={loginInfo.email}
         onChange={onChange}
       />
       <LabelInput
@@ -57,7 +60,7 @@ const LoginBox = () => {
       />
 
       <div className={styles.buttonBox}>
-        <BlueButton text={"Login in"} onClick={submit} />
+        <BlueButton text={"Log in"} onClick={submit} />
       </div>
     </form>
   );

@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import styles from "./NavBar.module.scss";
+import { useSessionContext } from "../../contexts/SessionContext";
 
 type NavBarProps = {
   noLeftBarPage: Array<string>;
@@ -10,6 +11,7 @@ type NavBarProps = {
 const NavBar: React.FC<NavBarProps> = ({ noLeftBarPage }) => {
   const location = useLocation();
   const mode: string = location.pathname.split("/")[1];
+  const { userId, signout } = useSessionContext();
 
   return (
     <div className={styles.navBar}>
@@ -24,14 +26,25 @@ const NavBar: React.FC<NavBarProps> = ({ noLeftBarPage }) => {
           </li>
         </ul>
         <input className={styles.searchBox} />
-        <div className={styles.buttonList}>
-          <button className={`${styles.navBarButton} ${styles.loginButton}`}>
-            <Link to="/login">Log in</Link>
-          </button>
-          <button className={`${styles.navBarButton} ${styles.signupButton}`}>
-            <Link to="/register">Sign up</Link>
-          </button>
-        </div>
+        {userId === null ? (
+          <div className={styles.buttonList}>
+            <button className={`${styles.navBarButton} ${styles.loginButton}`}>
+              <Link to="/login">Log in</Link>
+            </button>
+            <button className={`${styles.navBarButton} ${styles.signupButton}`}>
+              <Link to="/register">Sign up</Link>
+            </button>
+          </div>
+        ) : (
+          <div className={styles.buttonList}>
+            <button
+              className={`${styles.navBarButton} ${styles.signoutButton}`}
+              onClick={signout}
+            >
+              Sign out
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

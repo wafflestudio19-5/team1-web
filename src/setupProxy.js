@@ -4,6 +4,9 @@ module.exports = function (app) {
     createProxyMiddleware("/api", {
       target: "https://waffleoverflow.shop",
       changeOrigin: true,
+      onProxyReq: (proxyReq) => {
+        proxyReq.removeHeader("Origin");
+      },
     })
   );
 };
