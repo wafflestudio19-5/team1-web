@@ -61,7 +61,7 @@ export const api = {
   ): Promise<AccessToken> =>
     (
       await instance.post<EmptyBody>(
-        "https://waffleoverflow.shop/api/user/signup/",
+        "/api/user/signup/",
         {
           name: name,
           email: email,
