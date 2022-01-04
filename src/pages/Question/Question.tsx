@@ -12,6 +12,8 @@ import AnswerPost from "./Post/AnswerPost";
 import QuestionPost from "./Post/QuestionPost";
 
 import styles from "./Question.module.scss";
+import axios from "axios";
+import { api } from "../../api/api";
 
 const FILTERS = ["Active", "Oldest", "Votes"];
 
@@ -26,6 +28,7 @@ const Question: React.FC = () => {
   const filter = query.get("answertab") ?? "Votes";
   const location = useLocation();
 
+  const [answer, setAnswer] = useState<string | undefined>("");
   useEffect(() => {
     const doIt = async () => {
       try {
@@ -37,6 +40,17 @@ const Question: React.FC = () => {
     };
     doIt().then();
   }, [filter]);
+
+  const submitAnswer = async () => {
+    try {
+      await api.postAnswer(101, "", answer ?? "");
+      setAnswer("");
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        console.log(e);
+      }
+    }
+  };
 
   return (
     <div className={styles.Question}>
@@ -90,8 +104,8 @@ const Question: React.FC = () => {
           </div>
           <div className={styles.writeAnswer}>
             <h2>Your Answer</h2>
-            <Markdown />
-            <BlueButton text={"Post Your Answer"} />
+            <Markdown state={answer} setState={setAnswer} />
+            <BlueButton text={"Post Your Answer"} onClick={submitAnswer} />
           </div>
         </section>
       </div>

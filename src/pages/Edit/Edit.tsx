@@ -6,6 +6,7 @@ import { dummyApi } from "../../api/dummyApi";
 
 import styles from "./Edit.module.scss";
 import { useLocation } from "react-router";
+import { api } from "../../api/api";
 
 const Edit: React.FC = () => {
   const location = useLocation();
@@ -34,6 +35,14 @@ const Edit: React.FC = () => {
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEditedTitle(e.target.value);
+  };
+
+  const editAnswer = async () => {
+    try {
+      await api.editAnswer(1, "", body);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

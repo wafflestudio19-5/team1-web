@@ -126,7 +126,6 @@ export const api = {
   postAnswer: async (questionId: number, title: string, body: string) =>
     (
       await instance.post<Answer>(`/api/question/${questionId}/answer/`, {
-        title: title,
         body: body,
       })
     ).data,
