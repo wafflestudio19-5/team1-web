@@ -8,16 +8,20 @@ type NavBarProps = {
   noLeftBarPage: Array<string>;
 };
 
-const NavBar: React.FC<NavBarProps> = ({ noLeftBarPage }) => {
-  const location = useLocation();
-  const mode: string = location.pathname.split("/")[1];
+const NavBar: React.FC<NavBarProps> = () => {
+  useLocation();
   const { signout, userInfo } = useSessionContext();
 
   return (
     <div className={styles.navBar}>
       <div className={styles.navBarContent}>
-        {noLeftBarPage.includes(mode) ? <div>leftBar</div> : null}
-        <Link to="/">Logo</Link>
+        <Link to="/">
+          <img
+            className={styles.logoImage}
+            src={process.env.PUBLIC_URL + "/logo.png"}
+            alt={"logo"}
+          />
+        </Link>
         <ul className={styles.menuList}>
           <li>About</li>
           <li>Products</li>

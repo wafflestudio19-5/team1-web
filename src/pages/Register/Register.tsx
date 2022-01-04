@@ -45,6 +45,11 @@ const Register = () => {
 
   return (
     <div className={styles.register}>
+      <img
+        className={styles.logoImage}
+        src={process.env.PUBLIC_URL + "/logo.png"}
+        alt={"logo"}
+      />
       <OAuthLogin />
       <div className={styles.registerBox}>
         <LabelInput
