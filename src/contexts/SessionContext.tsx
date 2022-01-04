@@ -42,10 +42,16 @@ export const SessionProvider: FC = ({ children }) => {
     doIt().then();
   }, []);
   const signin = useCallback(async (email: string, password: string) => {
-    const token = await api._signin(email, password);
-    const userInfo = await api.getMyProfile();
-    _setAccessToken(token);
-    setUserInfo(userInfo);
+    try {
+      const token = await api._signin(email, password);
+      _setAccessToken(token);
+      const userInfo = await api.getMyProfile();
+      setUserInfo(userInfo);
+    } catch (e) {
+      _setAccessToken(null);
+      setUserInfo(null);
+      throw e;
+    }
   }, []);
   const signup = useCallback(
     async (username: string, email: string, password: string) => {
