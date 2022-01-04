@@ -5,8 +5,8 @@ import MDEditor from "@uiw/react-md-editor";
 import styles from "./Markdown.module.scss";
 
 interface MarkdownProps {
-  value?: string | undefined;
-  onChange?: (state: string | undefined) => void;
+  value: string | undefined;
+  onChange: (state: string | undefined) => void;
 }
 
 const Markdown: React.FC<MarkdownProps> = ({ value, onChange }) => {
