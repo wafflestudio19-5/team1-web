@@ -4,6 +4,7 @@ import styles from "./LoginBox.module.scss";
 import LabelInput from "../../../Components/LabelInput/LabelInput";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import { useNavigate } from "react-router";
+import { dummyApi } from "../../../api/dummyApi";
 
 type LoginInfo = {
   [key: string]: string;
@@ -24,12 +25,22 @@ const LoginBox = () => {
     setLoginInfo(newLoginInfo);
   };
 
-  const submit = (e: React.MouseEvent<HTMLElement>) => {
-    navigate("/mypage?tab=profile");
+  const submit = async (e: React.MouseEvent<HTMLElement>) => {
+    try {
+      await dummyApi.signin(loginInfo.userName, loginInfo.password);
+      navigate("/mypage?tab=profile");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
-    <div className={styles.loginBox}>
+    <form
+      className={styles.loginBox}
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
       <LabelInput
         title={"Email"}
         name={"userName"}
@@ -44,8 +55,11 @@ const LoginBox = () => {
         value={loginInfo.password}
         onChange={onChange}
       />
-      <BlueButton text={"Login in"} onClick={submit} />
-    </div>
+
+      <div className={styles.buttonBox}>
+        <BlueButton text={"Login in"} onClick={submit} />
+      </div>
+    </form>
   );
 };
 
