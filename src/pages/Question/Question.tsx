@@ -14,6 +14,7 @@ import QuestionPost from "./Post/QuestionPost";
 import styles from "./Question.module.scss";
 import axios from "axios";
 import { api } from "../../api/api";
+import { toast } from "react-toastify";
 
 const FILTERS = ["Active", "Oldest", "Votes"];
 
@@ -29,6 +30,10 @@ const Question: React.FC = () => {
   const location = useLocation();
 
   const [answer, setAnswer] = useState<string | undefined>("");
+
+  // 리셋 필요할 때,
+  const [reset, setReset] = useState<boolean>(false);
+
   useEffect(() => {
     const doIt = async () => {
       try {
@@ -39,15 +44,21 @@ const Question: React.FC = () => {
       }
     };
     doIt().then();
-  }, [filter]);
+  }, [filter, reset]);
 
   const submitAnswer = async () => {
     try {
-      await api.postAnswer(101, "", answer ?? "");
+      if (answer === "") {
+        toast.error("답변을 입력해주세요!", { autoClose: 3000 });
+        return;
+      }
+      await api.postAnswer(101, answer ?? "");
       setAnswer("");
+
+      // 다시 데이터 불러오도록 하기 위해서
+      setReset(!reset);
     } catch (e) {
       if (axios.isAxiosError(e)) {
-        console.log(e);
       }
     }
   };

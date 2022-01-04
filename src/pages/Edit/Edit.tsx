@@ -7,6 +7,7 @@ import { dummyApi } from "../../api/dummyApi";
 import styles from "./Edit.module.scss";
 import { useLocation } from "react-router";
 import { api } from "../../api/api";
+import { toast } from "react-toastify";
 
 const Edit: React.FC = () => {
   const location = useLocation();
@@ -39,7 +40,11 @@ const Edit: React.FC = () => {
 
   const editAnswer = async () => {
     try {
-      await api.editAnswer(1, "", body);
+      if (!body) {
+        toast.error("수정된 답변을 입력해주세요", { autoClose: 3000 });
+        return;
+      }
+      await api.editAnswer(1, body);
     } catch (e) {
       console.log(e);
     }
@@ -83,7 +88,11 @@ const Edit: React.FC = () => {
         </div>
       </div>
       <div className={styles.postButtons}>
-        <BlueButton text={"Save edits"} />
+        {/*answer 일 때랑 question 일 때 구분*/}
+        <BlueButton
+          onClick={isQuestion ? () => {} : editAnswer}
+          text={"Save edits"}
+        />
         <button className={styles.cancelButton}>Cancel</button>
       </div>
     </div>
