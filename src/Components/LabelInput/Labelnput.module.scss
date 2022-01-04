@@ -21,7 +21,7 @@
   height: 35px;
   margin-top: 5px;
   border-radius: 3px;
-  &.passwordInput {
+  &[type="password"] {
     font-family: arial, serif;
   }
 }

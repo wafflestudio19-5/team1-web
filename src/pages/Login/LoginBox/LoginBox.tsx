@@ -28,24 +28,32 @@ const LoginBox = () => {
   };
 
   const submit = async () => {
-    try {
-      await signin(loginInfo.email, loginInfo.password);
-    } catch (e) {
-      if (axios.isAxiosError(e)) {
-        if (e.response) {
-          if (e.response.status === 401) {
-            toast.error("Invalid email or password");
-          } else if (e.response.status === 400) {
-            toast.error("Invalid email format");
-          } else {
-            toast.error(e.response.data.status + " " + e.response.data.error);
+    if (
+      !loginInfo.email.match(
+        /^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+      )
+    )
+      toast.error("Invalid email format");
+    else if (loginInfo.password === "") toast.error("Password is empty");
+    else
+      try {
+        await signin(loginInfo.email, loginInfo.password);
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response) {
+            if (e.response.status === 401) {
+              toast.error("Invalid email or password");
+            } else if (e.response.status === 400) {
+              toast.error("Invalid email format");
+            } else {
+              toast.error(e.response.data.status + " " + e.response.data.error);
+            }
+            console.log(e.response.status, e.response.data);
           }
-          console.log(e.response.status, e.response.data);
+        } else {
+          console.log(e);
         }
-      } else {
-        console.log(e);
       }
-    }
   };
 
   return (
@@ -59,6 +67,7 @@ const LoginBox = () => {
         title={"Email"}
         name={"email"}
         isPassword={false}
+        type={"email"}
         value={loginInfo.email}
         onChange={onChange}
       />
@@ -66,6 +75,7 @@ const LoginBox = () => {
         title={"Password"}
         name={"password"}
         isPassword={true}
+        type={"password"}
         value={loginInfo.password}
         onChange={onChange}
       />
