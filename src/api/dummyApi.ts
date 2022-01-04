@@ -98,6 +98,7 @@ const dummyQuestions: QuestionInterface[] = [
       },
     ],
     createdAt: new Date(2021, 12, 1).toISOString(),
+    updatedAt: new Date(2021, 12, 1).toISOString(),
     comments: [
       {
         id: 201,
@@ -167,6 +168,7 @@ export const dummyApi = {
       tags: [],
       answers: [],
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
     dummyQuestions.push(question);
     return question;
@@ -184,6 +186,7 @@ export const dummyApi = {
       throw new DummyApiError(401, "Unauthorized");
     item.title = title;
     item.body = body;
+    item.updatedAt = new Date().toISOString();
     return item;
   },
   deleteQuestion: async (id: number) => {

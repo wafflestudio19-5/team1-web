@@ -51,6 +51,7 @@ export interface QuestionInterface {
   tags: Tag[];
   answers: Answer[];
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface UserInfoResponse {
