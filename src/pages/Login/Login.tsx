@@ -4,9 +4,14 @@ import styles from "./Login.module.scss";
 import OAuthLogin from "../../Components/OAuthLogin/OAuthLogin";
 import LoginBox from "./LoginBox/LoginBox";
 import { Link } from "react-router-dom";
+import { Navigate } from "react-router";
+import { useSessionContext } from "../../contexts/SessionContext";
 
 const Login = () => {
-  return (
+  const { userInfo } = useSessionContext();
+  return userInfo ? (
+    <Navigate to={"/questions"} />
+  ) : (
     <div className={styles.login}>
       <img
         className={styles.logoImage}

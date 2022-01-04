@@ -27,23 +27,24 @@ export const SessionProvider: FC = ({ children }) => {
   const [userInfo, setUserInfo] = useState<UserInfoResponse | null>(null);
   useEffect(() => {
     const doIt = async () => {
-      try {
-        const token = _getAccessToken();
-        if (token) {
+      const token = _getAccessToken();
+      if (token) {
+        try {
           const newUserInfo = await api.getMyProfile();
           setUserInfo(newUserInfo);
+        } catch (e) {
+          _setAccessToken(null);
+          setUserInfo(null);
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
       }
     };
     doIt().then();
   }, []);
   const signin = useCallback(async (email: string, password: string) => {
     const token = await api._signin(email, password);
-    console.log(token);
-    _setAccessToken(token);
     const userInfo = await api.getMyProfile();
+    _setAccessToken(token);
     setUserInfo(userInfo);
   }, []);
   const signup = useCallback(

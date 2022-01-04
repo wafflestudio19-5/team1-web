@@ -6,6 +6,8 @@ import LabelInput from "../../Components/LabelInput/LabelInput";
 import { Link, Navigate } from "react-router-dom";
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { useSessionContext } from "../../contexts/SessionContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 type RegisterInfo = {
   [key: string]: string;
@@ -37,13 +39,27 @@ const Register = () => {
         registerInfo.password
       );
     } catch (e) {
-      console.log(e);
+      if (axios.isAxiosError(e)) {
+        if (e.response) {
+          if (e.response.status === 400) {
+            toast.error("Invalid email format");
+          } else if (e.response.status === 401) {
+            toast.error("Invalid email or password");
+          } else if (e.response.status === 409) {
+            toast.error("User name already exists");
+          } else {
+            console.log(e.response.status, e.response.data);
+          }
+        }
+      } else {
+        console.log(e);
+      }
     }
   };
 
-  if (userInfo) return <Navigate to={"/questions"} />;
-
-  return (
+  return userInfo ? (
+    <Navigate to={"/questions"} />
+  ) : (
     <div className={styles.register}>
       <img
         className={styles.logoImage}
