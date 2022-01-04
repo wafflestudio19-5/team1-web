@@ -9,6 +9,7 @@ import { QuestionInterface } from "../../interface/interface";
 import { api } from "../../api/api";
 import { useSessionContext } from "../../contexts/SessionContext";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const useQuery = () => {
   const { search } = useLocation();
@@ -24,7 +25,7 @@ const Questions = () => {
   const [count, setCount] = useState(0);
 
   // redirect
-  const { userInfo } = useSessionContext();
+  const { userInfo, signout } = useSessionContext();
   const navigate = useNavigate();
   useEffect(() => {
     if (!userInfo) {
@@ -35,18 +36,25 @@ const Questions = () => {
 
   // get data
   useEffect(() => {
+    if (!userInfo) return;
     const doIt = async () => {
       try {
         const { results, count } = await api.getQuestionList();
         setQuestionList(results);
         setCount(count);
       } catch (e) {
-        // prevent silent error while developing
-        console.log(e);
+        if (axios.isAxiosError(e)) {
+          if (e.response) {
+            if (e.response.status === 401) {
+              await signout();
+              toast.error("Please sign in again");
+            } else console.log(e.response.status, e.response.data);
+          } else console.log(e);
+        } else console.log(e);
       }
     };
     doIt().then();
-  }, [filter]);
+  }, [filter, signout, userInfo]);
 
   return (
     <div className={styles.questions}>

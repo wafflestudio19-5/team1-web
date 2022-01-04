@@ -16,9 +16,9 @@ const NavBar: React.FC<NavBarProps> = () => {
   const onSignoutButton = useCallback(() => {
     const doIt = async () => {
       try {
-        await signout();
-        toast.info("logged out");
         navigate("/login");
+        await signout();
+        toast.info("signed out");
       } catch (e) {
         console.log(e);
       }
