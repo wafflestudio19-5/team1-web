@@ -27,9 +27,7 @@ const CommentItem: React.FC<CommentProps> = ({
   const auth = _getCurrentUser()?.id === comment.user.id;
   const navigate = useNavigate();
   const [onEdit, setOnEdit] = useState<boolean>(false);
-  const [onAdd, setOnAdd] = useState<boolean>(false);
   const [edited, setEdited] = useState<string>("");
-  const [value, setValue] = useState<string>("");
 
   const handleEdit = () => {
     setOnEdit(!onEdit);
@@ -47,7 +45,9 @@ const CommentItem: React.FC<CommentProps> = ({
     navigate(`/questions/${questionId}`);
   };
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleEditSubmit: React.FormEventHandler<HTMLFormElement> = async (
+    e
+  ) => {
     e.preventDefault();
     if (questionId) {
       if (!edited) {
@@ -71,7 +71,7 @@ const CommentItem: React.FC<CommentProps> = ({
         <span>{comment.id}</span>
         {onEdit ? (
           <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleEditSubmit}>
               <textarea
                 value={edited}
                 onChange={(e) => setEdited(e.target.value)}
@@ -115,34 +115,6 @@ const CommentItem: React.FC<CommentProps> = ({
           </>
         )}
       </div>
-
-      {onAdd ? (
-        <>
-          <form className={styles.commentForm} onSubmit={handleSubmit}>
-            <textarea
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-            <BlueButton type="submit" text={"Add Comment"} />
-          </form>
-          <button
-            className={styles.cancelComment}
-            onClick={() => setOnAdd(!onAdd)}
-          >
-            cancel
-          </button>
-        </>
-      ) : (
-        <button
-          className={styles.addComment}
-          onClick={() => {
-            setOnAdd(!onAdd);
-            setValue("");
-          }}
-        >
-          Add a comment
-        </button>
-      )}
     </>
   );
 };

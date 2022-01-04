@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 
 import MDEditor from "@uiw/react-md-editor";
 
+import BlueButton from "../../../Components/BlueButton/BlueButton";
 import UserCard from "../../../Components/UserCard/UserCard";
 import { countVotes, Answer } from "../../../interface/interface";
 import CommentItem from "../CommentItem/CommentItem";
@@ -20,6 +21,14 @@ interface PostProps {
 const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
   const auth = _getCurrentUser()?.id === answer.user.id;
   const navigate = useNavigate();
+  const [onAdd, setOnAdd] = useState<boolean>(false);
+  const [value, setValue] = useState<string>("");
+
+  const handleCommentSubmit: React.FormEventHandler<HTMLFormElement> = async (
+    e
+  ) => {
+    e.preventDefault();
+  };
 
   const handleDelete = async () => {
     try {
@@ -76,6 +85,35 @@ const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
             />
           ))}
         </div>
+        {onAdd ? (
+          <>
+            <form className={styles.commentForm} onSubmit={handleCommentSubmit}>
+              <textarea
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+              <BlueButton type="submit" text={"Add Comment"} />
+            </form>
+            <button
+              className={styles.cancelComment}
+              onClick={() => {
+                setOnAdd(!onAdd);
+                setValue("");
+              }}
+            >
+              cancel
+            </button>
+          </>
+        ) : (
+          <button
+            className={styles.addComment}
+            onClick={() => {
+              setOnAdd(!onAdd);
+            }}
+          >
+            Add a comment
+          </button>
+        )}
       </div>
     </div>
   );

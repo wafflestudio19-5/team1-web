@@ -12,7 +12,12 @@ interface UserData {
   profile: string;
   password: string;
 }
-let currentUser: User | null = null;
+let currentUser: User | null = {
+  id: 1,
+  name: "bob",
+  email: "bob@example.com",
+  profile: "",
+};
 
 function box<T>(e: T | undefined) {
   return e ? [e] : [];

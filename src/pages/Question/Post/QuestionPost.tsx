@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import MDEditor from "@uiw/react-md-editor";
 
+import BlueButton from "../../../Components/BlueButton/BlueButton";
 import TagItem from "../../../Components/TagItem/TagItem";
 import UserCard from "../../../Components/UserCard/UserCard";
 import { countVotes, QuestionInterface } from "../../../interface/interface";
 import CommentItem from "../CommentItem/CommentItem";
 import Vote from "../Vote/Vote";
-import { _getCurrentUser } from "../../../api/dummyApi";
+import { dummyApi, _getCurrentUser } from "../../../api/dummyApi";
 
 import styles from "./Post.module.scss";
 
@@ -19,6 +20,25 @@ interface PostProps {
 
 const QuestionPost: React.FC<PostProps> = ({ question }) => {
   const auth = _getCurrentUser()?.id === question.user.id;
+  const [onAdd, setOnAdd] = useState<boolean>(false);
+  const [value, setValue] = useState<string>("");
+  const navigate = useNavigate();
+
+  const handleCommentSubmit: React.FormEventHandler<HTMLFormElement> = async (
+    e
+  ) => {
+    e.preventDefault();
+    if (question.id) {
+      try {
+        await dummyApi.postQuestionComment(question.id, value);
+      } catch (err) {
+        console.error(err);
+      }
+      setOnAdd(false);
+      setValue("");
+      navigate(`/questions/${question.id}`);
+    }
+  };
 
   return (
     <div className={styles.questionPostLayout}>
@@ -70,6 +90,35 @@ const QuestionPost: React.FC<PostProps> = ({ question }) => {
             />
           ))}
         </div>
+        {onAdd ? (
+          <>
+            <form className={styles.commentForm} onSubmit={handleCommentSubmit}>
+              <textarea
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+              <BlueButton type="submit" text={"Add Comment"} />
+            </form>
+            <button
+              className={styles.cancelComment}
+              onClick={() => {
+                setOnAdd(!onAdd);
+                setValue("");
+              }}
+            >
+              cancel
+            </button>
+          </>
+        ) : (
+          <button
+            className={styles.addComment}
+            onClick={() => {
+              setOnAdd(!onAdd);
+            }}
+          >
+            Add a comment
+          </button>
+        )}
       </div>
     </div>
   );
