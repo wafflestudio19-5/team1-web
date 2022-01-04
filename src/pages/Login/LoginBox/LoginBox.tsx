@@ -66,7 +66,6 @@ const LoginBox = () => {
       <LabelInput
         title={"Email"}
         name={"email"}
-        isPassword={false}
         type={"email"}
         value={loginInfo.email}
         onChange={onChange}
@@ -74,7 +73,6 @@ const LoginBox = () => {
       <LabelInput
         title={"Password"}
         name={"password"}
-        isPassword={true}
         type={"password"}
         value={loginInfo.password}
         onChange={onChange}

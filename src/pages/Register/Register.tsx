@@ -81,7 +81,6 @@ const Register = () => {
         <LabelInput
           title={"Display name"}
           name={"name"}
-          isPassword={false}
           value={registerInfo.name}
           type={"text"}
           onChange={onChange}
@@ -90,7 +89,6 @@ const Register = () => {
           title={"Email"}
           name={"email"}
           type={"email"}
-          isPassword={false}
           value={registerInfo.email}
           onChange={onChange}
         />
@@ -98,7 +96,6 @@ const Register = () => {
           title={"Password"}
           name={"password"}
           type={"password"}
-          isPassword={true}
           value={registerInfo.password}
           onChange={onChange}
         />
