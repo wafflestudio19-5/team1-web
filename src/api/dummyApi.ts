@@ -68,7 +68,6 @@ const dummyQuestions: QuestionInterface[] = [
           profile: "",
         },
         body: "yes",
-        title: "no?",
         votes: [
           {
             id: 501,
@@ -242,13 +241,12 @@ export const dummyApi = {
     question.comments.splice(index, 1);
     return {};
   },
-  postAnswer: async (questionId: number, title: string, body: string) => {
+  postAnswer: async (questionId: number, body: string) => {
     if (currentUser === null) throw new DummyApiError(401, "Unauthorized");
     const question = dummyQuestions.find((value) => value.id === questionId);
     if (!question) throw new DummyApiError(404, "Not found");
     const answer: Answer = {
       accepted: false,
-      title: title,
       body: body,
       comments: [],
       id: ++lastId,
@@ -258,7 +256,7 @@ export const dummyApi = {
     question.answers.push(answer);
     return answer;
   },
-  editAnswer: async (answerId: number, title: string, body: string) => {
+  editAnswer: async (answerId: number, body: string) => {
     if (currentUser === null) throw new DummyApiError(401, "Unauthorized");
     const answer = unbox(
       dummyQuestions.flatMap((question) =>
@@ -268,7 +266,6 @@ export const dummyApi = {
     if (!answer) throw new DummyApiError(404, "Not found");
     if (answer.user.id !== currentUser.id)
       throw new DummyApiError(401, "Unauthorized");
-    answer.title = title;
     answer.body = body;
     return answer;
   },
