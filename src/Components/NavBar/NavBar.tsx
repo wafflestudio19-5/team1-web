@@ -32,19 +32,25 @@ const NavBar: React.FC<NavBarProps> = () => {
         <input className={styles.searchBox} />
         {!userInfo ? (
           <div className={styles.buttonList}>
-            <button className={`${styles.navBarButton} ${styles.loginButton}`}>
-              <Link to="/login">Log in</Link>
-            </button>
-            <button className={`${styles.navBarButton} ${styles.signupButton}`}>
-              <Link to="/register">Sign up</Link>
-            </button>
+            <Link
+              className={`${styles.navBarButton} ${styles.loginButton}`}
+              to="/login"
+            >
+              Log in
+            </Link>
+            <Link
+              className={`${styles.navBarButton} ${styles.signupButton}`}
+              to="/register"
+            >
+              Sign up
+            </Link>
           </div>
         ) : (
           <div className={styles.buttonList}>
             <button
               className={`${styles.navBarButton} ${styles.profileButton}`}
             >
-              <Link to={"/mypage"}>{userInfo.username}</Link>
+              {userInfo.username}
             </button>
             <button
               className={`${styles.navBarButton} ${styles.signoutButton}`}
