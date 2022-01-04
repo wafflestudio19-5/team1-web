@@ -6,27 +6,75 @@ import {
   useEffect,
   useState,
 } from "react";
-import { AccessToken, _getCurrentUser, _setCurrentUser } from "../api/dummyApi";
+import { _getAccessToken, _setAccessToken, api } from "../api/api";
+import { UserInfoResponse } from "../interface/interface";
 
 interface SessionContextProps {
-  isAuthorized: boolean | null;
-  setToken: (token: AccessToken | null) => void;
+  signin: (email: string, password: string) => Promise<void>;
+  signup: (username: string, email: string, password: string) => Promise<void>;
+  signout: () => Promise<void>;
+  userInfo: UserInfoResponse | null;
 }
-const defaultValue = { isAuthorized: null, setToken: () => {} };
+const defaultValue: SessionContextProps = {
+  signin: async () => {},
+  signout: async () => {},
+  signup: async () => {},
+  userInfo: null,
+};
 const SessionContext = createContext<SessionContextProps>(defaultValue);
 
 export const SessionProvider: FC = ({ children }) => {
-  const [isAuthorized, setAuthorized] = useState<boolean | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfoResponse | null>(null);
   useEffect(() => {
-    setAuthorized(!!_getCurrentUser());
+    const doIt = async () => {
+      const token = _getAccessToken();
+      if (token) {
+        try {
+          const newUserInfo = await api.getMyProfile();
+          setUserInfo(newUserInfo);
+        } catch (e) {
+          _setAccessToken(null);
+          setUserInfo(null);
+          console.log(e);
+        }
+      }
+    };
+    doIt().then();
   }, []);
-  const setToken = useCallback((token: AccessToken | null) => {
-    _setCurrentUser(token);
-    setAuthorized(!!token);
+  const signin = useCallback(async (email: string, password: string) => {
+    try {
+      const token = await api._signin(email, password);
+      _setAccessToken(token);
+      const userInfo = await api.getMyProfile();
+      setUserInfo(userInfo);
+    } catch (e) {
+      _setAccessToken(null);
+      setUserInfo(null);
+      throw e;
+    }
+  }, []);
+  const signup = useCallback(
+    async (username: string, email: string, password: string) => {
+      const { token, userInfo } = await api._signup(username, email, password);
+      _setAccessToken(token);
+      setUserInfo(userInfo);
+    },
+    []
+  );
+  const signout = useCallback(async () => {
+    _setAccessToken(null);
+    setUserInfo(null);
   }, []);
 
   return (
-    <SessionContext.Provider value={{ isAuthorized: isAuthorized, setToken }}>
+    <SessionContext.Provider
+      value={{
+        signin,
+        signup,
+        signout,
+        userInfo,
+      }}
+    >
       {children}
     </SessionContext.Provider>
   );
