@@ -1,12 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 import styles from "./Questions.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { QuestionItem } from "./QuestionItem/QuestionItem";
 import { useLocation } from "react-router";
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { QuestionInterface } from "../../interface/interface";
-import { dummyApi } from "../../api/dummyApi";
+import { api } from "../../api/api";
+import { useSessionContext } from "../../contexts/SessionContext";
+import { toast } from "react-toastify";
 
 const useQuery = () => {
   const { search } = useLocation();
@@ -19,10 +21,25 @@ const Questions = () => {
   const query = useQuery();
   const filter = query.get("tab") ?? "Newest";
   const [questionList, setQuestionList] = useState<QuestionInterface[]>([]);
+  const [count, setCount] = useState(0);
+
+  // redirect
+  const { userInfo } = useSessionContext();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!userInfo) {
+      toast.error("Please sign in first");
+      navigate("/login");
+    }
+  }, [navigate, userInfo]);
+
+  // get data
   useEffect(() => {
     const doIt = async () => {
       try {
-        setQuestionList(await dummyApi.getQuestionList());
+        const { results, count } = await api.getQuestionList();
+        setQuestionList(results);
+        setCount(count);
       } catch (e) {
         // prevent silent error while developing
         console.log(e);
@@ -41,7 +58,7 @@ const Questions = () => {
           </Link>
         </div>
         <div className={styles.secondBar}>
-          <div className={styles.total}>{questionList.length} questions</div>
+          <div className={styles.total}>{count} questions</div>
           <div className={styles.filterList}>
             {FILTERS.map((value) => (
               <Link
