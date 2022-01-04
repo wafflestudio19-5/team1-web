@@ -1,14 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 import styles from "./Questions.module.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { QuestionItem } from "./QuestionItem/QuestionItem";
 import { useLocation } from "react-router";
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { QuestionInterface } from "../../interface/interface";
 import { api } from "../../api/api";
-import { useSessionContext } from "../../contexts/SessionContext";
-import { toast } from "react-toastify";
 import axios from "axios";
 
 const useQuery = () => {
@@ -24,19 +22,8 @@ const Questions = () => {
   const [questionList, setQuestionList] = useState<QuestionInterface[]>([]);
   const [count, setCount] = useState(0);
 
-  // redirect
-  const { userInfo, signout } = useSessionContext();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!userInfo) {
-      toast.error("Please sign in first");
-      navigate("/login");
-    }
-  }, [navigate, userInfo]);
-
   // get data
   useEffect(() => {
-    if (!userInfo) return;
     const doIt = async () => {
       try {
         const { results, count } = await api.getQuestionList();
@@ -45,16 +32,13 @@ const Questions = () => {
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
-            if (e.response.status === 401) {
-              await signout();
-              toast.error("Please sign in again");
-            } else console.log(e.response.status, e.response.data);
+            console.log(e.response.status, e.response.data);
           } else console.log(e);
         } else console.log(e);
       }
     };
     doIt().then();
-  }, [filter, signout, userInfo]);
+  }, [filter]);
 
   return (
     <div className={styles.questions}>
