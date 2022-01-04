@@ -52,7 +52,9 @@ export const api = {
       email: email,
       password: password,
     });
-    return response.headers["authentication"];
+    return (
+      response.headers["authentication"] || response.headers["Authentication"]
+    );
   },
   _signup: async (username: string, email: string, password: string) => {
     const response = await instance.post<UserInfoResponse>(
@@ -64,7 +66,9 @@ export const api = {
       }
     );
     return {
-      token: response.headers["authentication"],
+      token:
+        response.headers["authentication"] ||
+        response.headers["Authentication"],
       userInfo: response.data,
     };
   },
