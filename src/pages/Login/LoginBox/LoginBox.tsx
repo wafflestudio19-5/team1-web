@@ -3,21 +3,23 @@ import React, { useState } from "react";
 import styles from "./LoginBox.module.scss";
 import LabelInput from "../../../Components/LabelInput/LabelInput";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
-import { useNavigate } from "react-router";
-import { dummyApi } from "../../../api/dummyApi";
+import { useSessionContext } from "../../../contexts/SessionContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 type LoginInfo = {
   [key: string]: string;
-  userName: string;
+  email: string;
   password: string;
 };
 
 const LoginBox = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState<LoginInfo>({
-    userName: "",
+    email: "",
     password: "",
   });
+  const { signin } = useSessionContext();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,13 +27,33 @@ const LoginBox = () => {
     setLoginInfo(newLoginInfo);
   };
 
-  const submit = async (e: React.MouseEvent<HTMLElement>) => {
-    try {
-      await dummyApi.signin(loginInfo.userName, loginInfo.password);
-      navigate("/mypage?tab=profile");
-    } catch (e) {
-      console.log(e);
-    }
+  const submit = async () => {
+    if (
+      !loginInfo.email.match(
+        /^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+      )
+    )
+      toast.error("Invalid email format");
+    else if (loginInfo.password === "") toast.error("Password is empty");
+    else
+      try {
+        await signin(loginInfo.email, loginInfo.password);
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response) {
+            if (e.response.status === 401) {
+              toast.error("Invalid email or password");
+            } else if (e.response.status === 400) {
+              toast.error("Invalid email format");
+            } else {
+              toast.error(e.response.data.status + " " + e.response.data.error);
+            }
+            console.log(e.response.status, e.response.data);
+          }
+        } else {
+          console.log(e);
+        }
+      }
   };
 
   return (
@@ -43,21 +65,21 @@ const LoginBox = () => {
     >
       <LabelInput
         title={"Email"}
-        name={"userName"}
-        isPassword={false}
-        value={loginInfo.userName}
+        name={"email"}
+        type={"email"}
+        value={loginInfo.email}
         onChange={onChange}
       />
       <LabelInput
         title={"Password"}
         name={"password"}
-        isPassword={true}
+        type={"password"}
         value={loginInfo.password}
         onChange={onChange}
       />
 
       <div className={styles.buttonBox}>
-        <BlueButton text={"Login in"} onClick={submit} />
+        <BlueButton text={"Log in"} onClick={submit} />
       </div>
     </form>
   );

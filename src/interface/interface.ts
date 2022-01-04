@@ -54,6 +54,14 @@ export interface QuestionInterface {
   createdAt: string;
 }
 
+export interface UserInfoResponse {
+  id: number;
+  email: string;
+  username: string;
+  questions: { id: number; title: string }[];
+  answer: { id: number; questionTitle: string }[];
+}
+
 export const countVotes = (question: QuestionInterface) => {
   return question.votes.length
     ? question.votes.map<number>((vote) => vote.status).reduce((a, b) => a + b)

@@ -12,7 +12,8 @@ import Questions from "./pages/Questions/Questions";
 import Register from "./pages/Register/Register";
 import "./App.css";
 import { api } from "./api/api";
-import MyPage from "./pages/MyPage/MyPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const noLeftBarPage = ["register", "login"];
 
@@ -25,26 +26,29 @@ const App: React.FC = () => {
       .catch((e) => console.log(e));
   });
   return (
-    <div className="App">
-      <BrowserRouter>
-        <NavBar noLeftBarPage={noLeftBarPage} />
-        <div className="appContent">
-          <LeftBar noLeftBarPage={noLeftBarPage} />
-          <div className="appPageViewer">
-            <Routes>
-              <Route path="/questions" element={<Questions />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/questions/:id/:title" element={<Question />} />
-              <Route path="/questions/ask" element={<Ask />} />
-              <Route path="/posts/:id/edit" element={<Edit />} />
-              <Route path="/mypage" element={<MyPage />} />
-              <Route path="/*" element={<Navigate to="/questions" />} />
-            </Routes>
+    <>
+      <div className="App">
+        <BrowserRouter>
+          <NavBar noLeftBarPage={noLeftBarPage} />
+          <div className="appContent">
+            <LeftBar noLeftBarPage={noLeftBarPage} />
+            <div className="appPageViewer">
+              <Routes>
+                <Route path="/questions" element={<Questions />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/questions/:id/:title" element={<Question />} />
+                <Route path="/questions/ask" element={<Ask />} />
+                <Route path="/posts/:id/edit" element={<Edit />} />
+                {/*<Route path="/mypage" element={<MyPage />} />*/}
+                <Route path="/" element={<Navigate to="/questions" />} />
+              </Routes>
+            </div>
           </div>
-        </div>
-      </BrowserRouter>
-    </div>
+        </BrowserRouter>
+      </div>
+      <ToastContainer />
+    </>
   );
 };
 

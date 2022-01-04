@@ -5,17 +5,17 @@ import styles from "./Labelnput.module.scss";
 type LabelInputProps = {
   title: string;
   name: string;
-  isPassword: boolean;
   value: string;
+  type: "password" | "text" | "email";
   onChange(args: React.ChangeEvent<HTMLInputElement>): void;
 };
 
 const LabelInput: React.FC<LabelInputProps> = ({
   title,
   name,
-  isPassword,
   value,
   onChange,
+  type,
 }) => {
   return (
     <div className={styles.labelInput}>
@@ -24,7 +24,7 @@ const LabelInput: React.FC<LabelInputProps> = ({
       </label>
       <input
         className={styles.loginInput}
-        type={isPassword ? "password" : "text"}
+        type={type}
         id={name}
         name={name}
         value={value}
