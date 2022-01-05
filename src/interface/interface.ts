@@ -35,7 +35,6 @@ export interface AnswerComment {
 export interface Answer {
   id: number;
   user: User;
-  title: string;
   body: string;
   votes: Vote[];
   comments: AnswerComment[];
@@ -52,6 +51,7 @@ export interface QuestionInterface {
   tags: Tag[];
   answers: Answer[];
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface UserInfoResponse {
@@ -62,9 +62,9 @@ export interface UserInfoResponse {
   answer: { id: number; questionTitle: string }[];
 }
 
-export const countVotes = (question: QuestionInterface) => {
-  return question.votes.length
-    ? question.votes.map<number>((vote) => vote.status).reduce((a, b) => a + b)
+export const countVotes = (data: QuestionInterface | Answer) => {
+  return data.votes.length
+    ? data.votes.map<number>((vote) => vote.status).reduce((a, b) => a + b)
     : 0;
 };
 

@@ -8,8 +8,22 @@
   border-bottom-style: solid;
   border-bottom-width: 1px;
 
+  form {
+    display: flex;
+    margin-top: 3px;
+
+    textarea {
+      width: 500px;
+      margin: 0 10px 3px 0;
+      font-family: sans-serif;
+    }
+
+    button {
+      height: 30px;
+    }
+  }
+
   span {
-    margin-right: 10px;
     margin: 10px;
     color: hsl(210, 8%, 55%);
   }
@@ -19,4 +33,60 @@
     margin: 10px;
     flex-wrap: wrap;
   }
+
+  label {
+    display: flex;
+
+    .username {
+      margin-top: 12px;
+      margin-right: 7px;
+      border: none;
+      background-color: white;
+      color: rgb(0, 116, 204);
+      opacity: 0.6;
+      cursor: pointer;
+
+      &:hover {
+        color: rgb(10, 149, 255);
+      }
+    }
+
+    .date {
+      margin-left: 0;
+      color: hsl(210, 8%, 55%);
+    }
+  }
+}
+
+.editButton,
+.deleteButton {
+  width: 15px;
+  height: 15px;
+  margin: 5px;
+  margin-left: 0;
+  color: hsl(210, 8%, 55%);
+}
+
+%button {
+  margin-top: 20px;
+  flex-direction: row;
+  align-self: flex-start;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  background-color: white;
+
+  color: hsl(210, 8%, 55%);
+  opacity: 0.6;
+  padding: 0 3px 2px;
+  cursor: pointer;
+
+  &:hover {
+    color: hsl(206, 100%, 52%);
+  }
+}
+
+.cancelEdit {
+  @extend %button;
+  margin: 0;
 }

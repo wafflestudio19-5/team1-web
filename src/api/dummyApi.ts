@@ -12,7 +12,12 @@ interface UserData {
   profile: string;
   password: string;
 }
-let currentUser: User | null = null;
+let currentUser: User | null = {
+  id: 1,
+  name: "bob",
+  email: "bob@example.com",
+  profile: "",
+};
 
 function box<T>(e: T | undefined) {
   return e ? [e] : [];
@@ -68,7 +73,6 @@ const dummyQuestions: QuestionInterface[] = [
           profile: "",
         },
         body: "yes",
-        title: "no?",
         votes: [
           {
             id: 501,
@@ -99,6 +103,7 @@ const dummyQuestions: QuestionInterface[] = [
       },
     ],
     createdAt: new Date(2021, 12, 1).toISOString(),
+    updatedAt: new Date(2021, 12, 1).toISOString(),
     comments: [
       {
         id: 201,
@@ -168,6 +173,7 @@ export const dummyApi = {
       tags: [],
       answers: [],
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
     dummyQuestions.push(question);
     return question;
@@ -185,6 +191,7 @@ export const dummyApi = {
       throw new DummyApiError(401, "Unauthorized");
     item.title = title;
     item.body = body;
+    item.updatedAt = new Date().toISOString();
     return item;
   },
   deleteQuestion: async (id: number) => {
@@ -242,13 +249,12 @@ export const dummyApi = {
     question.comments.splice(index, 1);
     return {};
   },
-  postAnswer: async (questionId: number, title: string, body: string) => {
+  postAnswer: async (questionId: number, body: string) => {
     if (currentUser === null) throw new DummyApiError(401, "Unauthorized");
     const question = dummyQuestions.find((value) => value.id === questionId);
     if (!question) throw new DummyApiError(404, "Not found");
     const answer: Answer = {
       accepted: false,
-      title: title,
       body: body,
       comments: [],
       id: ++lastId,
@@ -258,7 +264,7 @@ export const dummyApi = {
     question.answers.push(answer);
     return answer;
   },
-  editAnswer: async (answerId: number, title: string, body: string) => {
+  editAnswer: async (answerId: number, body: string) => {
     if (currentUser === null) throw new DummyApiError(401, "Unauthorized");
     const answer = unbox(
       dummyQuestions.flatMap((question) =>
@@ -268,7 +274,6 @@ export const dummyApi = {
     if (!answer) throw new DummyApiError(404, "Not found");
     if (answer.user.id !== currentUser.id)
       throw new DummyApiError(401, "Unauthorized");
-    answer.title = title;
     answer.body = body;
     return answer;
   },

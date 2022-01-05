@@ -8,17 +8,11 @@ import {
   QuestionInterface,
 } from "../../../interface/interface";
 import UserCard from "../../../Components/UserCard/UserCard";
+import MDEditor from "@uiw/react-md-editor";
 
 interface QuestionItemProps {
   question: QuestionInterface;
 }
-
-const makeTitleUrl = (title: string) => {
-  return title
-    .toLowerCase()
-    .replaceAll(/[^\w]+/g, "-")
-    .substring(0, 80);
-};
 
 export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
   const questionSummary = useMemo(
@@ -43,13 +37,13 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
       </div>
       <div className={styles.titleBox}>
         <h3>
-          <Link
-            to={`/questions/${question.id}/${makeTitleUrl(question.title)}`}
-          >
-            {question.title}
-          </Link>
+          <Link to={`/questions/${question.id}`}>{question.title}</Link>
         </h3>
-        <p>{questionSummary}</p>
+        {/* <p>{questionSummary}</p> */}
+        <MDEditor.Markdown
+          className={questionSummary}
+          source={questionSummary}
+        />
         <div className={styles.itemFooter}>
           <div className={styles.tagList}>
             {question.tags.map((tag) => (
@@ -57,7 +51,12 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
             ))}
           </div>
           <div className={styles.activityContainer}>
-            <UserCard user={question.user} timestamp={question.createdAt} />
+            <UserCard
+              user={question.user}
+              timestamp={question.createdAt}
+              isQuestion={true}
+              isEdited={question?.updatedAt ? true : false}
+            />
           </div>
         </div>
       </div>
