@@ -53,12 +53,14 @@ export const api = {
   ping: async () => (await instance.get<string>("/api/ping/")).data,
 
   _signin: async (email: string, password: string): Promise<AccessToken> => {
-    const response = await instance.post<EmptyBody>("/api/user/signin/", {
-      email: email,
-      password: password,
-    });
-    console.log("signin response header", response.headers);
-    return response.headers["authentication"];
+    const response = await instance.post<{ accessToken: string }>(
+      "/api/user/signin/",
+      {
+        email: email,
+        password: password,
+      }
+    );
+    return response.data.accessToken;
   },
   _signup: async (username: string, email: string, password: string) => {
     const response = await instance.post<SignupResponse>("/api/user/signup/", {
@@ -66,7 +68,6 @@ export const api = {
       email: email,
       password: password,
     });
-    console.log("signup response header", response.headers);
     return {
       token: response.data.accessToken,
       userInfo: response.data,
