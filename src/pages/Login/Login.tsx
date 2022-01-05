@@ -9,7 +9,7 @@ import { useSessionContext } from "../../contexts/SessionContext";
 
 const Login = () => {
   const { userInfo } = useSessionContext();
-  return userInfo ? (
+  return userInfo !== null ? (
     <Navigate to={"/questions"} />
   ) : (
     <div className={styles.login}>

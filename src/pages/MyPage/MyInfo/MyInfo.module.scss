@@ -20,7 +20,13 @@
       font-size: 13px;
       color: #6a737c;
       li {
-        margin: 4px;
+        &::after {
+          content: "/";
+          margin: 4px;
+        }
+        &:last-child::after {
+          content: none;
+        }
       }
     }
   }

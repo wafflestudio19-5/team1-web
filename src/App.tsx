@@ -14,6 +14,7 @@ import "./App.css";
 import { api } from "./api/api";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MyPage from "./pages/MyPage/MyPage";
 
 const noLeftBarPage = ["register", "login"];
 
@@ -40,7 +41,7 @@ const App: React.FC = () => {
                 <Route path="/questions/:id/:title" element={<Question />} />
                 <Route path="/questions/ask" element={<Ask />} />
                 <Route path="/posts/:id/edit" element={<Edit />} />
-                {/*<Route path="/mypage" element={<MyPage />} />*/}
+                <Route path="/mypage" element={<MyPage />} />
                 <Route path="/" element={<Navigate to="/questions" />} />
               </Routes>
             </div>

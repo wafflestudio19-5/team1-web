@@ -13,7 +13,7 @@ interface SessionContextProps {
   signin: (email: string, password: string) => Promise<void>;
   signup: (username: string, email: string, password: string) => Promise<void>;
   signout: () => Promise<void>;
-  userInfo: UserInfoResponse | null;
+  userInfo?: UserInfoResponse | null;
 }
 const defaultValue: SessionContextProps = {
   signin: async () => {},
@@ -24,7 +24,9 @@ const defaultValue: SessionContextProps = {
 const SessionContext = createContext<SessionContextProps>(defaultValue);
 
 export const SessionProvider: FC = ({ children }) => {
-  const [userInfo, setUserInfo] = useState<UserInfoResponse | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfoResponse | null | undefined>(
+    undefined
+  );
   useEffect(() => {
     const doIt = async () => {
       const token = _getAccessToken();

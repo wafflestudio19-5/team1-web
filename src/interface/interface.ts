@@ -59,7 +59,7 @@ export interface UserInfoResponse {
   email: string;
   username: string;
   questions: { id: number; title: string }[];
-  answer: { id: number; questionTitle: string }[];
+  answers: { id: number; questionTitle: string }[];
 }
 
 export const countVotes = (question: QuestionInterface) => {

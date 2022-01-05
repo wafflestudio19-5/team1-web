@@ -44,7 +44,7 @@ const NavBar: React.FC<NavBarProps> = () => {
           </li>
         </ul>
         <input className={styles.searchBox} />
-        {!userInfo ? (
+        {userInfo === null ? (
           <div className={styles.buttonList}>
             <Link
               className={`${styles.navBarButton} ${styles.loginButton}`}
@@ -61,11 +61,12 @@ const NavBar: React.FC<NavBarProps> = () => {
           </div>
         ) : (
           <div className={styles.buttonList}>
-            <button
+            <Link
               className={`${styles.navBarButton} ${styles.profileButton}`}
+              to={"/mypage"}
             >
-              {userInfo.username}
-            </button>
+              {userInfo?.username}
+            </Link>
             <button
               className={`${styles.navBarButton} ${styles.signoutButton}`}
               onClick={onSignoutButton}
