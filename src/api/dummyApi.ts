@@ -320,4 +320,45 @@ export const dummyApi = {
       user: currentUser,
     });
   },
+  postAnswerComment: async (answerId: number, body: string) => {
+    if (currentUser === null) throw new DummyApiError(401, "Unauthorized");
+    const item = dummyQuestions.find((value) => value.id === answerId);
+    if (!item) throw new DummyApiError(404, "Not found");
+    const comment: QuestionComment = {
+      body: body,
+      id: ++lastId,
+      questionId: answerId,
+      user: currentUser,
+    };
+    item.comments.push(comment);
+    return {};
+  },
+  editAnswerComment: async (
+    answerId: number,
+    commentId: number,
+    body: string
+  ) => {
+    if (currentUser === null) throw new DummyApiError(401, "Unauthorized");
+    const question = dummyQuestions.find((value) => value.id === answerId);
+    if (!question) throw new DummyApiError(404, "Not found");
+    const comment = question.comments.find((value) => value.id === commentId);
+    if (!comment) throw new DummyApiError(404, "Not found");
+    if (comment.user.id !== currentUser.id)
+      throw new DummyApiError(401, "Unauthorized");
+    comment.body = body;
+    return comment;
+  },
+  deleteAnswerComment: async (answerId: number, commentId: number) => {
+    if (currentUser === null) throw new DummyApiError(401, "Unauthorized");
+    const question = dummyQuestions.find((value) => value.id === answerId);
+    if (!question) throw new DummyApiError(404, "Not found");
+    const index = question.comments.findIndex(
+      (value) => value.id === commentId
+    );
+    if (index < 0) throw new DummyApiError(404, "Not found");
+    if (question.comments[index].user.id !== currentUser.id)
+      throw new DummyApiError(401, "Unauthorized");
+    question.comments.splice(index, 1);
+    return {};
+  },
 };
