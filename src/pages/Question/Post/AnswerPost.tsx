@@ -11,6 +11,9 @@ import CommentItem from "../CommentItem/CommentItem";
 import Vote from "../Vote/Vote";
 
 import styles from "./Post.module.scss";
+import { api } from "../../../api/api";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 interface PostProps {
   answer?: Answer;
@@ -19,6 +22,20 @@ interface PostProps {
 const AnswerPost: React.FC<PostProps> = ({ answer }) => {
   const [addOn, setAddOn] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
+
+  const addComment = async () => {
+    try {
+      if (comment === "") {
+        toast.success("comment를 입력하세요");
+        return;
+      }
+      await api.postAnswerComment(0, comment);
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        toast.error(e.response?.data?.msg, { autoClose: 3000 });
+      }
+    }
+  };
 
   return (
     <div className={styles.answerPostLayout}>
