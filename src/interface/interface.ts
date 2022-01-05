@@ -36,7 +36,7 @@ export interface Answer {
   id: number;
   user: User;
   body: string;
-  votes: Vote[];
+  vote: number;
   comments: AnswerComment[];
   accepted: boolean;
 }
@@ -46,7 +46,7 @@ export interface QuestionInterface {
   user: User;
   title: string;
   body: string;
-  votes: Vote[];
+  vote: number;
   comments: QuestionComment[];
   tags: Tag[];
   answers: Answer[];
@@ -63,9 +63,7 @@ export interface UserInfoResponse {
 }
 
 export const countVotes = (data: QuestionInterface | Answer) => {
-  return data.votes.length
-    ? data.votes.map<number>((vote) => vote.status).reduce((a, b) => a + b)
-    : 0;
+  return data.vote;
 };
 
 export const isAnswered = (question: QuestionInterface) => {
