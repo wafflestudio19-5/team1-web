@@ -104,6 +104,7 @@ const Question: React.FC = () => {
                     ? `${questionData.answers.length} Answers`
                     : "Your Answer"}
                 </h2>
+                {/*
                 <div className={styles.filterList}>
                   {FILTERS.map((value) => (
                     <Link
@@ -117,6 +118,7 @@ const Question: React.FC = () => {
                     </Link>
                   ))}
                 </div>
+                */}
               </div>
               {questionData?.answers.map((answer) => (
                 <AnswerPost
