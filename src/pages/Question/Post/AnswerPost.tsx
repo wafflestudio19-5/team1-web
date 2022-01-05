@@ -42,13 +42,19 @@ const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
     navigate(`/questions/${questionId}`);
   };
 
+  const addComment = async () => {
+    try {
+    } catch (e) {}
+  };
+
   return (
     <div className={styles.answerPostLayout}>
       <div className={styles.voteCell}>
         <Vote
           vote={countVotes(answer)}
-          questionId={answer.id}
+          questionId={0}
           accepted={answer.accepted}
+          answerId={answer.id}
         />
       </div>
       <div className={styles.postCell}>

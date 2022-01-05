@@ -8,12 +8,6 @@ import Markdown from "../../Components/Markdown/Markdown";
 import { dummyApi } from "../../api/dummyApi";
 
 import styles from "./Edit.module.scss";
-<<<<<<< HEAD
-import { useLocation } from "react-router";
-import { api } from "../../api/api";
-import { toast } from "react-toastify";
-=======
->>>>>>> 9f0d2e9204a3ffd10ca4922aa1612d34ede99ba7
 
 const Edit: React.FC = () => {
   const location = useLocation();
@@ -60,18 +54,6 @@ const Edit: React.FC = () => {
       } catch (err) {
         console.error(err);
       }
-    }
-  };
-
-  const editAnswer = async () => {
-    try {
-      if (!body) {
-        toast.error("수정된 답변을 입력해주세요", { autoClose: 3000 });
-        return;
-      }
-      await api.editAnswer(1, body);
-    } catch (e) {
-      console.log(e);
     }
   };
 
@@ -125,17 +107,6 @@ const Edit: React.FC = () => {
             placeholder="e.g. (asp.net-mvc typescript database)"
           />
         </div>
-<<<<<<< HEAD
-      </div>
-      <div className={styles.postButtons}>
-        {/*answer 일 때랑 question 일 때 구분*/}
-        <BlueButton
-          onClick={isQuestion ? () => {} : editAnswer}
-          text={"Save edits"}
-        />
-        <button className={styles.cancelButton}>Cancel</button>
-      </div>
-=======
         <div className={styles.postButtons}>
           <BlueButton type="submit" text={"Save edits"} />
           <button
@@ -146,7 +117,6 @@ const Edit: React.FC = () => {
           </button>
         </div>
       </form>
->>>>>>> 9f0d2e9204a3ffd10ca4922aa1612d34ede99ba7
     </div>
   );
 };

@@ -15,7 +15,6 @@ import QuestionPost from "./Post/QuestionPost";
 
 import styles from "./Question.module.scss";
 import axios from "axios";
-import { api } from "../../api/api";
 import { toast } from "react-toastify";
 
 const FILTERS = ["Active", "Oldest", "Votes"];
@@ -35,8 +34,6 @@ const Question: React.FC = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [answer, setAnswer] = useState<string | undefined>("");
-
   // 리셋 필요할 때,
   const [reset, setReset] = useState<boolean>(false);
 
@@ -50,23 +47,6 @@ const Question: React.FC = () => {
       }
     };
     doIt().then();
-<<<<<<< HEAD
-  }, [filter, reset]);
-
-  const submitAnswer = async () => {
-    try {
-      if (answer === "") {
-        toast.error("답변을 입력해주세요!", { autoClose: 3000 });
-        return;
-      }
-      await api.postAnswer(101, answer ?? "");
-      setAnswer("");
-
-      // 다시 데이터 불러오도록 하기 위해서
-      setReset(!reset);
-    } catch (e) {
-      if (axios.isAxiosError(e)) {
-=======
   }, [filter, id]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -78,7 +58,6 @@ const Question: React.FC = () => {
         navigate(`/questions/${id}`);
       } catch (err) {
         console.error(err);
->>>>>>> 9f0d2e9204a3ffd10ca4922aa1612d34ede99ba7
       }
     }
   };
@@ -151,23 +130,9 @@ const Question: React.FC = () => {
                 </div>
               </form>
             </div>
-<<<<<<< HEAD
-            {questionData?.answers.map((answer) => (
-              <AnswerPost key={answer.id} answer={answer} />
-            ))}
-          </div>
-          <div className={styles.writeAnswer}>
-            <h2>Your Answer</h2>
-            <Markdown state={answer} setState={setAnswer} />
-            <BlueButton text={"Post Your Answer"} onClick={submitAnswer} />
-          </div>
-        </section>
-      </div>
-=======
           </section>
         </div>
       )}
->>>>>>> 9f0d2e9204a3ffd10ca4922aa1612d34ede99ba7
     </div>
   );
 };
