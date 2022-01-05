@@ -63,8 +63,8 @@ export const Settings: FC<SettingsProps> = ({}) => {
           />
           <label htmlFor={"about-me"}>About me</label>
           <Markdown
-            setState={(value) => setAboutMe(value ?? "")}
-            state={aboutMe}
+            onChange={(value) => setAboutMe(value ?? "")}
+            value={aboutMe}
           />
         </div>
         <h3>Links</h3>

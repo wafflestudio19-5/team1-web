@@ -1,7 +1,8 @@
 .blueButton {
   display: inline-block;
   position: relative;
-  width: 100%;
+  // width: 100%;
+  min-width: 85px;
   height: 40px;
   background-color: hsl(206deg 100% 52%);
   border: 1px solid transparent;

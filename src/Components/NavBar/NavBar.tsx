@@ -15,13 +15,18 @@ const NavBar: React.FC<NavBarProps> = () => {
   return (
     <div className={styles.navBar}>
       <div className={styles.navBarContent}>
-        <Link to="/">
-          <img
-            className={styles.logoImage}
-            src={process.env.PUBLIC_URL + "/logo.png"}
-            alt={"logo"}
-          />
-        </Link>
+        <div className={styles.logo}>
+          <Link to="/">
+            <img
+              className={styles.logoImage}
+              src={process.env.PUBLIC_URL + "/logo.png"}
+              alt={"logo"}
+            />
+            <label>
+              waffle <strong>overflow</strong>
+            </label>
+          </Link>
+        </div>
         <ul className={styles.menuList}>
           <li>About</li>
           <li>Products</li>
