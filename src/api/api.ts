@@ -68,11 +68,17 @@ export const api = {
       userInfo: response.data,
     };
   },
+  _signout: async () => {
+    await instance.get<EmptyBody>("/api/user/signout/");
+  },
   getMyProfile: async () =>
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
   getQuestionList: async () =>
-    (await instance.get<{ questions: QuestionInterface[] }>("/api/question/"))
-      .data.questions,
+    (
+      await instance.get<{ results: QuestionInterface[]; count: number }>(
+        "/api/question/"
+      )
+    ).data,
   postQuestion: async (title: string, body: string) =>
     (
       await instance.post<QuestionInterface>("/api/question/", {

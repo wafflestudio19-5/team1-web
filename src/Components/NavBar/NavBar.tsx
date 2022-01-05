@@ -1,8 +1,9 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useCallback } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import styles from "./NavBar.module.scss";
 import { useSessionContext } from "../../contexts/SessionContext";
+import { toast } from "react-toastify";
 
 type NavBarProps = {
   noLeftBarPage: Array<string>;
@@ -11,6 +12,19 @@ type NavBarProps = {
 const NavBar: React.FC<NavBarProps> = () => {
   useLocation();
   const { signout, userInfo } = useSessionContext();
+  const navigate = useNavigate();
+  const onSignoutButton = useCallback(() => {
+    const doIt = async () => {
+      try {
+        await signout();
+      } catch (e) {
+        console.log(e);
+      }
+      navigate("/login");
+      toast.info("signed out");
+    };
+    doIt().then();
+  }, [navigate, signout]);
 
   return (
     <div className={styles.navBar}>
@@ -59,7 +73,7 @@ const NavBar: React.FC<NavBarProps> = () => {
             </button>
             <button
               className={`${styles.navBarButton} ${styles.signoutButton}`}
-              onClick={signout}
+              onClick={onSignoutButton}
             >
               Sign out
             </button>
