@@ -50,7 +50,7 @@ setHeaderToken(loadToken());
 export interface EmptyBody {}
 
 export const api = {
-  ping: async () => (await instance.get<string>("/api/v1/pingpong/")).data,
+  ping: async () => (await instance.get<string>("/api/ping/")).data,
 
   _signin: async (email: string, password: string): Promise<AccessToken> => {
     const response = await instance.post<EmptyBody>("/api/user/signin/", {

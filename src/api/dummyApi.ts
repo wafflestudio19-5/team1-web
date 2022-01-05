@@ -55,7 +55,7 @@ const dummyQuestions: QuestionInterface[] = [
   {
     id: 101,
     title: "Lorem Ipsum",
-    votes: [],
+    vote: 0,
     tags: [],
     user: {
       id: 0,
@@ -73,19 +73,7 @@ const dummyQuestions: QuestionInterface[] = [
           profile: "",
         },
         body: "yes",
-        votes: [
-          {
-            id: 501,
-            user: {
-              id: 0,
-              profile: "",
-              name: "alice",
-              email: "alice@example.com",
-            },
-            status: -1,
-            articleId: 301,
-          },
-        ],
+        vote: 2,
         comments: [
           {
             id: 201,
@@ -168,7 +156,7 @@ export const dummyApi = {
       user: currentUser,
       title: title,
       body: body,
-      votes: [],
+      vote: 0,
       comments: [],
       tags: [],
       answers: [],
@@ -259,7 +247,7 @@ export const dummyApi = {
       comments: [],
       id: ++lastId,
       user: currentUser,
-      votes: [],
+      vote: 0,
     };
     question.answers.push(answer);
     return answer;
@@ -297,12 +285,7 @@ export const dummyApi = {
     if (currentUser === null) throw new DummyApiError(401, "Unauthorized");
     const question = dummyQuestions.find((value) => value.id === questionId);
     if (!question) throw new DummyApiError(404, "Not found");
-    question.votes.push({
-      articleId: questionId,
-      id: ++lastId,
-      status: vote,
-      user: currentUser,
-    });
+    question.vote += vote;
     return {};
   },
   voteAnswer: async (answerId: number, vote: -1 | 1) => {
@@ -313,12 +296,7 @@ export const dummyApi = {
       )
     );
     if (!answer) throw new DummyApiError(404, "Not found");
-    answer.votes.push({
-      articleId: answerId,
-      id: ++lastId,
-      status: vote,
-      user: currentUser,
-    });
+    answer.vote += vote;
   },
   postAnswerComment: async (answerId: number, body: string) => {
     if (currentUser === null) throw new DummyApiError(401, "Unauthorized");

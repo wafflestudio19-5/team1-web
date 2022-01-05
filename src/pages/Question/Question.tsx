@@ -40,7 +40,7 @@ const Question: React.FC = () => {
   useEffect(() => {
     const doIt = async () => {
       try {
-        setQuestionData(await dummyApi.getQuestion(Number(id)));
+        setQuestionData(await api.getQuestion(Number(id)));
         setLoading(false);
       } catch (e) {
         console.log(e);
