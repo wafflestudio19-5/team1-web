@@ -97,7 +97,7 @@ const CommentItem: React.FC<CommentProps> = ({
               <Link to={`/users/${comment.user.id}`}>
                 <button className={styles.username}>
                   {" "}
-                  {comment.user.name}
+                  {comment.user.username}
                 </button>
               </Link>
               <p className={styles.date}>

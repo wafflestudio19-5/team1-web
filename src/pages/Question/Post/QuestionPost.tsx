@@ -81,6 +81,7 @@ const QuestionPost: React.FC<PostProps> = ({ question }) => {
               user={question.user}
               timestamp={question.createdAt}
               isQuestion={true}
+              questionId={question.id}
               isEdited={question.updatedAt ? true : false}
             />
           </div>

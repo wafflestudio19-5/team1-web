@@ -1,8 +1,8 @@
 export interface User {
   id: number;
-  name: string;
+  username: string;
   email: string;
-  profile: string;
+  // profile: string;
 }
 
 export interface Tag {
@@ -54,10 +54,7 @@ export interface QuestionInterface {
   updatedAt: string;
 }
 
-export interface UserInfoResponse {
-  id: number;
-  email: string;
-  username: string;
+export interface UserInfoResponse extends User {
   questions: { id: number; title: string }[];
   answer: { id: number; questionTitle: string }[];
 }

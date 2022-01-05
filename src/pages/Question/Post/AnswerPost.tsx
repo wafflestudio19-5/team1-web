@@ -88,7 +88,7 @@ const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
             <UserCard
               user={answer.user}
               timestamp="2021-11-26 20:45:00Z"
-              isQuestion={true}
+              isQuestion={false}
               isEdited={false}
             />
           </div>
