@@ -36,7 +36,7 @@ export interface Answer {
   id: number;
   user: User;
   body: string;
-  vote: number;
+  votes: number;
   comments: AnswerComment[];
   accepted: boolean;
 }
@@ -60,7 +60,7 @@ export interface UserInfoResponse extends User {
 }
 
 export const countVotes = (data: QuestionInterface | Answer) => {
-  return data.vote;
+  return "vote" in data ? data.vote : data.votes;
 };
 
 export const isAnswered = (question: QuestionInterface) => {
