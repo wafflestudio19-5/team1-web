@@ -37,7 +37,9 @@ const CommentItem: React.FC<CommentProps> = ({
   const handleDelete = async () => {
     if (questionId) {
       try {
-        await dummyApi.deleteQuestionComment(questionId, comment.id);
+        answerId
+          ? await dummyApi.deleteAnswerComment(answerId, comment.id)
+          : await dummyApi.deleteQuestionComment(questionId, comment.id);
       } catch (err) {
         console.error(err);
       }
@@ -55,7 +57,9 @@ const CommentItem: React.FC<CommentProps> = ({
         return;
       }
       try {
-        await dummyApi.editQuestionComment(questionId, comment.id, edited);
+        answerId
+          ? await dummyApi.editAnswerComment(answerId, comment.id, edited)
+          : await dummyApi.editQuestionComment(questionId, comment.id, edited);
       } catch (err) {
         console.error(err);
       }

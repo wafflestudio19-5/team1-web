@@ -12,6 +12,9 @@ import Vote from "../Vote/Vote";
 import { dummyApi, _getCurrentUser } from "../../../api/dummyApi";
 
 import styles from "./Post.module.scss";
+import { api } from "../../../api/api";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 interface PostProps {
   answer: Answer;
@@ -22,7 +25,7 @@ const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
   const auth = _getCurrentUser()?.id === answer.user.id;
   const navigate = useNavigate();
   const [onAdd, setOnAdd] = useState<boolean>(false);
-  const [value, setValue] = useState<string>("");
+  const [comment, setComment] = useState<string>("");
 
   const handleCommentSubmit: React.FormEventHandler<HTMLFormElement> = async (
     e
@@ -39,13 +42,27 @@ const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
     navigate(`/questions/${questionId}`);
   };
 
+  const addComment = async () => {
+    try {
+      if (comment === "") {
+        toast.error("답변을 입력해주세요!");
+        return;
+      }
+      await dummyApi.postAnswerComment(answer.id, comment);
+      setComment("");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div className={styles.answerPostLayout}>
       <div className={styles.voteCell}>
         <Vote
           vote={countVotes(answer)}
-          questionId={answer.id}
+          questionId={0}
           accepted={answer.accepted}
+          answerId={answer.id}
         />
       </div>
       <div className={styles.postCell}>
@@ -89,16 +106,20 @@ const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
           <>
             <form className={styles.commentForm} onSubmit={handleCommentSubmit}>
               <textarea
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
               />
-              <BlueButton type="submit" text={"Add Comment"} />
+              <BlueButton
+                type="submit"
+                text={"Add Comment"}
+                onClick={addComment}
+              />
             </form>
             <button
               className={styles.cancelComment}
               onClick={() => {
                 setOnAdd(!onAdd);
-                setValue("");
+                setComment("");
               }}
             >
               cancel

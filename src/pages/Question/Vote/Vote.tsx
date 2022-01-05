@@ -15,14 +15,22 @@ interface VoteProps {
   vote: number;
   accepted?: boolean;
   questionId: number;
+  answerId: number | undefined;
 }
 
-const Vote: React.FC<VoteProps> = ({ vote, accepted, questionId }) => {
+const Vote: React.FC<VoteProps> = ({
+  vote,
+  accepted,
+  questionId,
+  answerId,
+}) => {
   const navigate = useNavigate();
 
   const handleVoteUp = async () => {
     try {
-      await dummyApi.voteQuestion(questionId, 1);
+      answerId
+        ? await dummyApi.voteAnswer(answerId, 1)
+        : await dummyApi.voteQuestion(questionId, 1);
       navigate(`/questions/${questionId}`);
     } catch (err) {
       console.error(err);
@@ -31,7 +39,9 @@ const Vote: React.FC<VoteProps> = ({ vote, accepted, questionId }) => {
 
   const handleVoteDown = async () => {
     try {
-      await dummyApi.voteQuestion(questionId, -1);
+      answerId
+        ? await dummyApi.voteAnswer(answerId, -1)
+        : await dummyApi.voteQuestion(questionId, -1);
       navigate(`/questions/${questionId}`);
     } catch (err) {
       console.error(err);

@@ -43,7 +43,11 @@ const QuestionPost: React.FC<PostProps> = ({ question }) => {
   return (
     <div className={styles.questionPostLayout}>
       <div className={styles.voteCell}>
-        <Vote vote={countVotes(question)} questionId={question.id} />
+        <Vote
+          vote={countVotes(question)}
+          questionId={question.id}
+          answerId={undefined}
+        />
       </div>
       <div className={styles.postCell}>
         <div className={styles.postBody}>

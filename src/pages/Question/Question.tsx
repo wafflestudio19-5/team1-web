@@ -14,6 +14,8 @@ import AnswerPost from "./Post/AnswerPost";
 import QuestionPost from "./Post/QuestionPost";
 
 import styles from "./Question.module.scss";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const FILTERS = ["Active", "Oldest", "Votes"];
 
@@ -31,6 +33,9 @@ const Question: React.FC = () => {
   const location = useLocation();
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
+
+  // 리셋 필요할 때,
+  const [reset, setReset] = useState<boolean>(false);
 
   useEffect(() => {
     const doIt = async () => {
