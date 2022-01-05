@@ -14,6 +14,10 @@ const instance = axios.create({
   baseURL: API_ENDPOINT,
 });
 
+interface SignupResponse extends UserInfoResponse {
+  accessToken: string;
+}
+
 const setHeaderToken = (newToken: string | null) => {
   if (newToken) {
     instance.defaults.headers.common["Authentication"] = newToken;
@@ -37,6 +41,7 @@ export type AccessToken = string;
 export const _setAccessToken = (token: AccessToken | null) => {
   setHeaderToken(token);
   storeToken(token);
+  console.log("new token : ", token);
 };
 // used only in SessionContext.tsx
 export const _getAccessToken = () => loadToken();
@@ -52,19 +57,18 @@ export const api = {
       email: email,
       password: password,
     });
+    console.log("signin response header", response.headers);
     return response.headers["authentication"];
   },
   _signup: async (username: string, email: string, password: string) => {
-    const response = await instance.post<UserInfoResponse>(
-      "/api/user/signup/",
-      {
-        username: username,
-        email: email,
-        password: password,
-      }
-    );
+    const response = await instance.post<SignupResponse>("/api/user/signup/", {
+      username: username,
+      email: email,
+      password: password,
+    });
+    console.log("signup response header", response.headers);
     return {
-      token: response.headers["authentication"],
+      token: response.data.accessToken,
       userInfo: response.data,
     };
   },
