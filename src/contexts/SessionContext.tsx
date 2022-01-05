@@ -62,9 +62,12 @@ export const SessionProvider: FC = ({ children }) => {
     []
   );
   const signout = useCallback(async () => {
-    api._signout().then();
-    _setAccessToken(null);
-    setUserInfo(null);
+    try {
+      await api._signout();
+    } finally {
+      _setAccessToken(null);
+      setUserInfo(null);
+    }
   }, []);
 
   return (
