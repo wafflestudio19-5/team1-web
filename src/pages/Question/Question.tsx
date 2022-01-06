@@ -42,10 +42,10 @@ const Question: React.FC = () => {
     const doIt = async () => {
       try {
         setQuestionData(await api.getQuestion(Number(id)));
-
         setLoading(false);
       } catch (e) {
         console.log(e);
+        toast.error("Cannot load question");
       }
     };
     doIt().then();
@@ -57,8 +57,7 @@ const Question: React.FC = () => {
       try {
         await api.postAnswer(Number(id), answer);
         setAnswer("");
-        navigate(`/questions/${id}`);
-
+        // navigate(`/questions/${id}`);
         setReset(!reset);
       } catch (err) {
         console.error(err);
@@ -107,7 +106,11 @@ const Question: React.FC = () => {
           </ul>
 
           <section className={styles.main}>
-            <QuestionPost question={questionData!} />
+            <QuestionPost
+              question={questionData!}
+              reset={reset}
+              setReset={setReset}
+            />
             <div className={styles.Answers}>
               <div className={styles.answerBar}>
                 <h2>

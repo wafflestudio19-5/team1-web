@@ -9,6 +9,8 @@ import { ReactComponent as Check } from "../../../icons/iconCheck.svg";
 
 import { dummyApi } from "../../../api/dummyApi";
 
+import { useSessionContext } from "../../../contexts/SessionContext";
+
 import styles from "./Vote.module.scss";
 import { api } from "../../../api/api";
 
@@ -30,15 +32,19 @@ const Vote: React.FC<VoteProps> = ({
   setReset,
 }) => {
   const navigate = useNavigate();
+  const { userInfo } = useSessionContext();
+  const auth = userInfo?.questions.map((question) => question.id === questionId)
+    ? true
+    : false;
 
   const handleVoteUp = async () => {
     try {
       answerId
         ? await api.voteAnswer(answerId, 1)
-        : await dummyApi.voteQuestion(questionId, 1);
+        : await api.voteQuestion(questionId, 1);
 
       setReset(!reset);
-      // navigate(`/questions/${questionId}`);/
+      // navigate(`/questions/${questionId}`);
     } catch (err) {
       console.error(err);
     }
@@ -48,7 +54,7 @@ const Vote: React.FC<VoteProps> = ({
     try {
       answerId
         ? await api.voteAnswer(answerId, -1)
-        : await dummyApi.voteQuestion(questionId, -1);
+        : await api.voteQuestion(questionId, -1);
 
       setReset(!reset);
       // navigate(`/questions/${questionId}`);
@@ -70,14 +76,7 @@ const Vote: React.FC<VoteProps> = ({
         <div className={styles.answerChecked}>
           <Check />
         </div>
-      ) : (
-        // Question Post
-        accepted !== false && (
-          <button>
-            <Bookmark />
-          </button>
-        )
-      )}
+      ) : null}
     </>
   );
 };

@@ -10,35 +10,67 @@ import UserCard from "../../../Components/UserCard/UserCard";
 import { countVotes, QuestionInterface } from "../../../interface/interface";
 import CommentItem from "../CommentItem/CommentItem";
 import Vote from "../Vote/Vote";
-import { dummyApi, _getCurrentUser } from "../../../api/dummyApi";
+import { api } from "../../../api/api";
+import { useSessionContext } from "../../../contexts/SessionContext";
+import { toast } from "react-toastify";
 
 import styles from "./Post.module.scss";
 
 interface PostProps {
   question: QuestionInterface;
+  reset: boolean;
+  setReset(e: boolean): void;
 }
 
-const QuestionPost: React.FC<PostProps> = ({ question }) => {
-  const auth = _getCurrentUser()?.id === question.user.id;
+const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
+  const { userInfo } = useSessionContext();
+  const auth = userInfo?.id === question.user.id;
   const [onAdd, setOnAdd] = useState<boolean>(false);
-  const [value, setValue] = useState<string>("");
+  const [comment, setComment] = useState<string>("");
   const navigate = useNavigate();
 
   const handleCommentSubmit: React.FormEventHandler<HTMLFormElement> = async (
     e
   ) => {
     e.preventDefault();
-    if (question.id) {
-      try {
-        await dummyApi.postQuestionComment(question.id, value);
-      } catch (err) {
-        console.error(err);
+    try {
+      if (comment === "") {
+        toast.error("답변을 입력해주세요!");
+        return;
       }
+      await api.postQuestionComment(question.id, comment);
+      setReset(!reset);
       setOnAdd(false);
-      setValue("");
-      navigate(`/questions/${question.id}`);
+      setComment("");
+    } catch (err) {
+      console.error(err);
     }
   };
+
+  const handleDelete = async () => {
+    try {
+      await api.deleteQuestion(question.id);
+    } catch (err) {
+      console.error(err);
+    }
+    navigate(`/questions`);
+  };
+
+  // const addComment = async () => {
+  //   try {
+  //     if (comment === "") {
+  //       toast.error("답변을 입력해주세요!");
+  //       return;
+  //     }
+  //     await api.postQuestionComment(question.id, comment);
+
+  //     // setReset(!reset);
+  //     setComment("");
+  //     navigate(`/questions/${question.id}`);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <div className={styles.questionPostLayout}>
@@ -47,8 +79,8 @@ const QuestionPost: React.FC<PostProps> = ({ question }) => {
           vote={countVotes(question)}
           questionId={question.id}
           answerId={undefined}
-          setReset={() => {}}
           reset={false}
+          setReset={setReset}
         />
       </div>
       <div className={styles.postCell}>
@@ -64,16 +96,19 @@ const QuestionPost: React.FC<PostProps> = ({ question }) => {
 
         <div className={styles.itemFooter}>
           {auth ? (
-            <Link
-              to={`/posts/${question.id}/edit`}
-              state={{
-                title: question.title,
-                body: question.body,
-                questionId: question.id,
-              }}
-            >
-              <button>Edit</button>
-            </Link>
+            <div className={styles.buttonList}>
+              <Link
+                to={`/posts/${question.id}/edit`}
+                state={{
+                  title: question.title,
+                  body: question.body,
+                  questionId: question.id,
+                }}
+              >
+                <button>Edit</button>
+              </Link>
+              <button onClick={handleDelete}>Delete</button>
+            </div>
           ) : (
             <div />
           )}
@@ -94,6 +129,8 @@ const QuestionPost: React.FC<PostProps> = ({ question }) => {
               key={comment.id}
               comment={comment}
               questionId={comment.questionId}
+              reset={reset}
+              setReset={setReset}
             />
           ))}
         </div>
@@ -101,8 +138,8 @@ const QuestionPost: React.FC<PostProps> = ({ question }) => {
           <>
             <form className={styles.commentForm} onSubmit={handleCommentSubmit}>
               <textarea
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
               />
               <BlueButton type="submit" text={"Add Comment"} />
             </form>
@@ -110,7 +147,7 @@ const QuestionPost: React.FC<PostProps> = ({ question }) => {
               className={styles.cancelComment}
               onClick={() => {
                 setOnAdd(!onAdd);
-                setValue("");
+                setComment("");
               }}
             >
               cancel

@@ -26,9 +26,9 @@ const Questions = () => {
   useEffect(() => {
     const doIt = async () => {
       try {
-        const { results, count } = await api.getQuestionList();
-        setQuestionList(results);
-        setCount(count);
+        const { content, totalElements } = await api.getQuestionList();
+        setQuestionList(content);
+        setCount(totalElements);
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
@@ -50,7 +50,9 @@ const Questions = () => {
           </Link>
         </div>
         <div className={styles.secondBar}>
-          <div className={styles.total}>{count} questions</div>
+          <div className={styles.total}>
+            {count ? `${count} questions` : `No question`}
+          </div>
           {/*
           <div className={styles.filterList}>
             {FILTERS.map((value) => (
@@ -69,7 +71,7 @@ const Questions = () => {
         </div>
       </div>
       <div className={styles.questionList}>
-        {questionList.map((question) => (
+        {questionList?.map((question) => (
           <QuestionItem key={question.id} question={question} />
         ))}
       </div>

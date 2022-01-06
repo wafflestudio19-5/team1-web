@@ -80,9 +80,10 @@ export const api = {
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
   getQuestionList: async () =>
     (
-      await instance.get<{ results: QuestionInterface[]; count: number }>(
-        "/api/question/"
-      )
+      await instance.get<{
+        content: QuestionInterface[];
+        totalElements: number;
+      }>("/api/question/")
     ).data,
   postQuestion: async (title: string, body: string) =>
     (
@@ -133,7 +134,7 @@ export const api = {
   deleteQuestionComment: async (questionId: number, commentId: number) =>
     (
       await instance.delete<EmptyBody>(
-        `/api/question/${questionId}/comment/${commentId}/`
+        `api/question/${questionId}/comment/${commentId}/`
       )
     ).data,
   postAnswer: async (questionId: number, body: string) =>

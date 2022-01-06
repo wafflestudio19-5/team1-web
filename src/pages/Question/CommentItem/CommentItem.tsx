@@ -9,12 +9,15 @@ import { ReactComponent as Delete } from "../../../icons/iconDelete.svg";
 import dayjs from "dayjs";
 
 import styles from "./CommentItem.module.scss";
-import { _getCurrentUser, dummyApi } from "../../../api/dummyApi";
+import { api } from "../../../api/api";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
+import { useSessionContext } from "../../../contexts/SessionContext";
 
 interface CommentProps {
   comment: QuestionComment | AnswerComment;
-  questionId?: number;
+  questionId: number;
+  reset: boolean;
+  setReset(e: boolean): void;
   answerId?: number;
 }
 
@@ -22,12 +25,16 @@ const CommentItem: React.FC<CommentProps> = ({
   comment,
   questionId,
   answerId,
+  reset,
+  setReset,
 }) => {
   const date = new Date();
-  const auth = _getCurrentUser()?.id === comment.user.id;
+  const { userInfo } = useSessionContext();
+  const auth = userInfo?.id === comment.user.id;
   const navigate = useNavigate();
   const [onEdit, setOnEdit] = useState<boolean>(false);
   const [edited, setEdited] = useState<string>("");
+  console.log(comment.body);
 
   const handleEdit = () => {
     setOnEdit(!onEdit);
@@ -38,13 +45,14 @@ const CommentItem: React.FC<CommentProps> = ({
     if (questionId) {
       try {
         answerId
-          ? await dummyApi.deleteAnswerComment(answerId, comment.id)
-          : await dummyApi.deleteQuestionComment(questionId, comment.id);
+          ? await api.deleteAnswerComment(answerId, comment.id)
+          : await api.deleteQuestionComment(questionId, comment.id);
+        // navigate(`/questions/${questionId}`);
+        setReset(!reset);
       } catch (err) {
         console.error(err);
       }
     }
-    navigate(`/questions/${questionId}`);
   };
 
   const handleEditSubmit: React.FormEventHandler<HTMLFormElement> = async (
@@ -52,27 +60,23 @@ const CommentItem: React.FC<CommentProps> = ({
   ) => {
     e.preventDefault();
     if (questionId) {
-      if (!edited) {
-        alert("no edited!");
-        return;
-      }
       try {
         answerId
-          ? await dummyApi.editAnswerComment(answerId, comment.id, edited)
-          : await dummyApi.editQuestionComment(questionId, comment.id, edited);
+          ? await api.editAnswerComment(answerId, comment.id, edited)
+          : await api.editQuestionComment(questionId, comment.id, edited);
+        setReset(!reset);
+        setOnEdit(false);
+        setEdited("");
       } catch (err) {
         console.error(err);
       }
-      setOnEdit(false);
-      setEdited("");
-      navigate(`/questions/${questionId}`);
     }
   };
 
   return (
     <>
       <div className={styles.commentContent}>
-        <span>{comment.id}</span>
+        <span />
         {onEdit ? (
           <div>
             <form onSubmit={handleEditSubmit}>
