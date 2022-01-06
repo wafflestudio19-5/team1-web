@@ -26,9 +26,9 @@ const Questions = () => {
   useEffect(() => {
     const doIt = async () => {
       try {
-        const { results, count } = await api.getQuestionList();
-        setQuestionList(results);
-        setCount(count);
+        const { content, totalElements } = await api.getQuestionList();
+        setQuestionList(content);
+        setCount(totalElements);
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
