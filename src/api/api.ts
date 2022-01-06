@@ -166,7 +166,7 @@ export const api = {
     ).data,
   editAnswerComment: async (commentId: number, body: string) =>
     (
-      await instance.post<AnswerComment>(`/api/answer/comment/${commentId}/`, {
+      await instance.put<AnswerComment>(`/api/answer/comment/${commentId}/`, {
         body: body,
       })
     ).data,
