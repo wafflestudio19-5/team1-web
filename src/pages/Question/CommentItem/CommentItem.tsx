@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { QuestionComment, AnswerComment } from "../../../interface/interface";
 
@@ -31,7 +31,6 @@ const CommentItem: React.FC<CommentProps> = ({
   const date = new Date();
   const { userInfo } = useSessionContext();
   const auth = userInfo?.id === comment.user.id;
-  const navigate = useNavigate();
   const [onEdit, setOnEdit] = useState<boolean>(false);
   const [edited, setEdited] = useState<string>("");
   console.log(comment.body);
@@ -45,8 +44,8 @@ const CommentItem: React.FC<CommentProps> = ({
     if (questionId) {
       try {
         answerId
-          ? await api.deleteAnswerComment(answerId, comment.id)
-          : await api.deleteQuestionComment(questionId, comment.id);
+          ? await api.deleteAnswerComment(comment.id)
+          : await api.deleteQuestionComment(comment.id);
         // navigate(`/questions/${questionId}`);
         setReset(!reset);
       } catch (err) {
@@ -62,8 +61,8 @@ const CommentItem: React.FC<CommentProps> = ({
     if (questionId) {
       try {
         answerId
-          ? await api.editAnswerComment(answerId, comment.id, edited)
-          : await api.editQuestionComment(questionId, comment.id, edited);
+          ? await api.editAnswerComment(comment.id, edited)
+          : await api.editQuestionComment(comment.id, edited);
         setReset(!reset);
         setOnEdit(false);
         setEdited("");
