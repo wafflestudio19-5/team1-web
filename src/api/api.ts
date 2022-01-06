@@ -130,25 +130,18 @@ export const api = {
         }
       )
     ).data,
-  editQuestionComment: async (
-    questionId: number,
-    commentId: number,
-    body: string
-  ) =>
+  editQuestionComment: async (commentId: number, body: string) =>
     (
       await instance.put<QuestionComment>(
-        `/api/question/${questionId}/comment/${commentId}/`,
+        `/api/question/comment/${commentId}/`,
         {
           body: body,
         }
       )
     ).data,
-  deleteQuestionComment: async (questionId: number, commentId: number) =>
-    (
-      await instance.delete<EmptyBody>(
-        `api/question/${questionId}/comment/${commentId}/`
-      )
-    ).data,
+  deleteQuestionComment: async (commentId: number) =>
+    (await instance.delete<EmptyBody>(`api/question/comment/${commentId}/`))
+      .data,
   postAnswer: async (questionId: number, body: string) =>
     (
       await instance.post<Answer>(`/api/question/${questionId}/answer/`, {
@@ -171,23 +164,15 @@ export const api = {
         body: body,
       })
     ).data,
-  editAnswerComment: async (
-    answerId: number,
-    commentId: number,
-    body: string
-  ) =>
+  editAnswerComment: async (commentId: number, body: string) =>
     (
-      await instance.post<AnswerComment>(
-        `/api/answer/${answerId}/comment/${commentId}/`,
-        { body: body }
-      )
+      await instance.post<AnswerComment>(`/api/answer/comment/${commentId}/`, {
+        body: body,
+      })
     ).data,
-  deleteAnswerComment: async (answerId: number, commentId: number) =>
-    (
-      await instance.delete<EmptyBody>(
-        `/api/answer/${answerId}/comment/${commentId}/`
-      )
-    ).data,
+  deleteAnswerComment: async (commentId: number) =>
+    (await instance.delete<EmptyBody>(`/api/answer/comment/${commentId}/`))
+      .data,
 
   voteQuestion: async (questionId: number, vote: -1 | 1) =>
     (

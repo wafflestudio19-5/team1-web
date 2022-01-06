@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import MDEditor from "@uiw/react-md-editor";
 
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import UserCard from "../../../Components/UserCard/UserCard";
-import { countVotes, Answer } from "../../../interface/interface";
+import { Answer } from "../../../interface/interface";
 import CommentItem from "../CommentItem/CommentItem";
 import Vote from "../Vote/Vote";
-import { dummyApi, _getCurrentUser } from "../../../api/dummyApi";
 import { useSessionContext } from "../../../contexts/SessionContext";
 
 import styles from "./Post.module.scss";
 import { api } from "../../../api/api";
-import axios from "axios";
 import { toast } from "react-toastify";
 
 interface PostProps {
@@ -32,7 +30,6 @@ const AnswerPost: React.FC<PostProps> = ({
 }) => {
   const { userInfo } = useSessionContext();
   const auth = userInfo?.id === answer.user.id;
-  const navigate = useNavigate();
   const [onAdd, setOnAdd] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
 
@@ -55,7 +52,7 @@ const AnswerPost: React.FC<PostProps> = ({
         toast.error("답변을 입력해주세요!");
         return;
       }
-      await api.postQuestionComment(questionId, comment);
+      await api.postAnswerComment(answer.id, comment);
       // navigate(`/questions/${questionId}`);
       setReset(!reset);
       setOnAdd(false);
@@ -122,16 +119,18 @@ const AnswerPost: React.FC<PostProps> = ({
           </div>
         </div>
         <div className={styles.commentList}>
-          {answer.comments.map((comment) => (
-            <CommentItem
-              key={comment.id}
-              comment={comment}
-              questionId={questionId}
-              answerId={comment.answerId}
-              reset={reset}
-              setReset={setReset}
-            />
-          ))}
+          {answer.comments.map((comment) => {
+            return (
+              <CommentItem
+                key={comment.id}
+                comment={comment}
+                questionId={questionId}
+                answerId={comment.answerId}
+                reset={reset}
+                setReset={setReset}
+              />
+            );
+          })}
         </div>
         {onAdd ? (
           <>
