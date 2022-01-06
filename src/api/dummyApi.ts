@@ -73,7 +73,8 @@ const dummyQuestions: QuestionInterface[] = [
           profile: "",
         },
         body: "yes",
-        vote: 2,
+        votes: 2,
+        createdAt: new Date(),
         comments: [
           {
             id: 201,
@@ -247,7 +248,9 @@ export const dummyApi = {
       comments: [],
       id: ++lastId,
       user: currentUser,
-      vote: 0,
+      votes: 0,
+
+      createdAt: new Date(),
     };
     question.answers.push(answer);
     return answer;
@@ -296,7 +299,7 @@ export const dummyApi = {
       )
     );
     if (!answer) throw new DummyApiError(404, "Not found");
-    answer.vote += vote;
+    answer.votes += vote;
   },
   postAnswerComment: async (answerId: number, body: string) => {
     if (currentUser === null) throw new DummyApiError(401, "Unauthorized");

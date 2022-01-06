@@ -10,12 +10,15 @@ import { ReactComponent as Check } from "../../../icons/iconCheck.svg";
 import { dummyApi } from "../../../api/dummyApi";
 
 import styles from "./Vote.module.scss";
+import { api } from "../../../api/api";
 
 interface VoteProps {
   vote: number;
   accepted?: boolean;
   questionId: number;
   answerId: number | undefined;
+  reset: boolean;
+  setReset(e: boolean): void;
 }
 
 const Vote: React.FC<VoteProps> = ({
@@ -23,14 +26,18 @@ const Vote: React.FC<VoteProps> = ({
   accepted,
   questionId,
   answerId,
+  reset,
+  setReset,
 }) => {
   const navigate = useNavigate();
 
   const handleVoteUp = async () => {
     try {
       answerId
-        ? await dummyApi.voteAnswer(answerId, 1)
+        ? await api.voteAnswer(answerId, 1)
         : await dummyApi.voteQuestion(questionId, 1);
+
+      setReset(!reset);
       navigate(`/questions/${questionId}`);
     } catch (err) {
       console.error(err);
@@ -40,8 +47,10 @@ const Vote: React.FC<VoteProps> = ({
   const handleVoteDown = async () => {
     try {
       answerId
-        ? await dummyApi.voteAnswer(answerId, -1)
+        ? await api.voteAnswer(answerId, -1)
         : await dummyApi.voteQuestion(questionId, -1);
+
+      setReset(!reset);
       navigate(`/questions/${questionId}`);
     } catch (err) {
       console.error(err);
