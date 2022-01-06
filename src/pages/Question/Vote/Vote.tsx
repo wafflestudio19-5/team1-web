@@ -38,7 +38,7 @@ const Vote: React.FC<VoteProps> = ({
         : await dummyApi.voteQuestion(questionId, 1);
 
       setReset(!reset);
-      navigate(`/questions/${questionId}`);
+      // navigate(`/questions/${questionId}`);/
     } catch (err) {
       console.error(err);
     }
@@ -51,7 +51,7 @@ const Vote: React.FC<VoteProps> = ({
         : await dummyApi.voteQuestion(questionId, -1);
 
       setReset(!reset);
-      navigate(`/questions/${questionId}`);
+      // navigate(`/questions/${questionId}`);
     } catch (err) {
       console.error(err);
     }
