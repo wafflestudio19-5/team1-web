@@ -19,9 +19,16 @@ import { toast } from "react-toastify";
 interface PostProps {
   answer: Answer;
   questionId: number;
+  reset: boolean;
+  setReset(e: boolean): void;
 }
 
-const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
+const AnswerPost: React.FC<PostProps> = ({
+  answer,
+  questionId,
+  setReset,
+  reset,
+}) => {
   const auth = _getCurrentUser()?.id === answer.user.id;
   const navigate = useNavigate();
   const [onAdd, setOnAdd] = useState<boolean>(false);
@@ -35,7 +42,7 @@ const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
 
   const handleDelete = async () => {
     try {
-      await dummyApi.deleteAnswer(answer.id);
+      await api.deleteAnswer(answer.id);
     } catch (err) {
       console.error(err);
     }
@@ -48,7 +55,9 @@ const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
         toast.error("답변을 입력해주세요!");
         return;
       }
-      await dummyApi.postAnswerComment(answer.id, comment);
+      await api.postAnswerComment(answer.id, comment);
+
+      setReset(!reset);
       setComment("");
     } catch (e) {
       console.log(e);
@@ -59,10 +68,12 @@ const AnswerPost: React.FC<PostProps> = ({ answer, questionId }) => {
     <div className={styles.answerPostLayout}>
       <div className={styles.voteCell}>
         <Vote
-          vote={countVotes(answer)}
-          questionId={0}
+          vote={answer.votes}
+          questionId={questionId}
           accepted={answer.accepted}
           answerId={answer.id}
+          reset={reset}
+          setReset={setReset}
         />
       </div>
       <div className={styles.postCell}>

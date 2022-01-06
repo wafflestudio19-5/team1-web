@@ -29,10 +29,7 @@ const Ask: React.FC = () => {
       validateOnBlur: false,
       onSubmit: async (values) => {
         try {
-          const question = await dummyApi.postQuestion(
-            values.title,
-            values.body
-          );
+          const question = await api.postQuestion(values.title, values.body);
           navigate(`/questions/${question.id}`);
         } catch (err) {
           console.error(err);

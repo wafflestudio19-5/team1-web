@@ -47,6 +47,8 @@ const QuestionPost: React.FC<PostProps> = ({ question }) => {
           vote={countVotes(question)}
           questionId={question.id}
           answerId={undefined}
+          setReset={() => {}}
+          reset={false}
         />
       </div>
       <div className={styles.postCell}>

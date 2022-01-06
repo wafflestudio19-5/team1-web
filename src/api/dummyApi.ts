@@ -71,6 +71,7 @@ const dummyQuestions: QuestionInterface[] = [
         },
         body: "yes",
         votes: 2,
+        createdAt: new Date(),
         comments: [
           {
             id: 201,
@@ -245,6 +246,7 @@ export const dummyApi = {
       id: ++lastId,
       user: currentUser,
       votes: 0,
+      createdAt: new Date(),
     };
     question.answers.push(answer);
     return answer;

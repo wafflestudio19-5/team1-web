@@ -42,26 +42,37 @@ const Question: React.FC = () => {
     const doIt = async () => {
       try {
         setQuestionData(await api.getQuestion(Number(id)));
+
         setLoading(false);
       } catch (e) {
         console.log(e);
       }
     };
     doIt().then();
-  }, [filter, id]);
+  }, [filter, id, reset]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (answer) {
       try {
-        await dummyApi.postAnswer(Number(id), answer);
+        await api.postAnswer(Number(id), answer);
         setAnswer("");
         navigate(`/questions/${id}`);
+
+        setReset(!reset);
       } catch (err) {
         console.error(err);
       }
     }
   };
+
+  questionData?.answers.sort((a, b) => {
+    if (filter === "Oldest") {
+      return Number(a.createdAt) - Number(b.createdAt);
+    } else {
+      return b.votes - a.votes;
+    }
+  });
 
   return (
     <div className={styles.Question}>
@@ -125,6 +136,8 @@ const Question: React.FC = () => {
                   key={answer.id}
                   answer={answer}
                   questionId={questionData.id}
+                  reset={reset}
+                  setReset={setReset}
                 />
               ))}
             </div>
