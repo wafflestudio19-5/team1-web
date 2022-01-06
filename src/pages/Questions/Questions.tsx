@@ -142,7 +142,6 @@ const Questions = () => {
             Prev
           </Link>
         )}
-        <span className={styles.pageSpan}>...</span>
         {pageList.map((n, i) =>
           n === "..." ? (
             <span className={styles.pageSpan} key={i}>
