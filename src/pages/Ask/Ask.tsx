@@ -76,7 +76,7 @@ const Ask: React.FC = () => {
           ) : null}
         </div>
 
-        <div className={styles.tags}>
+        {/* <div className={styles.tags}>
           <label>Tags</label>
           <p className={styles.tip}>
             Add up to 5 tags to describe what your question is about
@@ -85,7 +85,7 @@ const Ask: React.FC = () => {
             maxLength={300}
             placeholder="e.g. (asp.net-mvc typescript database)"
           />
-        </div>
+        </div> */}
 
         <div className={styles.postButton}>
           <BlueButton type="submit" text={"Post your question"} />

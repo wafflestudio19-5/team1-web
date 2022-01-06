@@ -10,6 +10,7 @@ import { countVotes, Answer } from "../../../interface/interface";
 import CommentItem from "../CommentItem/CommentItem";
 import Vote from "../Vote/Vote";
 import { dummyApi, _getCurrentUser } from "../../../api/dummyApi";
+import { useSessionContext } from "../../../contexts/SessionContext";
 
 import styles from "./Post.module.scss";
 import { api } from "../../../api/api";
@@ -29,40 +30,56 @@ const AnswerPost: React.FC<PostProps> = ({
   setReset,
   reset,
 }) => {
-  const auth = _getCurrentUser()?.id === answer.user.id;
+  const { userInfo } = useSessionContext();
+  const auth = userInfo?.id === answer.user.id;
   const navigate = useNavigate();
   const [onAdd, setOnAdd] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
+
+  const handleDelete = async () => {
+    try {
+      await api.deleteAnswer(answer.id);
+      setReset(!reset);
+      // navigate(`/questions/${questionId}`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleCommentSubmit: React.FormEventHandler<HTMLFormElement> = async (
     e
   ) => {
     e.preventDefault();
-  };
-
-  const handleDelete = async () => {
-    try {
-      await api.deleteAnswer(answer.id);
-    } catch (err) {
-      console.error(err);
-    }
-    navigate(`/questions/${questionId}`);
-  };
-
-  const addComment = async () => {
     try {
       if (comment === "") {
         toast.error("답변을 입력해주세요!");
         return;
       }
-      await api.postAnswerComment(answer.id, comment);
-
+      await api.postQuestionComment(questionId, comment);
+      // navigate(`/questions/${questionId}`);
       setReset(!reset);
+      setOnAdd(false);
       setComment("");
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      console.error(err);
     }
   };
+
+  // const addComment = async () => {
+  //   try {
+  //     if (comment === "") {
+  //       toast.error("답변을 입력해주세요!");
+  //       return;
+  //     }
+  //     await api.postAnswerComment(answer.id, comment);
+
+  //     // setReset(!reset);
+  //     setComment("");
+  //     navigate(`/questions/${questionId}`);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <div className={styles.answerPostLayout}>
@@ -109,7 +126,10 @@ const AnswerPost: React.FC<PostProps> = ({
             <CommentItem
               key={comment.id}
               comment={comment}
+              questionId={questionId}
               answerId={comment.answerId}
+              reset={reset}
+              setReset={setReset}
             />
           ))}
         </div>
@@ -120,11 +140,7 @@ const AnswerPost: React.FC<PostProps> = ({
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
               />
-              <BlueButton
-                type="submit"
-                text={"Add Comment"}
-                onClick={addComment}
-              />
+              <BlueButton type="submit" text={"Add Comment"} />
             </form>
             <button
               className={styles.cancelComment}

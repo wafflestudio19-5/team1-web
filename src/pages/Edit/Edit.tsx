@@ -6,6 +6,7 @@ import BlueButton from "../../Components/BlueButton/BlueButton";
 import Markdown from "../../Components/Markdown/Markdown";
 
 import { dummyApi } from "../../api/dummyApi";
+import { api } from "../../api/api";
 
 import styles from "./Edit.module.scss";
 
@@ -46,9 +47,9 @@ const Edit: React.FC = () => {
         //   values.title === orgValues.title ? "" : values.title;
         // const editedBody = values.body === orgValues.body ? "" : values.body;
         if (Number(questionId) === Number(id) && values.title.length > 5) {
-          await dummyApi.editQuestion(Number(id), values.title, values.body);
+          await api.editQuestion(Number(id), values.title, values.body);
         } else {
-          await dummyApi.editAnswer(Number(id), values.body);
+          await api.editAnswer(Number(id), values.body);
         }
         navigate(`/questions/${questionId}`);
       } catch (err) {

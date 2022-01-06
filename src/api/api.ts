@@ -134,7 +134,7 @@ export const api = {
   deleteQuestionComment: async (questionId: number, commentId: number) =>
     (
       await instance.delete<EmptyBody>(
-        `/api/question/${questionId}/comment/${commentId}/`
+        `api/question/${questionId}/comment/${commentId}/`
       )
     ).data,
   postAnswer: async (questionId: number, body: string) =>
