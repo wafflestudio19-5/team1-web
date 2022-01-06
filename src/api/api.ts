@@ -18,6 +18,9 @@ interface SignupResponse extends UserInfoResponse {
   accessToken: string;
 }
 
+export type SortCriteria = "id" | "createdAt" | "updatedAt" | "votes";
+export type SortOrder = "asc" | "desc";
+
 const setHeaderToken = (newToken: string | null) => {
   if (newToken) {
     instance.defaults.headers.common["Authentication"] = newToken;
@@ -78,13 +81,22 @@ export const api = {
   },
   getMyProfile: async () =>
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
-  getQuestionList: async () =>
-    (
+  getQuestionList: async (
+    page = 0,
+    sortCriteria: SortCriteria = "id",
+    order: SortOrder = "desc"
+  ) => {
+    const params = new URLSearchParams();
+    params.set("page", String(page));
+    params.set("sort", `${sortCriteria},${order}`);
+    return (
       await instance.get<{
         content: QuestionInterface[];
         totalElements: number;
-      }>("/api/question/")
-    ).data,
+        totalPages: number;
+      }>("/api/question/?" + params.toString())
+    ).data;
+  },
   postQuestion: async (title: string, body: string) =>
     (
       await instance.post<QuestionInterface>("/api/question/", {

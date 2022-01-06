@@ -6,7 +6,7 @@ import { QuestionItem } from "./QuestionItem/QuestionItem";
 import { useLocation } from "react-router";
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { QuestionInterface } from "../../interface/interface";
-import { api } from "../../api/api";
+import { api, SortCriteria, SortOrder } from "../../api/api";
 import axios from "axios";
 
 const useQuery = () => {
@@ -14,21 +14,81 @@ const useQuery = () => {
   return useMemo(() => new URLSearchParams(search), [search]);
 };
 
-// const FILTERS = ["Newest", "Active", "Unanswered", "Frequent", "Votes"];
+const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
+  { label: "Newest", criteria: "createdAt", order: "desc" },
+  // "Active",
+  // "Unanswered",
+  // "Frequent",
+  { label: "Votes", criteria: "votes", order: "desc" },
+];
+
+const makePageList = (
+  currentPage: number,
+  totalPages: number
+): ("..." | number)[] => {
+  if (totalPages <= 10) {
+    let l = [];
+    for (let i = 1; i <= totalPages; i++) l.push(i);
+    return l;
+  } else if (currentPage <= 4) {
+    return [1, 2, 3, 4, 5, "...", totalPages];
+  } else if (currentPage >= totalPages - 4) {
+    return [
+      1,
+      "...",
+      totalPages - 4,
+      totalPages - 3,
+      totalPages - 2,
+      totalPages - 1,
+      totalPages,
+    ];
+  } else {
+    return [
+      1,
+      "...",
+      currentPage - 2,
+      currentPage - 1,
+      currentPage,
+      currentPage + 1,
+      currentPage + 2,
+      "...",
+      totalPages,
+    ];
+  }
+};
+
+const makeQuery = (filter: string, page: number) =>
+  `?tab=${filter}&page=${page}`;
 
 const Questions = () => {
   const query = useQuery();
-  const filter = query.get("tab") ?? "Newest";
+  const filter = useMemo(() => {
+    const rawFilter = query.get("tab") ?? "Newest";
+    return FILTERS.find((e) => e.label === rawFilter) ?? FILTERS[0];
+  }, [query]);
+  const page = useMemo(() => {
+    const rawPage = Number.parseInt(query.get("page") ?? "1");
+    return rawPage >= 1 ? rawPage : 1;
+  }, [query]);
   const [questionList, setQuestionList] = useState<QuestionInterface[]>([]);
   const [count, setCount] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const pageList = useMemo(
+    () => makePageList(page, pageCount),
+    [page, pageCount]
+  );
 
   // get data
   useEffect(() => {
     const doIt = async () => {
       try {
-        const { content, totalElements } = await api.getQuestionList();
+        const { content, totalElements, totalPages } =
+          await api.getQuestionList(page - 1, filter.criteria, filter.order);
+        console.log(content.length);
         setQuestionList(content);
         setCount(totalElements);
+        setPageCount(totalPages);
+        window.scrollTo(0, 0);
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
@@ -38,7 +98,7 @@ const Questions = () => {
       }
     };
     doIt().then();
-  }, [filter]);
+  }, [page, filter]);
 
   return (
     <div className={styles.questions}>
@@ -53,27 +113,60 @@ const Questions = () => {
           <div className={styles.total}>
             {count ? `${count} questions` : `No question`}
           </div>
-          {/*
           <div className={styles.filterList}>
-            {FILTERS.map((value) => (
+            {FILTERS.map((elem) => (
               <Link
                 className={`${styles.filterItem} ${
-                  value === filter ? styles.selected : ""
+                  elem === filter ? styles.selected : ""
                 }`}
-                key={value}
-                to={`/questions?tab=${value}`}
+                key={elem.label}
+                to={makeQuery(elem.label, elem === filter ? page : 1)}
               >
-                {value}
+                {elem.label}
               </Link>
             ))}
           </div>
-          */}
         </div>
       </div>
       <div className={styles.questionList}>
         {questionList?.map((question) => (
           <QuestionItem key={question.id} question={question} />
         ))}
+      </div>
+      <div className={styles.pageNumberList}>
+        {page > 1 && (
+          <Link
+            className={styles.pageButton}
+            to={makeQuery(filter.label, page - 1)}
+          >
+            Prev
+          </Link>
+        )}
+        {pageList.map((n, i) =>
+          n === "..." ? (
+            <span className={styles.pageSpan} key={i}>
+              ...
+            </span>
+          ) : (
+            <Link
+              className={`${styles.pageButton} ${
+                page === n ? styles.current : ""
+              }`}
+              to={makeQuery(filter.label, n)}
+              key={n}
+            >
+              {n}
+            </Link>
+          )
+        )}
+        {page < pageCount && (
+          <Link
+            className={styles.pageButton}
+            to={makeQuery(filter.label, page + 1)}
+          >
+            Next
+          </Link>
+        )}
       </div>
     </div>
   );
