@@ -13,6 +13,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import AnswerPost from "./Post/AnswerPost";
 import QuestionPost from "./Post/QuestionPost";
 
+import ago from "s-ago";
 import styles from "./Question.module.scss";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -90,8 +91,11 @@ const Question: React.FC = () => {
           <ul className={styles.postInfo}>
             <li>
               <span>Asked</span>
-              <time>today</time>
+              <time>
+                {questionData ? ago(new Date(questionData.createdAt)) : null}
+              </time>
             </li>
+            {/*
             <li>
               <span>Active</span>
               <time>today</time>
@@ -99,6 +103,7 @@ const Question: React.FC = () => {
             <li>
               <span>Viewd</span>9 times
             </li>
+              */}
           </ul>
 
           <section className={styles.main}>
@@ -110,6 +115,7 @@ const Question: React.FC = () => {
                     ? `${questionData.answers.length} Answers`
                     : "Your Answer"}
                 </h2>
+                {/*
                 <div className={styles.filterList}>
                   {FILTERS.map((value) => (
                     <Link
@@ -123,6 +129,7 @@ const Question: React.FC = () => {
                     </Link>
                   ))}
                 </div>
+                */}
               </div>
               {questionData?.answers.map((answer) => (
                 <AnswerPost

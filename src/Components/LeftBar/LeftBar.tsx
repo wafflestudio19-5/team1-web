@@ -11,9 +11,7 @@ const LeftBar: React.FC<LeftBarProps> = ({ noLeftBarPage }) => {
   const location = useLocation();
   const mode: string = location.pathname.split("/")[1];
 
-  return noLeftBarPage.includes(mode) ? (
-    <div></div>
-  ) : (
+  return noLeftBarPage.includes(mode) ? null : (
     <div className={styles.leftBar}>
       <ul className={styles.menuList}>
         <li className={styles.menu}>
@@ -30,11 +28,15 @@ const LeftBar: React.FC<LeftBarProps> = ({ noLeftBarPage }) => {
           >
             <Link to="/questions">Questions</Link>{" "}
           </li>
+          {/*
           <li className={styles.subMenu}>Tags</li>
           <li className={styles.subMenu}>Users</li>
+            */}
         </ul>
 
+        {/*
         <li className={styles.menu}>COLLECIVES</li>
+        */}
       </ul>
     </div>
   );

@@ -5,18 +5,15 @@ import {
   User,
 } from "../interface/interface";
 
-interface UserData {
-  id: number;
-  name: string;
-  email: string;
+interface UserData extends User {
   profile: string;
   password: string;
 }
 let currentUser: User | null = {
   id: 1,
-  name: "bob",
+  username: "bob",
   email: "bob@example.com",
-  profile: "",
+  // profile: "",
 };
 
 function box<T>(e: T | undefined) {
@@ -38,14 +35,14 @@ export const _getCurrentUser = () => currentUser;
 const dummyUsers: UserData[] = [
   {
     id: 0,
-    name: "alice",
+    username: "alice",
     email: "alice@example.com",
     profile: "",
     password: "password",
   },
   {
     id: 1,
-    name: "bob",
+    username: "bob",
     email: "bob@example.com",
     profile: "",
     password: "baseball",
@@ -59,8 +56,8 @@ const dummyQuestions: QuestionInterface[] = [
     tags: [],
     user: {
       id: 0,
-      profile: "",
-      name: "alice",
+      // profile: "",
+      username: "alice",
       email: "alice@example.com",
     },
     answers: [
@@ -68,9 +65,9 @@ const dummyQuestions: QuestionInterface[] = [
         id: 301,
         user: {
           id: 1,
-          name: "bob",
+          username: "bob",
           email: "bob@example.com",
-          profile: "",
+          // profile: "",
         },
         body: "yes",
         votes: 2,
@@ -80,8 +77,8 @@ const dummyQuestions: QuestionInterface[] = [
             id: 201,
             user: {
               id: 0,
-              profile: "",
-              name: "alice",
+              // profile: "",
+              username: "alice",
               email: "alice@example.com",
             },
             body: "no!",
@@ -98,9 +95,9 @@ const dummyQuestions: QuestionInterface[] = [
         id: 201,
         user: {
           id: 1,
-          name: "bob",
+          username: "bob",
           email: "bob@example.com",
-          profile: "",
+          // profile: "",
         },
         body: "hello world!",
         questionId: 101,
@@ -141,7 +138,7 @@ export const dummyApi = {
     const userData: UserData = {
       email: email,
       id: ++lastId,
-      name: name,
+      username: name,
       password: password,
       profile: "",
     };
@@ -249,7 +246,6 @@ export const dummyApi = {
       id: ++lastId,
       user: currentUser,
       votes: 0,
-
       createdAt: new Date(),
     };
     question.answers.push(answer);

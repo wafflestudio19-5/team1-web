@@ -14,7 +14,7 @@ const useQuery = () => {
   return useMemo(() => new URLSearchParams(search), [search]);
 };
 
-const FILTERS = ["Newest", "Active", "Unanswered", "Frequent", "Votes"];
+// const FILTERS = ["Newest", "Active", "Unanswered", "Frequent", "Votes"];
 
 const Questions = () => {
   const query = useQuery();
@@ -51,6 +51,7 @@ const Questions = () => {
         </div>
         <div className={styles.secondBar}>
           <div className={styles.total}>{count} questions</div>
+          {/*
           <div className={styles.filterList}>
             {FILTERS.map((value) => (
               <Link
@@ -64,6 +65,7 @@ const Questions = () => {
               </Link>
             ))}
           </div>
+          */}
         </div>
       </div>
       <div className={styles.questionList}>

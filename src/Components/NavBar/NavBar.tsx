@@ -42,8 +42,6 @@ const NavBar: React.FC<NavBarProps> = () => {
           </Link>
         </div>
         <ul className={styles.menuList}>
-          <li>About</li>
-          <li>Products</li>
           <li>
             <Link to="/questions">Questions</Link>
           </li>

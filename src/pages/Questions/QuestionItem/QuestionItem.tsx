@@ -56,6 +56,7 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
               timestamp={question.createdAt}
               isQuestion={true}
               isEdited={question?.updatedAt ? true : false}
+              questionId={question.id}
             />
           </div>
         </div>
