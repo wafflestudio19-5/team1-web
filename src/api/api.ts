@@ -80,9 +80,10 @@ export const api = {
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
   getQuestionList: async () =>
     (
-      await instance.get<{ results: QuestionInterface[]; count: number }>(
-        "/api/question/"
-      )
+      await instance.get<{
+        content: QuestionInterface[];
+        totalElements: number;
+      }>("/api/question/")
     ).data,
   postQuestion: async (title: string, body: string) =>
     (
