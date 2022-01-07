@@ -48,7 +48,7 @@ const LoginBox = () => {
             } else {
               toast.error(e.response.data.status + " " + e.response.data.error);
             }
-            console.error(e.response.status, e.response.data);
+            toast.error(e.response.status, e.response.data);
           }
         } else {
           console.error(e);
@@ -79,7 +79,7 @@ const LoginBox = () => {
       />
 
       <div className={styles.buttonBox}>
-        <BlueButton text={"Log in"} onClick={submit} />
+        <BlueButton type={"submit"} text={"Log in"} onClick={submit} />
       </div>
     </form>
   );
