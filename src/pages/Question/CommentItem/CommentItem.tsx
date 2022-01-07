@@ -33,7 +33,6 @@ const CommentItem: React.FC<CommentProps> = ({
   const auth = userInfo?.id === comment.user.id;
   const [onEdit, setOnEdit] = useState<boolean>(false);
   const [edited, setEdited] = useState<string>("");
-  console.log(comment.body);
 
   const handleEdit = () => {
     setOnEdit(!onEdit);
@@ -83,7 +82,7 @@ const CommentItem: React.FC<CommentProps> = ({
                 value={edited}
                 onChange={(e) => setEdited(e.target.value)}
               />
-              <BlueButton type="submit" text={"Save eidts"} />
+              <BlueButton type="submit" text={"Save edits"} />
             </form>
             <button
               className={styles.cancelEdit}
