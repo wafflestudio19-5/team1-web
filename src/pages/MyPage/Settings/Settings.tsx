@@ -122,10 +122,12 @@ export const Settings: FC<SettingsProps> = () => {
             />
           </div>
         </div>
-        <BlueButton text={"Save profile"} onClick={saveProfile} />
-        <button className={styles.cancel} onClick={cancel}>
-          Cancel
-        </button>
+        <div className={styles.buttons}>
+          <BlueButton text={"Save profile"} onClick={saveProfile} />
+          <button className={styles.cancel} onClick={cancel}>
+            Cancel
+          </button>
+        </div>
       </section>
     </div>
   );

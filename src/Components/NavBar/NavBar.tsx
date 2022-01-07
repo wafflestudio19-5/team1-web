@@ -46,7 +46,7 @@ const NavBar: React.FC<NavBarProps> = () => {
             <Link to="/questions">Questions</Link>
           </li>
         </ul>
-        <input className={styles.searchBox} />
+        {/* <input className={styles.searchBox} /> */}
         {!userInfo ? (
           <div className={styles.buttonList}>
             <Link
