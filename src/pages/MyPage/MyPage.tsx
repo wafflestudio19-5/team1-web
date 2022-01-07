@@ -3,15 +3,17 @@ import MyInfo from "./MyInfo/MyInfo";
 
 import styles from "./MyPage.module.scss";
 import MyPageTab from "./MyPageTab/MyPageTab";
-import { useLocation } from "react-router";
+import { Navigate, useLocation } from "react-router";
 import ProfileButtons from "./ProfileButtons/ProfileButtons";
-import { Settings } from "./Settings/Settings";
 import MyPageProfile from "./MyPageProfile/MyPageProfile";
+import { useSessionContext } from "../../contexts/SessionContext";
+import { Settings } from "./Settings/Settings";
 
 const MyPage = () => {
   const qs = new URLSearchParams(useLocation().search);
-  const tab: string | null = qs.get("tab");
-  return (
+  const { userInfo } = useSessionContext();
+  const tab: string = qs.get("tab") ?? "profile";
+  return userInfo !== null ? (
     <div className={styles.myPage}>
       <ProfileButtons />
       <MyInfo />
@@ -19,6 +21,8 @@ const MyPage = () => {
       {tab === "settings" && <Settings />}
       {tab === "profile" && <MyPageProfile />}
     </div>
+  ) : (
+    <Navigate to={"/questions"} />
   );
 };
 

@@ -7,7 +7,7 @@
   }
   .statBox {
     display: flex;
-    height: 125px;
+    height: fit-content;
     flex-direction: column;
     justify-content: space-between;
     border: 1px solid hsl(210deg 8% 85%);
