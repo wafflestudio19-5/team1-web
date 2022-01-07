@@ -20,7 +20,7 @@ const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
   // "Active",
   // "Unanswered",
   // "Frequent",
-  { label: "Votes", criteria: "votes", order: "desc" },
+  // { label: "Votes", criteria: "votes", order: "desc" },
 ];
 
 const makePageList = (

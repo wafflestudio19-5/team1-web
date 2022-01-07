@@ -38,8 +38,6 @@
     display: flex;
 
     .username {
-      // margin-top: 12px;
-      // margin-right: 7px;
       border: none;
       background-color: white;
       color: rgb(0, 116, 204);
@@ -67,8 +65,8 @@
   color: hsl(210, 8%, 55%);
 }
 
-button {
-  margin-top: 20px;
+button.cancelEdit {
+  margin: 20px 0 0;
   flex-direction: row;
   align-self: flex-start;
   height: 28px;
@@ -84,9 +82,4 @@ button {
   &:hover {
     color: hsl(206, 100%, 52%);
   }
-}
-
-.cancelEdit {
-  // @extend %button;
-  margin: 0;
 }
