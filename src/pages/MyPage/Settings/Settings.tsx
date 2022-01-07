@@ -4,10 +4,12 @@ import { SettingsMenu } from "./SettingsMenu/SettingsMenu";
 import Markdown from "../../../Components/Markdown/Markdown";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import ImageInputBox from "../../../Components/ImageInputBox/ImageInputBox";
+import dummyProfile from "../../../icons/dummyProfile.svg";
+import { toast } from "react-toastify";
 
 interface SettingsProps {}
 
-export const Settings: FC<SettingsProps> = ({}) => {
+export const Settings: FC<SettingsProps> = () => {
   const [displayName, setDisplayName] = useState("");
   const [location, setLocation] = useState("");
   const [title, setTitle] = useState("");
@@ -33,12 +35,10 @@ export const Settings: FC<SettingsProps> = ({}) => {
 
   const [changeProfileOn, setChangeProfileOn] = useState<boolean>(false);
   const saveProfile = useCallback(() => {
-    // TODO
-    console.log("save profile");
+    toast.error("Not Implemented!");
   }, []);
   const cancel = useCallback(() => {
-    // TODO
-    console.log("cancel profile edit");
+    toast.error("Not Implemented!");
   }, []);
 
   return (
@@ -65,11 +65,7 @@ export const Settings: FC<SettingsProps> = ({}) => {
           <div className={styles.profileImgContainer}>
             <img
               className={styles.profileImg}
-              src={
-                imgSrc !== ""
-                  ? imgSrc
-                  : "https://www.gravatar.com/avatar/c7dce3957212482f3c931cce947e69e2?s=256&d=identicon&r=PG"
-              }
+              src={imgSrc !== "" ? imgSrc : dummyProfile}
               alt={"profile_image"}
               height={164}
               width={164}

@@ -19,6 +19,7 @@ const MyPageTab: React.FC<MyPageTabProps> = ({ mode }) => {
           Profile
         </span>
       </Link>
+      {/*
       <Link to={"/mypage?tab=activity"}>
         <span
           className={`${styles.tabList} ${
@@ -28,6 +29,7 @@ const MyPageTab: React.FC<MyPageTabProps> = ({ mode }) => {
           Activity
         </span>
       </Link>
+        */}
       <Link to={"/mypage?tab=settings"}>
         <span
           className={`${styles.tabList} ${

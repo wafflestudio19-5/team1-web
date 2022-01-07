@@ -63,7 +63,7 @@ export interface QuestionInterface {
 
 export interface UserInfoResponse extends User {
   questions: { id: number; title: string }[];
-  answer: { id: number; questionTitle: string }[];
+  answers: { id: number; questionTitle: string }[];
 }
 
 export const countVotes = (data: QuestionInterface | Answer) => {
