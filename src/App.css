@@ -4,6 +4,7 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
+  font-family: "BMHANNA_11yrs";
 }
 
 ul {
@@ -25,4 +26,16 @@ ul {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+@font-face {
+  font-family: "BMHANNA_11yrs";
+  src: url("./fonts/BMHANNA_11yrs_ttf.ttf") format("embedded-opentype"),
+    url("./fonts/BMHANNA_11yrs_ttf.ttf") format("woff2"),
+    url("./fonts/BMHANNA_11yrs_ttf.ttf") format("woff"),
+    url("./fonts/BMHANNA_11yrs_ttf.ttf") format("truetype"),
+    url("./fonts/BMHANNA_11yrs_otf.otf") format("embedded-opentype"),
+    url("./fonts/BMHANNA_11yrs_otf.otf") format("woff2"),
+    url("./fonts/BMHANNA_11yrs_otf.otf") format("woff"),
+    url("./fonts/BMHANNA_11yrs_otf.otf") format("truetype");
 }
