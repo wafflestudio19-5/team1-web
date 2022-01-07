@@ -14,6 +14,7 @@ import { useSessionContext } from "../../../contexts/SessionContext";
 import styles from "./Post.module.scss";
 import { api } from "../../../api/api";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 interface PostProps {
   answer: Answer;
@@ -37,9 +38,15 @@ const AnswerPost: React.FC<PostProps> = ({
     try {
       await api.deleteAnswer(answer.id);
       setReset(!reset);
-      // navigate(`/questions/${questionId}`);
+      toast.info("Answer deleted!");
     } catch (err) {
-      console.error(err);
+      if (axios.isAxiosError(err) && err.response) {
+        if (err.response.status === 403) {
+          toast.error("Cannot delete other user's answer");
+        } else if (err.response.status === 404) {
+          toast.error("The answer does not exist");
+        } else console.error(err.response.data);
+      } else console.error(err);
     }
   };
 
@@ -53,12 +60,18 @@ const AnswerPost: React.FC<PostProps> = ({
         return;
       }
       await api.postAnswerComment(answer.id, comment);
-      // navigate(`/questions/${questionId}`);
       setReset(!reset);
       setOnAdd(false);
       setComment("");
+      toast.info("Comment created!");
     } catch (err) {
-      console.error(err);
+      if (axios.isAxiosError(err) && err.response) {
+        if (err.response.status === 404) {
+          toast.error("The answer does not exist");
+        } else if (err.response.status === 405) {
+          toast.error("Invalid comment content");
+        } else console.error(err.response.data);
+      } else console.error(err);
     }
   };
 

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import Markdown from "../../Components/Markdown/Markdown";
-import { dummyApi } from "../../api/dummyApi";
 import { api } from "../../api/api";
 import { QuestionInterface } from "../../interface/interface";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -18,7 +17,7 @@ import styles from "./Question.module.scss";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const FILTERS = ["Active", "Oldest", "Votes"];
+// const FILTERS = ["Active", "Oldest", "Votes"];
 
 const useQuery = () => {
   const { search } = useLocation();
@@ -31,7 +30,7 @@ const Question: React.FC = () => {
   const query = useQuery();
   const navigate = useNavigate();
   const filter = query.get("answertab") ?? "Votes";
-  const location = useLocation();
+  // const location = useLocation();
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -44,12 +43,21 @@ const Question: React.FC = () => {
         setQuestionData(await api.getQuestion(Number(id)));
         setLoading(false);
       } catch (e) {
-        console.log(e);
-        toast.error("Cannot load question");
+        if (axios.isAxiosError(e)) {
+          if (e.response) {
+            if (e.response.status === 400) {
+              toast.error("Invalid question id");
+              navigate("/questions");
+            } else if (e.response.status === 404) {
+              toast.error("The question does not exist");
+              navigate("/questions");
+            } else console.error(e.response.data);
+          } else console.error(e);
+        } else console.error(e);
       }
     };
     doIt().then();
-  }, [filter, id, reset]);
+  }, [id, navigate]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -57,10 +65,16 @@ const Question: React.FC = () => {
       try {
         await api.postAnswer(Number(id), answer);
         setAnswer("");
-        // navigate(`/questions/${id}`);
         setReset(!reset);
+        toast.info("Answer posted!");
       } catch (err) {
-        console.error(err);
+        if (axios.isAxiosError(err)) {
+          if (err.response) {
+            if (err.response.status === 400) {
+              toast.error("Invalid answer id");
+            } else console.error(err.response.data);
+          } else console.error(err);
+        } else console.error(err);
       }
     }
   };
