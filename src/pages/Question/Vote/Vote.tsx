@@ -1,33 +1,38 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import { ReactComponent as ArrowDown } from "../../../icons/iconArrowDown.svg";
 import { ReactComponent as ArrowUp } from "../../../icons/iconArrowUp.svg";
 import { ReactComponent as Check } from "../../../icons/iconCheck.svg";
+import { ReactComponent as GreyCheck } from "../../../icons/greyCheck.svg";
 
 import styles from "./Vote.module.scss";
 import { api } from "../../../api/api";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useSessionContext } from "../../../contexts/SessionContext";
 
 interface VoteProps {
   vote: number;
-  accepted?: boolean;
+  isAcceptable: boolean;
+  isAccepted: boolean;
   questionId: number;
-  answerId: number | undefined;
+  answerId: number | null;
   reset: boolean;
   setReset(e: boolean): void;
 }
 
 const Vote: React.FC<VoteProps> = ({
   vote,
-  accepted,
+  isAcceptable,
+  isAccepted,
   questionId,
   answerId,
   reset,
   setReset,
 }) => {
   const navigate = useNavigate();
+  const { userInfo } = useSessionContext();
   const handleVote = async (vote: -1 | 1) => {
     try {
       answerId
@@ -49,6 +54,26 @@ const Vote: React.FC<VoteProps> = ({
   };
   const handleVoteUp = () => handleVote(1);
   const handleVoteDown = () => handleVote(-1);
+  const handleAnswerAccept = useCallback(async () => {
+    if (!answerId) return;
+    try {
+      await api.acceptAnswer(questionId, answerId);
+      setReset(!reset);
+      toast.info("Answer accepted!");
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        if (err.response.status === 401) {
+          if (userInfo) {
+            toast.error("Cannot accept an answer on other user's question");
+          } else {
+            toast.error("Please sign in first");
+          }
+        } else if (err.response.status === 404) {
+          toast.error("Question or answer does not exist");
+        } else console.error(err.response.data);
+      } else console.error(err);
+    }
+  }, [answerId, questionId, reset, setReset, userInfo]);
 
   return (
     <>
@@ -59,11 +84,16 @@ const Vote: React.FC<VoteProps> = ({
       <button onClick={handleVoteDown}>
         <ArrowDown />
       </button>
-      {accepted ? (
+      {isAccepted && (
         <div className={styles.answerChecked}>
           <Check />
         </div>
-      ) : null}
+      )}
+      {answerId && isAcceptable && (
+        <button onClick={handleAnswerAccept}>
+          <GreyCheck />
+        </button>
+      )}
     </>
   );
 };

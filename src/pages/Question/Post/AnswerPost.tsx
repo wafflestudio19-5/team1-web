@@ -22,6 +22,7 @@ interface PostProps {
   questionId: number;
   reset: boolean;
   setReset(e: boolean): void;
+  isAcceptable: boolean;
 }
 
 const AnswerPost: React.FC<PostProps> = ({
@@ -29,6 +30,7 @@ const AnswerPost: React.FC<PostProps> = ({
   questionId,
   setReset,
   reset,
+  isAcceptable,
 }) => {
   const { userInfo } = useSessionContext();
   const auth = userInfo?.id === answer.user.id;
@@ -98,29 +100,14 @@ const AnswerPost: React.FC<PostProps> = ({
     }
   };
 
-  // const addComment = async () => {
-  //   try {
-  //     if (comment === "") {
-  //       toast.error("답변을 입력해주세요!");
-  //       return;
-  //     }
-  //     await api.postAnswerComment(answer.id, comment);
-
-  //     // setReset(!reset);
-  //     setComment("");
-  //     navigate(`/questions/${questionId}`);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
   return (
     <div className={styles.answerPostLayout}>
       <div className={styles.voteCell}>
         <Vote
           vote={answer.votes}
           questionId={questionId}
-          accepted={answer.accepted}
+          isAccepted={answer.accepted}
+          isAcceptable={isAcceptable}
           answerId={answer.id}
           reset={reset}
           setReset={setReset}

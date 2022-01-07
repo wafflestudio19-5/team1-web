@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import Markdown from "../../Components/Markdown/Markdown";
 import { api } from "../../api/api";
-import { QuestionInterface } from "../../interface/interface";
+import { isAnswered, QuestionInterface } from "../../interface/interface";
 import BeatLoader from "react-spinners/BeatLoader";
 
 import AnswerPost from "./Post/AnswerPost";
@@ -16,6 +16,7 @@ import styles from "./Question.module.scss";
 import axios from "axios";
 import { toast } from "react-toastify";
 import ReactTimeAgo from "react-time-ago";
+import { useSessionContext } from "../../contexts/SessionContext";
 
 // const FILTERS = ["Active", "Oldest", "Votes"];
 
@@ -30,9 +31,19 @@ const Question: React.FC = () => {
   const query = useQuery();
   const navigate = useNavigate();
   const filter = query.get("answertab") ?? "Votes";
-  // const location = useLocation();
+  const { userInfo } = useSessionContext();
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
+  const isQuestionAnswered = useMemo(() => {
+    return questionData ? isAnswered(questionData) : false;
+  }, [questionData]);
+  const sortedAnswerPosts = useMemo(
+    () =>
+      questionData?.answers
+        ?.slice()
+        ?.sort((a, b) => (a.accepted ? -1 : b.accepted ? 1 : 0)),
+    [questionData]
+  );
 
   // 리셋 필요할 때,
   const [reset, setReset] = useState<boolean>(false);
@@ -149,13 +160,16 @@ const Question: React.FC = () => {
                 </div>
                 */}
               </div>
-              {questionData?.answers.map((answer) => (
+              {sortedAnswerPosts?.map((answer) => (
                 <AnswerPost
                   key={answer.id}
                   answer={answer}
                   questionId={questionData.id}
                   reset={reset}
                   setReset={setReset}
+                  isAcceptable={
+                    !isQuestionAnswered && userInfo?.id === questionData.user.id
+                  }
                 />
               ))}
             </div>
