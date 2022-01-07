@@ -61,3 +61,28 @@
     width: 100%;
   }
 }
+
+.buttons {
+  margin-top: 30px;
+
+  .cancel {
+    display: inline-block;
+    position: relative;
+    padding: 0.8em;
+    margin-left: 8px;
+    height: 40px;
+    color: hsl(206deg 100% 52%);
+    border-radius: 3px;
+    outline: none;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 1.15384615;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: hsl(206, 100%, 97%);
+    }
+  }
+}
