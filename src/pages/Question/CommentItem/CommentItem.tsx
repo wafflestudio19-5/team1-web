@@ -13,6 +13,7 @@ import { api } from "../../../api/api";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import { useSessionContext } from "../../../contexts/SessionContext";
 import { toast } from "react-toastify";
+import { confirmAlert } from "react-confirm-alert";
 import axios from "axios";
 
 interface CommentProps {
@@ -42,32 +43,47 @@ const CommentItem: React.FC<CommentProps> = ({
     setEdited(comment.body);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (questionId) {
-      try {
-        answerId
-          ? await api.deleteAnswerComment(comment.id)
-          : await api.deleteQuestionComment(comment.id);
-        setReset(!reset);
-        toast.info("Comment deleted!");
-      } catch (err) {
-        if (axios.isAxiosError(err)) {
-          if (err.response) {
-            if (err.response.status === 400) {
-              toast.error("Invalid comment id");
-            } else if (err.response.status === 401) {
-              if (userInfo) {
-                toast.error("Cannot remove other user's comment");
-              } else {
-                toast.error("Please sign in first");
-                navigate("/signin");
+      confirmAlert({
+        title: "Confirm",
+        message: "Are you sure?",
+        buttons: [
+          {
+            label: "Yes",
+            onClick: async () => {
+              try {
+                answerId
+                  ? await api.deleteAnswerComment(comment.id)
+                  : await api.deleteQuestionComment(comment.id);
+                setReset(!reset);
+                toast.info("Comment deleted!");
+              } catch (err) {
+                if (axios.isAxiosError(err)) {
+                  if (err.response) {
+                    if (err.response.status === 400) {
+                      toast.error("Invalid comment id");
+                    } else if (err.response.status === 401) {
+                      if (userInfo) {
+                        toast.error("Cannot remove other user's comment");
+                      } else {
+                        toast.error("Please sign in first");
+                        navigate("/signin");
+                      }
+                    } else if (err.response.status === 404) {
+                      toast.error("The comment does not exist");
+                    } else console.error(err.response.data);
+                  } else console.error(err);
+                } else console.error(err);
               }
-            } else if (err.response.status === 404) {
-              toast.error("The comment does not exist");
-            } else console.error(err.response.data);
-          } else console.error(err);
-        } else console.error(err);
-      }
+            },
+          },
+          {
+            label: "Cancel",
+            onClick: () => {},
+          },
+        ],
+      });
     }
   };
 

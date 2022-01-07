@@ -15,6 +15,7 @@ import styles from "./Post.module.scss";
 import { api } from "../../../api/api";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { confirmAlert } from "react-confirm-alert";
 
 interface PostProps {
   answer: Answer;
@@ -34,20 +35,35 @@ const AnswerPost: React.FC<PostProps> = ({
   const [onAdd, setOnAdd] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
 
-  const handleDelete = async () => {
-    try {
-      await api.deleteAnswer(answer.id);
-      setReset(!reset);
-      toast.info("Answer deleted!");
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 403) {
-          toast.error("Cannot delete other user's answer");
-        } else if (err.response.status === 404) {
-          toast.error("The answer does not exist");
-        } else console.error(err.response.data);
-      } else console.error(err);
-    }
+  const handleDelete = () => {
+    confirmAlert({
+      title: "Confirm",
+      message: "Are you sure?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            try {
+              await api.deleteAnswer(answer.id);
+              setReset(!reset);
+              toast.info("Answer deleted!");
+            } catch (err) {
+              if (axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 403) {
+                  toast.error("Cannot delete other user's answer");
+                } else if (err.response.status === 404) {
+                  toast.error("The answer does not exist");
+                } else console.error(err.response.data);
+              } else console.error(err);
+            }
+          },
+        },
+        {
+          label: "Cancel",
+          onClick: () => {},
+        },
+      ],
+    });
   };
 
   const handleCommentSubmit: React.FormEventHandler<HTMLFormElement> = async (

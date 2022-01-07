@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 
 import styles from "./Post.module.scss";
 import axios from "axios";
+import { confirmAlert } from "react-confirm-alert";
 
 interface PostProps {
   question: QuestionInterface;
@@ -54,23 +55,38 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
   };
 
   const handleDelete = async () => {
-    try {
-      await api.deleteQuestion(question.id);
-      toast.info("question deleted!");
-      navigate(`/questions`);
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 400) {
-          toast.error("Invalid question id");
-        } else if (err.response.status === 401) {
-          if (userInfo) {
-            toast.error("Cannot delete other user's question");
-          } else {
-            toast.error("Please sign in first");
-          }
-        }
-      } else console.error(err);
-    }
+    confirmAlert({
+      title: "Confirm",
+      message: "Are you sure?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            try {
+              await api.deleteQuestion(question.id);
+              toast.info("question deleted!");
+              navigate(`/questions`);
+            } catch (err) {
+              if (axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 400) {
+                  toast.error("Invalid question id");
+                } else if (err.response.status === 401) {
+                  if (userInfo) {
+                    toast.error("Cannot delete other user's question");
+                  } else {
+                    toast.error("Please sign in first");
+                  }
+                }
+              } else console.error(err);
+            }
+          },
+        },
+        {
+          label: "Cancel",
+          onClick: () => {},
+        },
+      ],
+    });
   };
 
   // const addComment = async () => {
