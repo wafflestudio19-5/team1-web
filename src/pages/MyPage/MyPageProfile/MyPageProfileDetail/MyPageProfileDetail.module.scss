@@ -13,16 +13,22 @@
     .detailInfo {
       height: fit-content;
       margin-top: 8px;
-      &.empty {
-        border-radius: 5px;
-        background-color: hsl(180, 5%, 96%);
-        border: 1px solid hsl(210deg 8% 90%);
-        height: 80px;
-        font-size: 12px;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      border-radius: 5px;
+      background-color: hsl(180, 5%, 96%);
+      border: 1px solid hsl(210deg 8% 90%);
+      font-size: 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .goEdit {
+        color: #385499;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }

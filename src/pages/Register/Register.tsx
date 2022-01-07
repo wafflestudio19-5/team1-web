@@ -77,7 +77,12 @@ const Register = () => {
         alt={"logo"}
       />
       <OAuthLogin />
-      <div className={styles.registerBox}>
+      <form
+        className={styles.registerBox}
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+      >
         <LabelInput
           title={"Display name"}
           name={"name"}
@@ -99,8 +104,8 @@ const Register = () => {
           value={registerInfo.password}
           onChange={onChange}
         />
-        <BlueButton text={"Sign up"} onClick={submit} />
-      </div>
+        <BlueButton type={"submit"} text={"Sign up"} onClick={submit} />
+      </form>
       <div className={styles.additional}>
         <span>Already have an account? </span>
         <Link className={styles.linkToLogin} to={"/login"}>
