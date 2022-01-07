@@ -7,6 +7,7 @@ import { Navigate, useLocation } from "react-router";
 import ProfileButtons from "./ProfileButtons/ProfileButtons";
 import MyPageProfile from "./MyPageProfile/MyPageProfile";
 import { useSessionContext } from "../../contexts/SessionContext";
+import { Settings } from "./Settings/Settings";
 
 const MyPage = () => {
   const qs = new URLSearchParams(useLocation().search);
@@ -17,7 +18,7 @@ const MyPage = () => {
       <ProfileButtons />
       <MyInfo />
       <MyPageTab mode={tab} />
-      {/*tab === "settings" && <Settings />// TODO: edit profile*/}
+      {tab === "settings" && <Settings />}
       {tab === "profile" && <MyPageProfile />}
     </div>
   ) : (
