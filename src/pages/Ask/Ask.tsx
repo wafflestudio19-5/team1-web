@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -13,9 +13,11 @@ import { api } from "../../api/api";
 import styles from "./Ask.module.scss";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useSessionContext } from "../../contexts/SessionContext";
 
 const Ask: React.FC = () => {
   const navigate = useNavigate();
+  const { userInfo } = useSessionContext();
 
   const { values, handleChange, handleSubmit, setFieldValue, errors } =
     useFormik({
@@ -47,6 +49,13 @@ const Ask: React.FC = () => {
         }
       },
     });
+
+  useEffect(() => {
+    if (!userInfo) {
+      toast.error("Please sign in to ask a question!");
+      navigate("/signin");
+    }
+  }, [navigate, userInfo]);
 
   return (
     <div className={styles.ask}>
