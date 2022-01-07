@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { QuestionComment, AnswerComment } from "../../../interface/interface";
 
@@ -141,12 +141,9 @@ const CommentItem: React.FC<CommentProps> = ({
             <p>{comment.body}</p>
             <label>
               <p>–</p>
-              <Link to={`/users/${comment.user.id}`}>
-                <button className={styles.username}>
-                  {" "}
-                  {comment.user.username}
-                </button>
-              </Link>
+              {/*<Link to={`/users/${comment.user.id}`}>*/}
+              <p className={styles.username}>{comment.user.username}</p>
+              {/*</Link>*/}
               <p className={styles.date}>
                 {dayjs(date).format("MMM DD 'YY")} at{" "}
                 {dayjs(date).format("HH:mm")}
