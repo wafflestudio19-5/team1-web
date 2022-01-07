@@ -42,7 +42,7 @@ const Ask: React.FC = () => {
                 toast.error("Invalid parameter!");
               } else if (err.response.status === 401) {
                 toast.error("Please sign in first!");
-                navigate("/signin");
+                navigate("/login");
               } else console.error(err.response.data);
             } else console.error(err);
           } else console.error(err);
@@ -53,7 +53,7 @@ const Ask: React.FC = () => {
   useEffect(() => {
     if (!userInfo) {
       toast.error("Please sign in to ask a question!");
-      navigate("/signin");
+      navigate("/login");
     }
   }, [navigate, userInfo]);
 

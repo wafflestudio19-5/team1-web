@@ -88,7 +88,7 @@ const AnswerPost: React.FC<PostProps> = ({
       if (axios.isAxiosError(err) && err.response) {
         if (err.response.status === 401) {
           toast.error("Please sign in first!");
-          navigate("/signin");
+          navigate("/login");
         } else if (err.response.status === 404) {
           toast.error("The answer does not exist");
         } else if (err.response.status === 405) {
