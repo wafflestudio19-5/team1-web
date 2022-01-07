@@ -13,12 +13,14 @@ interface SessionContextProps {
   signin: (email: string, password: string) => Promise<void>;
   signup: (username: string, email: string, password: string) => Promise<void>;
   signout: () => Promise<void>;
+  refreshMyProfile: () => Promise<void>;
   userInfo?: UserInfoResponse | null;
 }
 const defaultValue: SessionContextProps = {
   signin: async () => {},
   signout: async () => {},
   signup: async () => {},
+  refreshMyProfile: async () => {},
   userInfo: null,
 };
 const SessionContext = createContext<SessionContextProps>(defaultValue);
@@ -32,7 +34,7 @@ export const SessionProvider: FC = ({ children }) => {
       const token = _getAccessToken();
       if (token) {
         try {
-          const newUserInfo = await api.getMyProfile();
+          const newUserInfo = await api._getMyProfile();
           setUserInfo(newUserInfo);
         } catch (e) {
           _setAccessToken(null);
@@ -47,7 +49,7 @@ export const SessionProvider: FC = ({ children }) => {
     try {
       const token = await api._signin(email, password);
       _setAccessToken(token);
-      const userInfo = await api.getMyProfile();
+      const userInfo = await api._getMyProfile();
       setUserInfo(userInfo);
     } catch (e) {
       _setAccessToken(null);
@@ -71,6 +73,16 @@ export const SessionProvider: FC = ({ children }) => {
       setUserInfo(null);
     }
   }, []);
+  const refreshMyProfile = useCallback(async () => {
+    try {
+      const newUserInfo = await api._getMyProfile();
+      setUserInfo(newUserInfo);
+    } catch (e) {
+      _setAccessToken(null);
+      setUserInfo(null);
+      throw e;
+    }
+  }, []);
 
   return (
     <SessionContext.Provider
@@ -78,6 +90,7 @@ export const SessionProvider: FC = ({ children }) => {
         signin,
         signup,
         signout,
+        refreshMyProfile,
         userInfo,
       }}
     >
