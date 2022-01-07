@@ -64,11 +64,12 @@ const NavBar: React.FC<NavBarProps> = () => {
           </div>
         ) : (
           <div className={styles.buttonList}>
-            <button
+            <Link
+              to={"/mypage?tab=profile"}
               className={`${styles.navBarButton} ${styles.profileButton}`}
             >
               {userInfo.username}
-            </button>
+            </Link>
             <button
               className={`${styles.navBarButton} ${styles.signoutButton}`}
               onClick={onSignoutButton}
