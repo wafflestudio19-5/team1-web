@@ -1,6 +1,8 @@
 import React, { useMemo } from "react";
 
 import styles from "./MyPageProfileDetail.module.scss";
+import ProfilePostItem from "./ProfilePostItem/ProfilePostItem";
+import { useSessionContext } from "../../../../contexts/SessionContext";
 import { Link } from "react-router-dom";
 
 const MyPageProfileDetail = () => {
@@ -27,20 +29,17 @@ const MyPageProfileDetail = () => {
   );
   return userInfo ? (
     <div className={styles.myPageProfileDetail}>
-      {/*
       <div className={styles.detailBox}>
         <span className={styles.title}>About</span>
-        <div className={styles.detailInfo}>
-          <span>
-            our about me section is currently blank. Would you like to add one?
-          </span>
-
+        <div className={`${styles.detailInfo} ${styles.about}`}>
+          Your about me section is currently blank. Would you like to &nbsp;
           <Link className={styles.goEdit} to={"/mypage?tab=settings"}>
-            Edit profile
+            add one?
           </Link>
         </div>
       </div>
 
+      {/*
       <div className={styles.detailBox}>
         <span className={styles.title}>Badges</span>
       </div>
