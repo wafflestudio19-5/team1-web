@@ -1,6 +1,7 @@
 import React from "react";
 
 import styles from "./MyPageProfileDetail.module.scss";
+import { Link } from "react-router-dom";
 
 const MyPageProfileDetail = () => {
   return (
@@ -8,9 +9,13 @@ const MyPageProfileDetail = () => {
       <div className={styles.detailBox}>
         <span className={styles.title}>About</span>
         <div className={styles.detailInfo}>
-          Your about me section is currently blank. Would you like to add one?{" "}
-          <br />
-          Edit profile
+          <span>
+            our about me section is currently blank. Would you like to add one?
+          </span>
+
+          <Link className={styles.goEdit} to={"/mypage?tab=settings"}>
+            Edit profile
+          </Link>
         </div>
       </div>
 

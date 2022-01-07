@@ -19,8 +19,17 @@
       font-size: 12px;
       text-align: center;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+
+      .goEdit {
+        color: #385499;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 }

@@ -10,11 +10,11 @@ const MyStats = () => {
       <div className={styles.statBox}>
         <div className={styles.statLine}>
           <NumberAndKeyword number={0} keyword={"reputation"} />
-          <NumberAndKeyword number={1} keyword={"reached"} />
+          <NumberAndKeyword number={0} keyword={"reached"} />
         </div>
         <div className={styles.statLine}>
           <NumberAndKeyword number={0} keyword={"answers"} />
-          <NumberAndKeyword number={1} keyword={"questions"} />
+          <NumberAndKeyword number={0} keyword={"questions"} />
         </div>
       </div>
     </div>
