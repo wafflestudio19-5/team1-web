@@ -9,6 +9,7 @@ import { QuestionInterface } from "../../interface/interface";
 import { api, SortCriteria, SortOrder } from "../../api/api";
 import axios from "axios";
 import { useSessionContext } from "../../contexts/SessionContext";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const useQuery = () => {
   const { search } = useLocation();
@@ -71,7 +72,9 @@ const Questions = () => {
     const rawPage = Number.parseInt(query.get("page") ?? "1");
     return rawPage >= 1 ? rawPage : 1;
   }, [query]);
-  const [questionList, setQuestionList] = useState<QuestionInterface[]>([]);
+  const [questionList, setQuestionList] = useState<QuestionInterface[] | null>(
+    null
+  );
   const [count, setCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const pageList = useMemo(
@@ -84,6 +87,7 @@ const Questions = () => {
   useEffect(() => {
     const doIt = async () => {
       try {
+        setQuestionList(null);
         const { content, totalElements, totalPages } =
           await api.getQuestionList(page - 1, filter.criteria, filter.order);
         setQuestionList(content);
@@ -101,7 +105,7 @@ const Questions = () => {
     doIt().then();
   }, [page, filter]);
 
-  return (
+  return questionList ? (
     <div className={styles.questions}>
       <div className={styles.header}>
         <div className={styles.topBar}>
@@ -132,7 +136,7 @@ const Questions = () => {
         </div>
       </div>
       <div className={styles.questionList}>
-        {questionList?.map((question) => (
+        {questionList.map((question) => (
           <QuestionItem key={question.id} question={question} />
         ))}
       </div>
@@ -171,6 +175,10 @@ const Questions = () => {
           </Link>
         )}
       </div>
+    </div>
+  ) : (
+    <div className={styles.loaderContainer}>
+      <BeatLoader />
     </div>
   );
 };
