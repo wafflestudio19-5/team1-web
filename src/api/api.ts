@@ -78,7 +78,7 @@ export const api = {
   _signout: async () => {
     await instance.post<EmptyBody>("/api/user/signout/");
   },
-  getMyProfile: async () =>
+  _getMyProfile: async () =>
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
   getQuestionList: async (
     page = 0,
