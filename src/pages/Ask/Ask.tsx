@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -8,13 +8,16 @@ import Markdown from "../../Components/Markdown/Markdown";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import { dummyApi } from "../../api/dummyApi";
 import { api } from "../../api/api";
 
 import styles from "./Ask.module.scss";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useSessionContext } from "../../contexts/SessionContext";
 
 const Ask: React.FC = () => {
   const navigate = useNavigate();
+  const { userInfo } = useSessionContext();
 
   const { values, handleChange, handleSubmit, setFieldValue, errors } =
     useFormik({
@@ -30,12 +33,29 @@ const Ask: React.FC = () => {
       onSubmit: async (values) => {
         try {
           const question = await api.postQuestion(values.title, values.body);
+          toast.info("Question created!");
           navigate(`/questions/${question.id}`);
         } catch (err) {
-          console.error(err);
+          if (axios.isAxiosError(err)) {
+            if (err.response) {
+              if (err.response.status === 400) {
+                toast.error("Invalid parameter!");
+              } else if (err.response.status === 401) {
+                toast.error("Please sign in first!");
+                navigate("/signin");
+              } else console.error(err.response.data);
+            } else console.error(err);
+          } else console.error(err);
         }
       },
     });
+
+  useEffect(() => {
+    if (!userInfo) {
+      toast.error("Please sign in to ask a question!");
+      navigate("/signin");
+    }
+  }, [navigate, userInfo]);
 
   return (
     <div className={styles.ask}>

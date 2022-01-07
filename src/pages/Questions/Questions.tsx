@@ -8,6 +8,7 @@ import BlueButton from "../../Components/BlueButton/BlueButton";
 import { QuestionInterface } from "../../interface/interface";
 import { api, SortCriteria, SortOrder } from "../../api/api";
 import axios from "axios";
+import { useSessionContext } from "../../contexts/SessionContext";
 
 const useQuery = () => {
   const { search } = useLocation();
@@ -19,7 +20,7 @@ const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
   // "Active",
   // "Unanswered",
   // "Frequent",
-  { label: "Votes", criteria: "votes", order: "desc" },
+  // { label: "Votes", criteria: "votes", order: "desc" },
 ];
 
 const makePageList = (
@@ -77,6 +78,7 @@ const Questions = () => {
     () => makePageList(page, pageCount),
     [page, pageCount]
   );
+  const { userInfo } = useSessionContext();
 
   // get data
   useEffect(() => {
@@ -84,7 +86,6 @@ const Questions = () => {
       try {
         const { content, totalElements, totalPages } =
           await api.getQuestionList(page - 1, filter.criteria, filter.order);
-        console.log(content.length);
         setQuestionList(content);
         setCount(totalElements);
         setPageCount(totalPages);
@@ -92,9 +93,9 @@ const Questions = () => {
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
-            console.log(e.response.status, e.response.data);
-          } else console.log(e);
-        } else console.log(e);
+            console.error(e.response.status, e.response.data);
+          } else console.error(e);
+        } else console.error(e);
       }
     };
     doIt().then();
@@ -105,9 +106,11 @@ const Questions = () => {
       <div className={styles.header}>
         <div className={styles.topBar}>
           <h1>All Questions</h1>
-          <Link to="/questions/ask">
-            <BlueButton text={"Ask Question"} />
-          </Link>
+          {userInfo && (
+            <Link to="/questions/ask">
+              <BlueButton text={"Ask Question"} />
+            </Link>
+          )}
         </div>
         <div className={styles.secondBar}>
           <div className={styles.total}>

@@ -1,18 +1,14 @@
 import React from "react";
 
-import { useNavigate } from "react-router-dom";
-
 import { ReactComponent as ArrowDown } from "../../../icons/iconArrowDown.svg";
 import { ReactComponent as ArrowUp } from "../../../icons/iconArrowUp.svg";
-import { ReactComponent as Bookmark } from "../../../icons/iconBookmark.svg";
 import { ReactComponent as Check } from "../../../icons/iconCheck.svg";
-
-import { dummyApi } from "../../../api/dummyApi";
-
-import { useSessionContext } from "../../../contexts/SessionContext";
 
 import styles from "./Vote.module.scss";
 import { api } from "../../../api/api";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 interface VoteProps {
   vote: number;
@@ -32,36 +28,27 @@ const Vote: React.FC<VoteProps> = ({
   setReset,
 }) => {
   const navigate = useNavigate();
-  const { userInfo } = useSessionContext();
-  const auth = userInfo?.questions.map((question) => question.id === questionId)
-    ? true
-    : false;
-
-  const handleVoteUp = async () => {
+  const handleVote = async (vote: -1 | 1) => {
     try {
       answerId
-        ? await api.voteAnswer(answerId, 1)
-        : await api.voteQuestion(questionId, 1);
-
+        ? await api.voteAnswer(answerId, vote)
+        : await api.voteQuestion(questionId, vote);
       setReset(!reset);
-      // navigate(`/questions/${questionId}`);
     } catch (err) {
-      console.error(err);
+      if (axios.isAxiosError(err) && err.response) {
+        if (err.response.status === 400 || err.response.status === 405) {
+          console.error("Invalid status", err.response.data);
+        } else if (err.response.status === 404) {
+          toast.error("The post does not exists");
+        } else if (err.response.status === 401) {
+          toast.error("Please sign in first");
+          navigate("/signin");
+        } else console.error(err.response.data);
+      } else console.error(err);
     }
   };
-
-  const handleVoteDown = async () => {
-    try {
-      answerId
-        ? await api.voteAnswer(answerId, -1)
-        : await api.voteQuestion(questionId, -1);
-
-      setReset(!reset);
-      // navigate(`/questions/${questionId}`);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const handleVoteUp = () => handleVote(1);
+  const handleVoteDown = () => handleVote(-1);
 
   return (
     <>

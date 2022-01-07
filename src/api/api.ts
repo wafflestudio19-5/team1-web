@@ -44,7 +44,6 @@ export type AccessToken = string;
 export const _setAccessToken = (token: AccessToken | null) => {
   setHeaderToken(token);
   storeToken(token);
-  console.log("new token : ", token);
 };
 // used only in SessionContext.tsx
 export const _getAccessToken = () => loadToken();
@@ -77,7 +76,7 @@ export const api = {
     };
   },
   _signout: async () => {
-    await instance.get<EmptyBody>("/api/user/signout/");
+    await instance.post<EmptyBody>("/api/user/signout/");
   },
   getMyProfile: async () =>
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,

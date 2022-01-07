@@ -5,10 +5,11 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import Markdown from "../../Components/Markdown/Markdown";
 
-import { dummyApi } from "../../api/dummyApi";
 import { api } from "../../api/api";
 
 import styles from "./Edit.module.scss";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Edit: React.FC = () => {
   const location = useLocation();
@@ -29,7 +30,7 @@ const Edit: React.FC = () => {
   useEffect(() => {
     setValues(location.state);
     // setOrgValues(location.state);
-  }, []);
+  }, [location.state]);
 
   const handleTitleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setValues({ ...values, title: e.target.value });
@@ -48,12 +49,27 @@ const Edit: React.FC = () => {
         // const editedBody = values.body === orgValues.body ? "" : values.body;
         if (Number(questionId) === Number(id) && values.title.length > 5) {
           await api.editQuestion(Number(id), values.title, values.body);
+          toast.info("Question edited!");
         } else {
           await api.editAnswer(Number(id), values.body);
+          toast.info("Answer edited!");
         }
         navigate(`/questions/${questionId}`);
       } catch (err) {
-        console.error(err);
+        if (axios.isAxiosError(err)) {
+          if (err.response) {
+            if (err.response.status === 400) {
+              toast.error("Invalid question id, title or body");
+              console.error(err.response.data);
+            } else if (err.response.status === 401) {
+              toast.error("Please sign in first");
+              navigate("/signin");
+            } else if (err.response.status === 404) {
+              toast.error("The question does not exist");
+              navigate("/questions");
+            } else console.error(err.response.data);
+          } else console.error(err);
+        } else console.error(err);
       }
     }
   };

@@ -14,6 +14,7 @@ import "./App.css";
 import { api } from "./api/api";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "react-confirm-alert/src/react-confirm-alert.css";
 import MyPage from "./pages/MyPage/MyPage";
 
 const noLeftBarPage = ["register", "login"];

@@ -47,7 +47,7 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
           <div className={styles.activityContainer}>
             <UserCard
               user={question.user}
-              timestamp={question.createdAt}
+              date={new Date(question.createdAt + "Z")}
               isQuestion={true}
               isEdited={!!question?.updatedAt}
               questionId={question.id}

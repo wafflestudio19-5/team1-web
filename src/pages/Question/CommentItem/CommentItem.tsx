@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { QuestionComment, AnswerComment } from "../../../interface/interface";
 
 import { ReactComponent as Edit } from "../../../icons/iconEdit.svg";
 import { ReactComponent as Delete } from "../../../icons/iconDelete.svg";
-import dayjs from "dayjs";
 
 import styles from "./CommentItem.module.scss";
 import { api } from "../../../api/api";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import { useSessionContext } from "../../../contexts/SessionContext";
+import { toast } from "react-toastify";
+import { confirmAlert } from "react-confirm-alert";
+import axios from "axios";
+import ReactTimeAgo from "react-time-ago";
 
 interface CommentProps {
   comment: QuestionComment | AnswerComment;
@@ -28,28 +31,58 @@ const CommentItem: React.FC<CommentProps> = ({
   reset,
   setReset,
 }) => {
-  const date = new Date();
   const { userInfo } = useSessionContext();
   const auth = userInfo?.id === comment.user.id;
   const [onEdit, setOnEdit] = useState<boolean>(false);
   const [edited, setEdited] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleEdit = () => {
     setOnEdit(!onEdit);
     setEdited(comment.body);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (questionId) {
-      try {
-        answerId
-          ? await api.deleteAnswerComment(comment.id)
-          : await api.deleteQuestionComment(comment.id);
-        // navigate(`/questions/${questionId}`);
-        setReset(!reset);
-      } catch (err) {
-        console.error(err);
-      }
+      confirmAlert({
+        title: "Confirm",
+        message: "Are you sure?",
+        buttons: [
+          {
+            label: "Yes",
+            onClick: async () => {
+              try {
+                answerId
+                  ? await api.deleteAnswerComment(comment.id)
+                  : await api.deleteQuestionComment(comment.id);
+                setReset(!reset);
+                toast.info("Comment deleted!");
+              } catch (err) {
+                if (axios.isAxiosError(err)) {
+                  if (err.response) {
+                    if (err.response.status === 400) {
+                      toast.error("Invalid comment id");
+                    } else if (err.response.status === 401) {
+                      if (userInfo) {
+                        toast.error("Cannot remove other user's comment");
+                      } else {
+                        toast.error("Please sign in first");
+                        navigate("/signin");
+                      }
+                    } else if (err.response.status === 404) {
+                      toast.error("The comment does not exist");
+                    } else console.error(err.response.data);
+                  } else console.error(err);
+                } else console.error(err);
+              }
+            },
+          },
+          {
+            label: "Cancel",
+            onClick: () => {},
+          },
+        ],
+      });
     }
   };
 
@@ -65,8 +98,20 @@ const CommentItem: React.FC<CommentProps> = ({
         setReset(!reset);
         setOnEdit(false);
         setEdited("");
+        toast.info("Comment edited!");
       } catch (err) {
-        console.error(err);
+        if (axios.isAxiosError(err)) {
+          if (err.response) {
+            if (err.response.status === 400) {
+              toast.error("Invalid comment id or content");
+            } else if (err.response.status === 401) {
+              toast.error("Please sign in first");
+              navigate("/signin");
+            } else if (err.response.status === 404) {
+              toast.error("The comment does not exist");
+            } else console.error(err.response.data);
+          } else console.error(err);
+        } else console.error(err);
       }
     }
   };
@@ -96,17 +141,16 @@ const CommentItem: React.FC<CommentProps> = ({
             <p>{comment.body}</p>
             <label>
               <p>–</p>
-              <Link to={`/users/${comment.user.id}`}>
-                <button className={styles.username}>
-                  {" "}
-                  {comment.user.username}
-                </button>
-              </Link>
-              <p className={styles.date}>
-                {dayjs(date).format("MMM DD 'YY")} at{" "}
-                {dayjs(date).format("HH:mm")}
+              {/*<Link to={`/users/${comment.user.id}`}>*/}
+              <p className={styles.username}>{comment.user.username}</p>
+              {/*</Link>*/}
+              <p>
+                <ReactTimeAgo
+                  className={styles.date}
+                  date={new Date(comment.createdAt + "Z")}
+                />
               </p>
-            </label>{" "}
+            </label>
           </>
         )}
 

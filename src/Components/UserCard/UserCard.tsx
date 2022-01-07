@@ -6,23 +6,25 @@ import { User } from "../../interface/interface";
 
 import styles from "./UserCard.module.scss";
 import dummyProfile from "../../icons/dummyProfile.svg";
+import ReactTimeAgo from "react-time-ago";
 
 const UserCard: React.FC<{
   user: User;
-  timestamp: string;
+  date: Date;
   isQuestion?: boolean;
   isEdited: boolean;
   questionId?: number;
-}> = ({ user, timestamp, isQuestion = false, isEdited, questionId }) => {
-  const date = new Date(timestamp);
+}> = ({ user, date, isQuestion = false, questionId }) => {
   return (
     <div className={styles.activity}>
       {isQuestion ? (
         <Link to={`/questions/${questionId}`} className={styles.action}>
-          asked at {date.toDateString()}
+          asked <ReactTimeAgo date={date} />
         </Link>
       ) : (
-        <span className={styles.action}>answered at {date.toDateString()}</span>
+        <span className={styles.action}>
+          answered <ReactTimeAgo date={date} />
+        </span>
       )}
       <div>
         <img

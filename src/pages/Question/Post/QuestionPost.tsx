@@ -15,6 +15,8 @@ import { useSessionContext } from "../../../contexts/SessionContext";
 import { toast } from "react-toastify";
 
 import styles from "./Post.module.scss";
+import axios from "axios";
+import { confirmAlert } from "react-confirm-alert";
 
 interface PostProps {
   question: QuestionInterface;
@@ -42,18 +44,53 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
       setReset(!reset);
       setOnAdd(false);
       setComment("");
+      toast.info("Comment created!");
     } catch (err) {
-      console.error(err);
+      if (axios.isAxiosError(err) && err.response) {
+        if (err.response.status === 401) {
+          toast.error("Please sign in first!");
+          navigate("/signin");
+        } else if (err.response.status === 400) {
+          toast.error("Invalid question id");
+        } else console.error(err.response.data);
+      } else console.error(err);
     }
   };
 
   const handleDelete = async () => {
-    try {
-      await api.deleteQuestion(question.id);
-    } catch (err) {
-      console.error(err);
-    }
-    navigate(`/questions`);
+    confirmAlert({
+      title: "Confirm",
+      message: "Are you sure?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            try {
+              await api.deleteQuestion(question.id);
+              toast.info("question deleted!");
+              navigate(`/questions`);
+            } catch (err) {
+              if (axios.isAxiosError(err) && err.response) {
+                if (err.response.status === 400) {
+                  toast.error("Invalid question id");
+                } else if (err.response.status === 401) {
+                  if (userInfo) {
+                    toast.error("Cannot delete other user's question");
+                  } else {
+                    toast.error("Please sign in first");
+                    navigate("/signin");
+                  }
+                }
+              } else console.error(err);
+            }
+          },
+        },
+        {
+          label: "Cancel",
+          onClick: () => {},
+        },
+      ],
+    });
   };
 
   // const addComment = async () => {
@@ -79,7 +116,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
           vote={countVotes(question)}
           questionId={question.id}
           answerId={undefined}
-          reset={false}
+          reset={reset}
           setReset={setReset}
         />
       </div>
@@ -116,10 +153,10 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
           <div className={styles.activityContainer}>
             <UserCard
               user={question.user}
-              timestamp={question.createdAt}
+              date={new Date(question.createdAt + "Z")}
               isQuestion={true}
               questionId={question.id}
-              isEdited={question.updatedAt ? true : false}
+              isEdited={!!question.updatedAt}
             />
           </div>
         </div>

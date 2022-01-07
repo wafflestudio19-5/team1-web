@@ -57,11 +57,11 @@ const Register = () => {
             } else if (e.response.status === 409) {
               toast.error("User name already exists");
             } else {
-              console.log(e.response.status, e.response.data);
+              console.error(e.response.status, e.response.data);
             }
           }
         } else {
-          console.log(e);
+          console.error(e);
         }
       }
     }
