@@ -14,6 +14,13 @@ const instance = axios.create({
   baseURL: API_ENDPOINT,
 });
 
+interface SignupResponse extends UserInfoResponse {
+  accessToken: string;
+}
+
+export type SortCriteria = "id" | "createdAt" | "updatedAt" | "votes";
+export type SortOrder = "asc" | "desc";
+
 const setHeaderToken = (newToken: string | null) => {
   if (newToken) {
     instance.defaults.headers.common["Authentication"] = newToken;
@@ -45,40 +52,50 @@ setHeaderToken(loadToken());
 export interface EmptyBody {}
 
 export const api = {
-  ping: async () => (await instance.get<string>("/api/v1/pingpong/")).data,
+  ping: async () => (await instance.get<string>("/api/ping/")).data,
 
   _signin: async (email: string, password: string): Promise<AccessToken> => {
-    const response = await instance.post<EmptyBody>("/api/user/signin/", {
-      email: email,
-      password: password,
-    });
-    return response.headers["authentication"];
-  },
-  _signup: async (username: string, email: string, password: string) => {
-    const response = await instance.post<UserInfoResponse>(
-      "/api/user/signup/",
+    const response = await instance.post<{ accessToken: string }>(
+      "/api/user/signin/",
       {
-        username: username,
         email: email,
         password: password,
       }
     );
+    return response.data.accessToken;
+  },
+  _signup: async (username: string, email: string, password: string) => {
+    const response = await instance.post<SignupResponse>("/api/user/signup/", {
+      username: username,
+      email: email,
+      password: password,
+    });
     return {
-      token: response.headers["authentication"],
+      token: response.data.accessToken,
       userInfo: response.data,
     };
   },
   _signout: async () => {
-    await instance.get<EmptyBody>("/api/user/signout/");
+    await instance.post<EmptyBody>("/api/user/signout/");
   },
   getMyProfile: async () =>
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
-  getQuestionList: async () =>
-    (
-      await instance.get<{ results: QuestionInterface[]; count: number }>(
-        "/api/question/"
-      )
-    ).data,
+  getQuestionList: async (
+    page = 0,
+    sortCriteria: SortCriteria = "id",
+    order: SortOrder = "desc"
+  ) => {
+    const params = new URLSearchParams();
+    params.set("page", String(page));
+    params.set("sort", `${sortCriteria},${order}`);
+    return (
+      await instance.get<{
+        content: QuestionInterface[];
+        totalElements: number;
+        totalPages: number;
+      }>("/api/question/?" + params.toString())
+    ).data;
+  },
   postQuestion: async (title: string, body: string) =>
     (
       await instance.post<QuestionInterface>("/api/question/", {
@@ -112,25 +129,18 @@ export const api = {
         }
       )
     ).data,
-  editQuestionComment: async (
-    questionId: number,
-    commentId: number,
-    body: string
-  ) =>
+  editQuestionComment: async (commentId: number, body: string) =>
     (
       await instance.put<QuestionComment>(
-        `/api/question/${questionId}/comment/${commentId}/`,
+        `/api/question/comment/${commentId}/`,
         {
           body: body,
         }
       )
     ).data,
-  deleteQuestionComment: async (questionId: number, commentId: number) =>
-    (
-      await instance.delete<EmptyBody>(
-        `/api/question/${questionId}/comment/${commentId}/`
-      )
-    ).data,
+  deleteQuestionComment: async (commentId: number) =>
+    (await instance.delete<EmptyBody>(`api/question/comment/${commentId}/`))
+      .data,
   postAnswer: async (questionId: number, body: string) =>
     (
       await instance.post<Answer>(`/api/question/${questionId}/answer/`, {
@@ -153,23 +163,15 @@ export const api = {
         body: body,
       })
     ).data,
-  editAnswerComment: async (
-    answerId: number,
-    commentId: number,
-    body: string
-  ) =>
+  editAnswerComment: async (commentId: number, body: string) =>
     (
-      await instance.post<AnswerComment>(
-        `/api/answer/${answerId}/comment/${commentId}/`,
-        { body: body }
-      )
+      await instance.put<AnswerComment>(`/api/answer/comment/${commentId}/`, {
+        body: body,
+      })
     ).data,
-  deleteAnswerComment: async (answerId: number, commentId: number) =>
-    (
-      await instance.delete<EmptyBody>(
-        `/api/answer/${answerId}/comment/${commentId}/`
-      )
-    ).data,
+  deleteAnswerComment: async (commentId: number) =>
+    (await instance.delete<EmptyBody>(`/api/answer/comment/${commentId}/`))
+      .data,
 
   voteQuestion: async (questionId: number, vote: -1 | 1) =>
     (

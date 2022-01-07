@@ -77,3 +77,25 @@
     border-top: solid 1px rgb(214, 217, 220);
   }
 }
+
+.pageNumberList {
+  margin: 50px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .pageButton {
+    border: 1px #d6d9dc solid;
+    border-radius: 3px;
+    padding: 0 8px;
+    line-height: 2;
+    margin: 2px;
+    font-size: 13px;
+    &.current {
+      border-color: white;
+      background-color: #f48225;
+      color: white;
+    }
+  }
+  .pageSpan {
+  }
+}

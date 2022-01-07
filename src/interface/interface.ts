@@ -1,8 +1,8 @@
 export interface User {
   id: number;
-  name: string;
+  username: string;
   email: string;
-  profile: string;
+  // profile: string;
 }
 
 export interface Tag {
@@ -18,28 +18,34 @@ export interface Vote {
   articleId: number;
 }
 
-export interface QuestionComment {
+export interface Comment {
   id: number;
   user: User;
   body: string;
-  questionId: number;
+  questionId: number | null;
+  answerId: number | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface AnswerComment {
-  id: number;
-  user: User;
-  body: string;
+export interface QuestionComment extends Comment {
+  questionId: number;
+  answerId: null;
+}
+
+export interface AnswerComment extends Comment {
+  questionId: null;
   answerId: number;
 }
 
 export interface Answer {
   id: number;
   user: User;
-  title: string;
   body: string;
-  votes: Vote[];
+  votes: number;
   comments: AnswerComment[];
   accepted: boolean;
+  createdAt: Date;
 }
 
 export interface QuestionInterface {
@@ -47,25 +53,21 @@ export interface QuestionInterface {
   user: User;
   title: string;
   body: string;
-  votes: Vote[];
+  vote: number;
   comments: QuestionComment[];
   tags: Tag[];
   answers: Answer[];
   createdAt: string;
+  updatedAt: string;
 }
 
-export interface UserInfoResponse {
-  id: number;
-  email: string;
-  username: string;
+export interface UserInfoResponse extends User {
   questions: { id: number; title: string }[];
   answers: { id: number; questionTitle: string }[];
 }
 
-export const countVotes = (question: QuestionInterface) => {
-  return question.votes.length
-    ? question.votes.map<number>((vote) => vote.status).reduce((a, b) => a + b)
-    : 0;
+export const countVotes = (data: QuestionInterface | Answer) => {
+  return "vote" in data ? data.vote : data.votes;
 };
 
 export const isAnswered = (question: QuestionInterface) => {

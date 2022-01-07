@@ -1,56 +1,105 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
+
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import Markdown from "../../Components/Markdown/Markdown";
-import { dummyApi } from "../../api/dummyApi";
+
+import { api } from "../../api/api";
 
 import styles from "./Edit.module.scss";
-import { useLocation } from "react-router";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Edit: React.FC = () => {
   const location = useLocation();
-  const { title, body, isQuestion } = location.state;
-  const [editedTitle, setEditedTitle] = useState<string | undefined>("");
-  const [editedBody, setEditedBody] = useState<string | undefined>("");
-  //const [editedTags, setEditedTags] = useState<Array<string>>([]);
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const doIt = async () => {
-  //     try {
-  //       const response = await dummyApi.getQuestion(101);
-  //       setEditedTitle(response.title);
-  //       setEditedBody(response.body);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
-  //   doIt().then();
-  // }, []);
+  const { id } = useParams();
+  const questionId = location.state.questionId;
+
+  // const [orgValues, setOrgValues] = useState<{
+  //   title: string;
+  //   body: string | undefined;
+  // }>({ title: "", body: "" });
+  const [values, setValues] = useState<{
+    title: string;
+    body: string | undefined;
+  }>({ title: "", body: "" });
 
   useEffect(() => {
-    setEditedTitle(title ? title : "");
-    setEditedBody(body ? body : "");
-  }, []);
+    setValues(location.state);
+    // setOrgValues(location.state);
+  }, [location.state]);
 
-  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEditedTitle(e.target.value);
+  const handleTitleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setValues({ ...values, title: e.target.value });
+  };
+
+  const handleBodyChange = (value: string | undefined) => {
+    setValues({ ...values, body: value });
+  };
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    if (values.body) {
+      try {
+        // const editedTitle =
+        //   values.title === orgValues.title ? "" : values.title;
+        // const editedBody = values.body === orgValues.body ? "" : values.body;
+        if (Number(questionId) === Number(id) && values.title.length > 5) {
+          await api.editQuestion(Number(id), values.title, values.body);
+          toast.info("Question edited!");
+        } else {
+          await api.editAnswer(Number(id), values.body);
+          toast.info("Answer edited!");
+        }
+        navigate(`/questions/${questionId}`);
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          if (err.response) {
+            if (err.response.status === 400) {
+              toast.error("Invalid question id, title or body");
+              console.error(err.response.data);
+            } else if (err.response.status === 401) {
+              toast.error("Please sign in first");
+              navigate("/login");
+            } else if (err.response.status === 404) {
+              toast.error("The question does not exist");
+              navigate("/questions");
+            } else console.error(err.response.data);
+          } else console.error(err);
+        } else console.error(err);
+      }
+    }
   };
 
   return (
     <div className={styles.ask}>
-      {isQuestion ? <h1>Ask a public question</h1> : <h1>Answer</h1>}
-      <div className={styles.content}>
-        {isQuestion && (
+      {Number(questionId) === Number(id) ? (
+        <h1>Ask a public question</h1>
+      ) : (
+        <h1>Answer</h1>
+      )}
+
+      <form className={styles.content} onSubmit={handleSubmit}>
+        {Number(questionId) === Number(id) && (
           <div className={styles.title}>
             <label>Title</label>
             <p className={styles.tip}>
               Be specific and imagine you’re asking a question to another person
             </p>
             <input
+              name="title"
               maxLength={300}
-              value={editedTitle}
+              value={values.title}
               onChange={handleTitleChange}
             />
+            {values.title.length < 5 ? (
+              <p className={styles.errorMessage}>
+                {"Title must be at least 5 characters."}
+              </p>
+            ) : null}
           </div>
         )}
 
@@ -60,7 +109,10 @@ const Edit: React.FC = () => {
             Include all the information someone would need to answer your
             question
           </p>
-          <Markdown state={editedBody} setState={setEditedBody} />
+          <Markdown value={values.body} onChange={handleBodyChange} />
+          {!values.body ? (
+            <p className={styles.errorMessage}>{"Body is missing."}</p>
+          ) : null}
         </div>
         <div className={styles.tags}>
           <label>Tags</label>
@@ -72,11 +124,16 @@ const Edit: React.FC = () => {
             placeholder="e.g. (asp.net-mvc typescript database)"
           />
         </div>
-      </div>
-      <div className={styles.postButtons}>
-        <BlueButton text={"Save edits"} />
-        <button className={styles.cancelButton}>Cancel</button>
-      </div>
+        <div className={styles.postButtons}>
+          <BlueButton type="submit" text={"Save edits"} />
+          <button
+            className={styles.cancelButton}
+            onClick={() => navigate(`/questions/${questionId}`)}
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

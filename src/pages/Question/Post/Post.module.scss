@@ -91,32 +91,31 @@
   border-color: hsl(210, 8%, 90%);
   border-top-style: solid;
   border-top-width: 1px;
+}
 
-  .addComment {
-    @extend %button;
-    margin-bottom: 10px;
+.addComment {
+  @extend %button;
+  margin-bottom: 10px;
+  // margin-left: 12px;
+}
+
+.commentForm {
+  display: flex;
+  margin-top: 10px;
+
+  button {
+    height: 30px;
+    margin-left: 12px;
   }
 
-  form {
-    display: flex;
-    margin-top: 10px;
-    // margin-bottom: 20px;
-
-    button {
-      height: 30px;
-      margin-left: 12px;
-    }
-
-    textarea {
-      height: 50px;
-      width: 500px;
-    }
+  textarea {
+    height: 50px;
+    flex: 1;
   }
+}
 
-  .cancelComment {
-    margin: 0;
-    margin-bottom: 20px;
-    @extend %button;
-    // margin-bottom: 20px;
-  }
+.cancelComment {
+  margin: 0;
+  margin-bottom: 20px;
+  @extend %button;
 }

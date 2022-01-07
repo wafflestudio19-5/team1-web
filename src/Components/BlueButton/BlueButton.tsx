@@ -4,11 +4,16 @@ import styles from "./BlueButton.module.scss";
 type BlueButtonProps = {
   text: string;
   onClick?(event: React.MouseEvent<HTMLElement>): void;
+  type?: "button" | "submit" | "reset";
 };
 
-const BlueButton: React.FC<BlueButtonProps> = ({ text, onClick }) => {
+const BlueButton: React.FC<BlueButtonProps> = ({ type, text, onClick }) => {
   return (
-    <button className={styles.blueButton} onClick={onClick}>
+    <button
+      type={type ? `${type}` : "button"}
+      className={styles.blueButton}
+      onClick={onClick}
+    >
       {text}
     </button>
   );

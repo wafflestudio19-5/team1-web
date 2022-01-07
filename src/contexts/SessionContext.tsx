@@ -37,7 +37,7 @@ export const SessionProvider: FC = ({ children }) => {
         } catch (e) {
           _setAccessToken(null);
           setUserInfo(null);
-          console.log(e);
+          console.error(e);
         }
       }
     };
