@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import MDEditor from "@uiw/react-md-editor";
 
@@ -34,6 +34,7 @@ const AnswerPost: React.FC<PostProps> = ({
   const auth = userInfo?.id === answer.user.id;
   const [onAdd, setOnAdd] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleDelete = () => {
     confirmAlert({
@@ -49,7 +50,10 @@ const AnswerPost: React.FC<PostProps> = ({
               toast.info("Answer deleted!");
             } catch (err) {
               if (axios.isAxiosError(err) && err.response) {
-                if (err.response.status === 403) {
+                if (err.response.status === 401) {
+                  toast.error("Please sign in first!");
+                  navigate("/singin");
+                } else if (err.response.status === 403) {
                   toast.error("Cannot delete other user's answer");
                 } else if (err.response.status === 404) {
                   toast.error("The answer does not exist");
@@ -82,7 +86,10 @@ const AnswerPost: React.FC<PostProps> = ({
       toast.info("Comment created!");
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 404) {
+        if (err.response.status === 401) {
+          toast.error("Please sign in first!");
+          navigate("/signin");
+        } else if (err.response.status === 404) {
           toast.error("The answer does not exist");
         } else if (err.response.status === 405) {
           toast.error("Invalid comment content");

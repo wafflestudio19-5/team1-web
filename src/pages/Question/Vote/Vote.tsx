@@ -8,6 +8,7 @@ import styles from "./Vote.module.scss";
 import { api } from "../../../api/api";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 interface VoteProps {
   vote: number;
@@ -26,6 +27,7 @@ const Vote: React.FC<VoteProps> = ({
   reset,
   setReset,
 }) => {
+  const navigate = useNavigate();
   const handleVote = async (vote: -1 | 1) => {
     try {
       answerId
@@ -40,6 +42,7 @@ const Vote: React.FC<VoteProps> = ({
           toast.error("The post does not exists");
         } else if (err.response.status === 401) {
           toast.error("Please sign in first");
+          navigate("/signin");
         } else console.error(err.response.data);
       } else console.error(err);
     }

@@ -47,7 +47,10 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
       toast.info("Comment created!");
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 400) {
+        if (err.response.status === 401) {
+          toast.error("Please sign in first!");
+          navigate("/signin");
+        } else if (err.response.status === 400) {
           toast.error("Invalid question id");
         } else console.error(err.response.data);
       } else console.error(err);
@@ -75,6 +78,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
                     toast.error("Cannot delete other user's question");
                   } else {
                     toast.error("Please sign in first");
+                    navigate("/signin");
                   }
                 }
               } else console.error(err);

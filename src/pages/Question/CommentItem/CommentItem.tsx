@@ -106,6 +106,7 @@ const CommentItem: React.FC<CommentProps> = ({
               toast.error("Invalid comment id or content");
             } else if (err.response.status === 401) {
               toast.error("Please sign in first");
+              navigate("/signin");
             } else if (err.response.status === 404) {
               toast.error("The comment does not exist");
             } else console.error(err.response.data);
