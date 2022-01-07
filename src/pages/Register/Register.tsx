@@ -67,7 +67,7 @@ const Register = () => {
     }
   };
 
-  return userInfo !== null ? (
+  return userInfo ? (
     <Navigate to={"/questions"} />
   ) : (
     <div className={styles.register}>
