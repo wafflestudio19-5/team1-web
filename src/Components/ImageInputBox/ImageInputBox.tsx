@@ -8,12 +8,14 @@ type ImageInputBoxProps = {
   closeBox(): void;
 };
 
+const DEFAULTIMAGE = "/icons/dummyProfile.png";
+
 const ImageInputBox: React.FC<ImageInputBoxProps> = ({
   state,
   setState,
   closeBox,
 }) => {
-  const [imgSrc, setImgSrc] = useState<string>("/logo.png");
+  const [imgSrc, setImgSrc] = useState<string>(DEFAULTIMAGE);
 
   const onChangeHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -29,7 +31,7 @@ const ImageInputBox: React.FC<ImageInputBoxProps> = ({
         }
       };
     } else {
-      setImgSrc("/logo.png");
+      setImgSrc(DEFAULTIMAGE);
     }
   };
 

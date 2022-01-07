@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import styles from "./Settings.module.scss";
 import { SettingsMenu } from "./SettingsMenu/SettingsMenu";
 import Markdown from "../../../Components/Markdown/Markdown";
@@ -19,15 +19,17 @@ export const Settings: FC<SettingsProps> = ({}) => {
 
   const [imgSrc, setImgSrc] = useState<string>("");
 
-  if (profile) {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(profile);
-    fileReader.onload = function (e) {
-      if (e.target) {
-        setImgSrc(String(e.target.result));
-      }
-    };
-  }
+  useEffect(() => {
+    if (profile) {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(profile);
+      fileReader.onload = function (e) {
+        if (e.target) {
+          setImgSrc(String(e.target.result));
+        }
+      };
+    }
+  }, [profile]);
 
   const [changeProfileOn, setChangeProfileOn] = useState<boolean>(false);
   const saveProfile = useCallback(() => {
