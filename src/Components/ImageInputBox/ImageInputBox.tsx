@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import styles from "./ImageInputBox.module.scss";
+import BlueButton from "../BlueButton/BlueButton";
 
 type ImageInputBoxProps = {
   state: File | null;
@@ -16,13 +17,25 @@ const ImageInputBox: React.FC<ImageInputBoxProps> = ({
   closeBox,
 }) => {
   const [imgSrc, setImgSrc] = useState<string>(DEFAULTIMAGE);
+  const [tempFile, setTempFile] = useState<File | null>(null);
 
+  useEffect(() => {
+    if (state) {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(state);
+      fileReader.onload = function (e) {
+        if (e.target) {
+          setImgSrc(String(e.target.result));
+        }
+      };
+    }
+  }, []);
   const onChangeHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
     if (event?.target.files.length) {
       const imgTarget = event.target.files[0];
-      setState(event.target.files[0]);
+      setTempFile(event.target.files[0]);
       const fileReader = new FileReader();
       fileReader.readAsDataURL(imgTarget);
       fileReader.onload = function (e) {
@@ -33,6 +46,13 @@ const ImageInputBox: React.FC<ImageInputBoxProps> = ({
     } else {
       setImgSrc(DEFAULTIMAGE);
     }
+  };
+
+  const sendImgToMyPage = () => {
+    if (tempFile) {
+      setState(tempFile);
+    }
+    closeBox();
   };
 
   return (
@@ -46,6 +66,10 @@ const ImageInputBox: React.FC<ImageInputBoxProps> = ({
         onChange={onChangeHandle}
         type={"file"}
       />
+
+      <div className={styles.buttonLine}>
+        <BlueButton text={"확인"} onClick={sendImgToMyPage} />
+      </div>
     </div>
   );
 };
