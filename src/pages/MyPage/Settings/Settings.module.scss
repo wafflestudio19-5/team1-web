@@ -12,6 +12,21 @@
     font-size: 15px;
     font-weight: bold;
   }
+
+  .addImageContainer {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    background-color: rgba(159, 166, 173, 0.55);
+    z-index: 10;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .profileImgContainer {
     position: relative;
     width: fit-content;
