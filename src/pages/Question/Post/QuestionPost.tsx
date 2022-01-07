@@ -112,7 +112,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
           vote={countVotes(question)}
           questionId={question.id}
           answerId={undefined}
-          reset={false}
+          reset={reset}
           setReset={setReset}
         />
       </div>

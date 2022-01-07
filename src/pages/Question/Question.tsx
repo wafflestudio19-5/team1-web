@@ -57,7 +57,7 @@ const Question: React.FC = () => {
       }
     };
     doIt().then();
-  }, [id, navigate]);
+  }, [reset, id, navigate]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
