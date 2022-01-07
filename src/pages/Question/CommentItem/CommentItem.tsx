@@ -6,7 +6,6 @@ import { QuestionComment, AnswerComment } from "../../../interface/interface";
 
 import { ReactComponent as Edit } from "../../../icons/iconEdit.svg";
 import { ReactComponent as Delete } from "../../../icons/iconDelete.svg";
-import dayjs from "dayjs";
 
 import styles from "./CommentItem.module.scss";
 import { api } from "../../../api/api";
@@ -15,6 +14,7 @@ import { useSessionContext } from "../../../contexts/SessionContext";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import axios from "axios";
+import ReactTimeAgo from "react-time-ago";
 
 interface CommentProps {
   comment: QuestionComment | AnswerComment;
@@ -31,7 +31,6 @@ const CommentItem: React.FC<CommentProps> = ({
   reset,
   setReset,
 }) => {
-  const date = new Date();
   const { userInfo } = useSessionContext();
   const auth = userInfo?.id === comment.user.id;
   const [onEdit, setOnEdit] = useState<boolean>(false);
@@ -144,11 +143,13 @@ const CommentItem: React.FC<CommentProps> = ({
               {/*<Link to={`/users/${comment.user.id}`}>*/}
               <p className={styles.username}>{comment.user.username}</p>
               {/*</Link>*/}
-              <p className={styles.date}>
-                {dayjs(date).format("MMM DD 'YY")} at{" "}
-                {dayjs(date).format("HH:mm")}
+              <p>
+                <ReactTimeAgo
+                  className={styles.date}
+                  date={new Date(comment.createdAt + "Z")}
+                />
               </p>
-            </label>{" "}
+            </label>
           </>
         )}
 

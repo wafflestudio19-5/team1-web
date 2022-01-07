@@ -141,7 +141,7 @@ const AnswerPost: React.FC<PostProps> = ({
           <div className={styles.activityContainer}>
             <UserCard
               user={answer.user}
-              timestamp="2021-11-26 20:45:00Z"
+              date={new Date(answer.createdAt + "Z")}
               isQuestion={false}
               isEdited={false}
             />

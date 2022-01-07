@@ -18,17 +18,23 @@ export interface Vote {
   articleId: number;
 }
 
-export interface QuestionComment {
+export interface Comment {
   id: number;
   user: User;
   body: string;
-  questionId: number;
+  questionId: number | null;
+  answerId: number | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface AnswerComment {
-  id: number;
-  user: User;
-  body: string;
+export interface QuestionComment extends Comment {
+  questionId: number;
+  answerId: null;
+}
+
+export interface AnswerComment extends Comment {
+  questionId: null;
   answerId: number;
 }
 

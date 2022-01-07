@@ -149,7 +149,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
           <div className={styles.activityContainer}>
             <UserCard
               user={question.user}
-              timestamp={question.createdAt}
+              date={new Date(question.createdAt + "Z")}
               isQuestion={true}
               questionId={question.id}
               isEdited={!!question.updatedAt}

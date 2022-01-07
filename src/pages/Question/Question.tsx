@@ -12,10 +12,10 @@ import BeatLoader from "react-spinners/BeatLoader";
 import AnswerPost from "./Post/AnswerPost";
 import QuestionPost from "./Post/QuestionPost";
 
-import ago from "s-ago";
 import styles from "./Question.module.scss";
 import axios from "axios";
 import { toast } from "react-toastify";
+import ReactTimeAgo from "react-time-ago";
 
 // const FILTERS = ["Active", "Oldest", "Votes"];
 
@@ -87,7 +87,7 @@ const Question: React.FC = () => {
     }
   });
 
-  return (
+  return questionData ? (
     <div className={styles.Question}>
       {loading ? (
         <div className={styles.Loading}>
@@ -104,9 +104,7 @@ const Question: React.FC = () => {
           <ul className={styles.postInfo}>
             <li>
               <span>Asked</span>
-              <time>
-                {questionData ? ago(new Date(questionData.createdAt)) : null}
-              </time>
+              <ReactTimeAgo date={new Date(questionData.createdAt + "Z")} />
             </li>
             {/*
             <li>
@@ -121,14 +119,14 @@ const Question: React.FC = () => {
 
           <section className={styles.main}>
             <QuestionPost
-              question={questionData!}
+              question={questionData}
               reset={reset}
               setReset={setReset}
             />
             <div className={styles.Answers}>
               <div className={styles.answerBar}>
                 <h2>
-                  {questionData?.answers
+                  {questionData.answers
                     ? `${questionData.answers.length} Answers`
                     : "Your Answer"}
                 </h2>
@@ -171,7 +169,7 @@ const Question: React.FC = () => {
         </div>
       )}
     </div>
-  );
+  ) : null;
 };
 
 export default Question;
