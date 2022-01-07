@@ -42,7 +42,7 @@ const Vote: React.FC<VoteProps> = ({
           toast.error("The post does not exists");
         } else if (err.response.status === 401) {
           toast.error("Please sign in first");
-          navigate("/signin");
+          navigate("/login");
         } else console.error(err.response.data);
       } else console.error(err);
     }

@@ -67,7 +67,7 @@ const CommentItem: React.FC<CommentProps> = ({
                         toast.error("Cannot remove other user's comment");
                       } else {
                         toast.error("Please sign in first");
-                        navigate("/signin");
+                        navigate("/login");
                       }
                     } else if (err.response.status === 404) {
                       toast.error("The comment does not exist");
@@ -106,7 +106,7 @@ const CommentItem: React.FC<CommentProps> = ({
               toast.error("Invalid comment id or content");
             } else if (err.response.status === 401) {
               toast.error("Please sign in first");
-              navigate("/signin");
+              navigate("/login");
             } else if (err.response.status === 404) {
               toast.error("The comment does not exist");
             } else console.error(err.response.data);

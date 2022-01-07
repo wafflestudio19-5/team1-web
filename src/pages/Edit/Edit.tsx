@@ -63,7 +63,7 @@ const Edit: React.FC = () => {
               console.error(err.response.data);
             } else if (err.response.status === 401) {
               toast.error("Please sign in first");
-              navigate("/signin");
+              navigate("/login");
             } else if (err.response.status === 404) {
               toast.error("The question does not exist");
               navigate("/questions");

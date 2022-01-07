@@ -74,7 +74,7 @@ const Question: React.FC = () => {
               toast.error("Invalid answer id");
             } else if (err.response.status === 401) {
               toast.error("Please sign in first!");
-              navigate("/signin");
+              navigate("/login");
             } else console.error(err.response.data);
           } else console.error(err);
         } else console.error(err);
