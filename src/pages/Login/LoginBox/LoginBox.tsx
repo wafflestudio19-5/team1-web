@@ -48,10 +48,10 @@ const LoginBox = () => {
             } else {
               toast.error(e.response.data.status + " " + e.response.data.error);
             }
-            console.log(e.response.status, e.response.data);
+            console.error(e.response.status, e.response.data);
           }
         } else {
-          console.log(e);
+          console.error(e);
         }
       }
   };

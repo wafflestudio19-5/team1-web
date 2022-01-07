@@ -41,9 +41,9 @@ const Ask: React.FC = () => {
               } else if (err.response.status === 401) {
                 toast.error("Please sign in first!");
                 navigate("/signin");
-              } else console.log(err.response.data);
-            } else console.log(err);
-          } else console.log(err);
+              } else console.error(err.response.data);
+            } else console.error(err);
+          } else console.error(err);
         }
       },
     });

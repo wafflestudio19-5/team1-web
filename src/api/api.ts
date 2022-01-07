@@ -44,7 +44,6 @@ export type AccessToken = string;
 export const _setAccessToken = (token: AccessToken | null) => {
   setHeaderToken(token);
   storeToken(token);
-  console.log("new token : ", token);
 };
 // used only in SessionContext.tsx
 export const _getAccessToken = () => loadToken();

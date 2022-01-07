@@ -18,7 +18,7 @@ const NavBar: React.FC<NavBarProps> = () => {
       try {
         await signout();
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
       navigate("/login");
       toast.info("signed out");

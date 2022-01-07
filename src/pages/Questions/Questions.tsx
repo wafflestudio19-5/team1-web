@@ -86,7 +86,6 @@ const Questions = () => {
       try {
         const { content, totalElements, totalPages } =
           await api.getQuestionList(page - 1, filter.criteria, filter.order);
-        console.log(content.length);
         setQuestionList(content);
         setCount(totalElements);
         setPageCount(totalPages);
@@ -94,9 +93,9 @@ const Questions = () => {
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
-            console.log(e.response.status, e.response.data);
-          } else console.log(e);
-        } else console.log(e);
+            console.error(e.response.status, e.response.data);
+          } else console.error(e);
+        } else console.error(e);
       }
     };
     doIt().then();
