@@ -147,7 +147,7 @@ const Questions = () => {
         )}
         {pageList.map((n, i) =>
           n === "..." ? (
-            <span className={styles.pageSpan} key={i}>
+            <span className={styles.pageSpan} key={`${n}_${i}`}>
               ...
             </span>
           ) : (
@@ -156,7 +156,7 @@ const Questions = () => {
                 page === n ? styles.current : ""
               }`}
               to={makeQuery(filter.label, n)}
-              key={n}
+              key={`${n}_${i}`}
             >
               {n}
             </Link>
