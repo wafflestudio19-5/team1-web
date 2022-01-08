@@ -1,3 +1,3 @@
-# team1-web
+# Team1 Frontend (Web)
 
-* deploy: https://d1l1pkryywm5yq.cloudfront.net
+* 배포: https://www.waffleoverflow.shop
