@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
@@ -20,17 +20,19 @@ import { useSessionContext } from "../../contexts/SessionContext";
 
 // const FILTERS = ["Active", "Oldest", "Votes"];
 
+/*
 const useQuery = () => {
   const { search } = useLocation();
   return useMemo(() => new URLSearchParams(search), [search]);
 };
+ */
 
 const Question: React.FC = () => {
   const [questionData, setQuestionData] = useState<QuestionInterface>();
   const [answer, setAnswer] = useState<string>();
-  const query = useQuery();
+  // const query = useQuery();
   const navigate = useNavigate();
-  const filter = query.get("answertab") ?? "Votes";
+  // const filter = query.get("answertab") ?? "Votes";
   const { userInfo } = useSessionContext();
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
@@ -41,7 +43,7 @@ const Question: React.FC = () => {
     () =>
       questionData?.answers
         ?.slice()
-        ?.sort((a, b) => (a.accepted ? -1 : b.accepted ? 1 : 0)),
+        ?.sort((a, b) => (b.accepted ? 1 : 0) - (a.accepted ? 1 : 0)),
     [questionData]
   );
 
@@ -93,14 +95,6 @@ const Question: React.FC = () => {
     }
   };
 
-  questionData?.answers.sort((a, b) => {
-    if (filter === "Oldest") {
-      return Number(a.createdAt) - Number(b.createdAt);
-    } else {
-      return b.votes - a.votes;
-    }
-  });
-
   return questionData ? (
     <div className={styles.Question}>
       {loading ? (
@@ -120,15 +114,6 @@ const Question: React.FC = () => {
               <span>Asked</span>
               <ReactTimeAgo date={new Date(questionData.createdAt + "Z")} />
             </li>
-            {/*
-            <li>
-              <span>Active</span>
-              <time>today</time>
-            </li>
-            <li>
-              <span>Viewd</span>9 times
-            </li>
-              */}
           </ul>
 
           <section className={styles.main}>
