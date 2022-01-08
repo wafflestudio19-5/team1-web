@@ -155,6 +155,12 @@ export const api = {
     ).data,
   deleteAnswer: async (answerId: number) =>
     (await instance.delete<EmptyBody>(`/api/answer/${answerId}/`)).data,
+  acceptAnswer: async (questionId: number, answerId: number) =>
+    (
+      await instance.post<EmptyBody>(
+        `/api/question/${questionId}/${answerId}/accept/`
+      )
+    ).data,
   getAnswerCommentList: async (answerId: number) =>
     (await instance.get<Answer[]>(`/api/answer/${answerId}/comment/`)).data,
   postAnswerComment: async (answerId: number, body: string) =>

@@ -1,12 +1,12 @@
 import React, { useMemo, useState, useEffect } from "react";
 
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import Markdown from "../../Components/Markdown/Markdown";
 import { api } from "../../api/api";
-import { QuestionInterface } from "../../interface/interface";
+import { isAnswered, QuestionInterface } from "../../interface/interface";
 import BeatLoader from "react-spinners/BeatLoader";
 
 import AnswerPost from "./Post/AnswerPost";
@@ -16,23 +16,36 @@ import styles from "./Question.module.scss";
 import axios from "axios";
 import { toast } from "react-toastify";
 import ReactTimeAgo from "react-time-ago";
+import { useSessionContext } from "../../contexts/SessionContext";
 
 // const FILTERS = ["Active", "Oldest", "Votes"];
 
+/*
 const useQuery = () => {
   const { search } = useLocation();
   return useMemo(() => new URLSearchParams(search), [search]);
 };
+ */
 
 const Question: React.FC = () => {
   const [questionData, setQuestionData] = useState<QuestionInterface>();
   const [answer, setAnswer] = useState<string>();
-  const query = useQuery();
+  // const query = useQuery();
   const navigate = useNavigate();
-  const filter = query.get("answertab") ?? "Votes";
-  // const location = useLocation();
+  // const filter = query.get("answertab") ?? "Votes";
+  const { userInfo } = useSessionContext();
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
+  const isQuestionAnswered = useMemo(() => {
+    return questionData ? isAnswered(questionData) : false;
+  }, [questionData]);
+  const sortedAnswerPosts = useMemo(
+    () =>
+      questionData?.answers
+        ?.slice()
+        ?.sort((a, b) => (b.accepted ? 1 : 0) - (a.accepted ? 1 : 0)),
+    [questionData]
+  );
 
   // 리셋 필요할 때,
   const [reset, setReset] = useState<boolean>(false);
@@ -82,14 +95,6 @@ const Question: React.FC = () => {
     }
   };
 
-  questionData?.answers.sort((a, b) => {
-    if (filter === "Oldest") {
-      return Number(a.createdAt) - Number(b.createdAt);
-    } else {
-      return b.votes - a.votes;
-    }
-  });
-
   return questionData ? (
     <div className={styles.Question}>
       {loading ? (
@@ -109,15 +114,6 @@ const Question: React.FC = () => {
               <span>Asked</span>
               <ReactTimeAgo date={new Date(questionData.createdAt + "Z")} />
             </li>
-            {/*
-            <li>
-              <span>Active</span>
-              <time>today</time>
-            </li>
-            <li>
-              <span>Viewd</span>9 times
-            </li>
-              */}
           </ul>
 
           <section className={styles.main}>
@@ -149,13 +145,16 @@ const Question: React.FC = () => {
                 </div>
                 */}
               </div>
-              {questionData?.answers.map((answer) => (
+              {sortedAnswerPosts?.map((answer) => (
                 <AnswerPost
                   key={answer.id}
                   answer={answer}
                   questionId={questionData.id}
                   reset={reset}
                   setReset={setReset}
+                  isAcceptable={
+                    !isQuestionAnswered && userInfo?.id === questionData.user.id
+                  }
                 />
               ))}
             </div>
