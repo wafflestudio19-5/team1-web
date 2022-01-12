@@ -40,9 +40,11 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
 const myUriTransformer = (url: string) => {
   const transformed = uriTransformer(url);
   const protocols = ["http", "https", "mailto", "tel"];
-  const result = protocols.some((protocol) => transformed.startsWith(protocol))
-    ? transformed
-    : "https://" + transformed;
+  const result =
+    transformed === "" ||
+    protocols.some((protocol) => transformed.startsWith(protocol))
+      ? transformed
+      : "https://" + transformed;
   console.log(result);
   return result;
 };
