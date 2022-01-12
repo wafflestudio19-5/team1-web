@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-
-import MDEditor from "@uiw/react-md-editor";
-
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import TagItem from "../../../Components/TagItem/TagItem";
 import UserCard from "../../../Components/UserCard/UserCard";
@@ -13,10 +10,10 @@ import Vote from "../Vote/Vote";
 import { api } from "../../../api/api";
 import { useSessionContext } from "../../../contexts/SessionContext";
 import { toast } from "react-toastify";
-
 import styles from "./Post.module.scss";
 import axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
+import { MarkdownViewer } from "../../../Components/Markdown/Markdown";
 
 interface PostProps {
   question: QuestionInterface;
@@ -124,7 +121,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
       </div>
       <div className={styles.postCell}>
         <div className={styles.postBody}>
-          <MDEditor.Markdown className={styles.body} source={question.body} />
+          <MarkdownViewer className={styles.body} source={question.body} />
         </div>
 
         <div className={styles.tagList}>

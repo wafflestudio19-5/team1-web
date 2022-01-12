@@ -1,21 +1,18 @@
 import React, { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-
-import MDEditor from "@uiw/react-md-editor";
-
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import UserCard from "../../../Components/UserCard/UserCard";
 import { Answer } from "../../../interface/interface";
 import CommentItem from "../CommentItem/CommentItem";
 import Vote from "../Vote/Vote";
 import { useSessionContext } from "../../../contexts/SessionContext";
-
 import styles from "./Post.module.scss";
 import { api } from "../../../api/api";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
+import { MarkdownViewer } from "../../../Components/Markdown/Markdown";
 
 interface PostProps {
   answer: Answer;
@@ -115,7 +112,7 @@ const AnswerPost: React.FC<PostProps> = ({
       </div>
       <div className={styles.postCell}>
         <div className={styles.postBody}>
-          <MDEditor.Markdown className={styles.body} source={answer.body} />
+          <MarkdownViewer className={styles.body} source={answer.body} />
         </div>
 
         <div className={styles.itemFooter}>

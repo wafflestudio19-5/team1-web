@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
-import Markdown from "../../Components/Markdown/Markdown";
+import { MarkdownEditor } from "../../Components/Markdown/Markdown";
 import { api } from "../../api/api";
 import { isAnswered, QuestionInterface } from "../../interface/interface";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -161,7 +161,7 @@ const Question: React.FC = () => {
             <div className={styles.writeAnswer}>
               <h2>Your Answer</h2>
               <form onSubmit={handleSubmit}>
-                <Markdown value={answer} onChange={setAnswer} />
+                <MarkdownEditor value={answer} onChange={setAnswer} />
                 <div>
                   <BlueButton type="submit" text={"Post Your Answer"} />
                 </div>
