@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 
 import MDEditor from "@uiw/react-md-editor";
-
 import styles from "./Markdown.module.scss";
 import rehypeSanitize from "rehype-sanitize";
+import { uriTransformer } from "react-markdown";
 
 interface MarkdownEditorProps {
   value: string | undefined;
@@ -32,9 +32,19 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           rehypePlugins: [[rehypeSanitize]],
         }}
       />
-      <MDEditor.Markdown source={value} rehypePlugins={[[rehypeSanitize]]} />
+      <MarkdownViewer source={value} />
     </div>
   );
+};
+
+const myUriTransformer = (url: string) => {
+  const transformed = uriTransformer(url);
+  const protocols = ["http", "https", "mailto", "tel"];
+  const result = protocols.some((protocol) => transformed.startsWith(protocol))
+    ? transformed
+    : "https://" + transformed;
+  console.log(result);
+  return result;
 };
 
 export const MarkdownViewer: FC<MarkdownViewerProps> = ({
@@ -46,6 +56,8 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
       className={className}
       source={source}
       rehypePlugins={[[rehypeSanitize]]}
+      transformLinkUri={myUriTransformer}
+      transformImageUri={myUriTransformer}
     />
   );
 };
