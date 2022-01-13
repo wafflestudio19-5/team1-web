@@ -95,7 +95,7 @@ const AnswerPost: React.FC<PostProps> = ({
   };
 
   return (
-    <div className={styles.answerPostLayout}>
+    <div className={styles.answerPostLayout} id={`answer-${answer.id}`}>
       <div className={styles.voteCell}>
         <Vote
           vote={answer.votes}
