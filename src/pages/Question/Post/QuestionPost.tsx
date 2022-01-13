@@ -28,6 +28,14 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
   const [comment, setComment] = useState<string>("");
   const navigate = useNavigate();
 
+  const handleAddCommentButton = () => {
+    if (userInfo) {
+      setOnAdd(!onAdd);
+    } else {
+      toast.warn("로그인을 먼저 해주세요");
+    }
+  };
+
   const handleCommentSubmit: React.FormEventHandler<HTMLFormElement> = async (
     e
   ) => {
@@ -176,9 +184,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
         ) : (
           <button
             className={styles.addComment}
-            onClick={() => {
-              setOnAdd(!onAdd);
-            }}
+            onClick={handleAddCommentButton}
           >
             Add a comment
           </button>
