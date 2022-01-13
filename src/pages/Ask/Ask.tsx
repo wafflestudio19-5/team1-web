@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
-import Markdown from "../../Components/Markdown/Markdown";
+import { MarkdownEditor } from "../../Components/Markdown/Markdown";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -87,7 +87,7 @@ const Ask: React.FC = () => {
             Include all the information someone would need to answer your
             question
           </p>
-          <Markdown
+          <MarkdownEditor
             value={values.body}
             onChange={(e) => setFieldValue("body", e)}
           />
