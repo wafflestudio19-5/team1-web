@@ -42,6 +42,7 @@ export const SessionProvider: FC = ({ children }) => {
           console.error(e);
         }
       }
+      setUserInfo(null);
     };
     doIt().then();
   }, []);

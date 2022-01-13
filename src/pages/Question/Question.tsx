@@ -91,6 +91,8 @@ const Question: React.FC = () => {
           } else console.error(err);
         } else console.error(err);
       }
+    } else {
+      toast.error("Answer is empty");
     }
   };
 
@@ -104,9 +106,11 @@ const Question: React.FC = () => {
         <div className={styles.Content}>
           <section className={styles.questionHeader}>
             <h1>{questionData?.title}</h1>
-            <Link to="/questions/ask">
-              <BlueButton text={"Ask Question"} />
-            </Link>
+            {userInfo && (
+              <Link to="/questions/ask">
+                <BlueButton text={"Ask Question"} />
+              </Link>
+            )}
           </section>
           <ul className={styles.postInfo}>
             <li>

@@ -52,6 +52,7 @@ const Ask: React.FC = () => {
   useEffect(() => {
     if (userInfo === null) {
       toast.error("Please sign in to ask a question!");
+      navigate("/login", { replace: true });
     }
   }, [navigate, userInfo]);
 

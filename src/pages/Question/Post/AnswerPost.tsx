@@ -149,34 +149,41 @@ const AnswerPost: React.FC<PostProps> = ({
             );
           })}
         </div>
-        {onAdd ? (
-          <>
-            <form className={styles.commentForm} onSubmit={handleCommentSubmit}>
-              <textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-              <BlueButton type="submit" text={"Add Comment"} />
-            </form>
+        {userInfo ? (
+          onAdd ? (
+            <>
+              <form
+                className={styles.commentForm}
+                onSubmit={handleCommentSubmit}
+              >
+                <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <BlueButton type="submit" text={"Add Comment"} />
+              </form>
+              <button
+                className={styles.cancelComment}
+                onClick={() => {
+                  setOnAdd(!onAdd);
+                  setComment("");
+                }}
+              >
+                cancel
+              </button>
+            </>
+          ) : (
             <button
-              className={styles.cancelComment}
+              className={styles.addComment}
               onClick={() => {
                 setOnAdd(!onAdd);
-                setComment("");
               }}
             >
-              cancel
+              Add a comment
             </button>
-          </>
+          )
         ) : (
-          <button
-            className={styles.addComment}
-            onClick={() => {
-              setOnAdd(!onAdd);
-            }}
-          >
-            Add a comment
-          </button>
+          <span className={styles.addComment} />
         )}
       </div>
     </div>
