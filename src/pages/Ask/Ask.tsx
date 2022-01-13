@@ -80,7 +80,7 @@ const Ask: React.FC = () => {
           />
           {submit && removeSpace(values.title).length < 5 ? (
             <p className={styles.errorMessage}>
-              {"Title must be at least 5 characters."}
+              {"Title must be at least 5 characters without space."}
             </p>
           ) : null}
         </div>
