@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
-import Markdown from "../../Components/Markdown/Markdown";
+import { MarkdownEditor } from "../../Components/Markdown/Markdown";
 
 import { api } from "../../api/api";
 
@@ -107,7 +107,7 @@ const Edit: React.FC = () => {
             Include all the information someone would need to answer your
             question
           </p>
-          <Markdown value={values.body} onChange={handleBodyChange} />
+          <MarkdownEditor value={values.body} onChange={handleBodyChange} />
           {!values.body ? (
             <p className={styles.errorMessage}>{"Body is missing."}</p>
           ) : null}
