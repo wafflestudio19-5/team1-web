@@ -25,7 +25,7 @@ const MyPage = () => {
         if (axios.isAxiosError(e) && e.response) {
           if (e.response.status === 401) {
             toast.error("Please sign in first");
-            navigate("/login");
+            navigate("/login", { replace: true });
           } else console.error(e.response.data);
         } else console.error(e);
       }
@@ -42,7 +42,7 @@ const MyPage = () => {
       {tab === "profile" && <MyPageProfile />}
     </div>
   ) : (
-    <Navigate to={"/questions"} />
+    <Navigate to={"/questions"} replace />
   );
 };
 

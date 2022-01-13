@@ -68,7 +68,7 @@ const Register = () => {
   };
 
   return userInfo ? (
-    <Navigate to={"/questions"} />
+    <Navigate to={"/questions"} replace />
   ) : (
     <div className={styles.register}>
       <img
