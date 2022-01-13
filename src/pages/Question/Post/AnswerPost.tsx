@@ -75,7 +75,7 @@ const AnswerPost: React.FC<PostProps> = ({
     e.preventDefault();
     try {
       if (comment === "") {
-        toast.error("답변을 입력해주세요!");
+        toast.error("댓글을 입력해주세요!");
         return;
       }
       await api.postAnswerComment(answer.id, comment);

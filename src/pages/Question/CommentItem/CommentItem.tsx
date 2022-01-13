@@ -92,6 +92,10 @@ const CommentItem: React.FC<CommentProps> = ({
     e.preventDefault();
     if (questionId) {
       try {
+        if (edited === "") {
+          toast.error("댓글을 입력해주세요!");
+          return;
+        }
         answerId
           ? await api.editAnswerComment(comment.id, edited)
           : await api.editQuestionComment(comment.id, edited);

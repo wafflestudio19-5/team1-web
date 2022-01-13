@@ -34,7 +34,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
     e.preventDefault();
     try {
       if (comment === "") {
-        toast.error("답변을 입력해주세요!");
+        toast.error("댓글을 입력해주세요!");
         return;
       }
       await api.postQuestionComment(question.id, comment);
@@ -89,22 +89,6 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
       ],
     });
   };
-
-  // const addComment = async () => {
-  //   try {
-  //     if (comment === "") {
-  //       toast.error("답변을 입력해주세요!");
-  //       return;
-  //     }
-  //     await api.postQuestionComment(question.id, comment);
-
-  //     // setReset(!reset);
-  //     setComment("");
-  //     navigate(`/questions/${question.id}`);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
 
   return (
     <div className={styles.questionPostLayout}>
