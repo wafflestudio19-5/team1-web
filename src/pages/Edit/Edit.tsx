@@ -11,7 +11,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import styles from "./Edit.module.scss";
-import { useFormikContext } from "formik";
 
 const Edit: React.FC = () => {
   const location = useLocation();
