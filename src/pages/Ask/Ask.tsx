@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { MarkdownEditor } from "../../Components/Markdown/Markdown";
-
-import { useFormik } from "formik";
-import * as Yup from "yup";
 
 import { api } from "../../api/api";
 
@@ -14,41 +11,46 @@ import styles from "./Ask.module.scss";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useSessionContext } from "../../contexts/SessionContext";
+import { removeSpace } from "../../interface/interface";
 
 const Ask: React.FC = () => {
   const navigate = useNavigate();
   const { userInfo } = useSessionContext();
+  const [submit, setSubmit] = useState<boolean>(false);
+  const [values, setValues] = useState<{
+    title: string;
+    body: string | undefined;
+  }>({ title: "", body: "" });
 
-  const { values, handleChange, handleSubmit, setFieldValue, errors } =
-    useFormik({
-      initialValues: { title: "", body: "" },
-      validationSchema: Yup.object({
-        title: Yup.string()
-          .min(5, "Title must be at least 5 characters.")
-          .required("Title is missing"),
-        body: Yup.string().required("Body is missing"),
-      }),
-      validateOnChange: false,
-      validateOnBlur: false,
-      onSubmit: async (values) => {
-        try {
-          const question = await api.postQuestion(values.title, values.body);
-          toast.info("Question created!");
-          navigate(`/questions/${question.id}`);
-        } catch (err) {
-          if (axios.isAxiosError(err)) {
-            if (err.response) {
-              if (err.response.status === 400) {
-                toast.error("Invalid parameter!");
-              } else if (err.response.status === 401) {
-                toast.error("Please sign in first!");
-                navigate("/login");
-              } else console.error(err.response.data);
-            } else console.error(err);
+  const handleTitleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setValues({ ...values, title: e.target.value });
+  };
+
+  const handleBodyChange = (value: string | undefined) => {
+    setValues({ ...values, body: value });
+  };
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    if (values.body) {
+      try {
+        const question = await api.postQuestion(values.title, values.body);
+        toast.info("Question created!");
+        navigate(`/questions/${question.id}`);
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          if (err.response) {
+            if (err.response.status === 400) {
+              toast.error("Invalid parameter!");
+            } else if (err.response.status === 401) {
+              toast.error("Please sign in first!");
+              navigate("/login");
+            } else console.error(err.response.data);
           } else console.error(err);
-        }
-      },
-    });
+        } else console.error(err);
+      }
+    }
+  };
 
   useEffect(() => {
     if (!userInfo) {
@@ -74,10 +76,12 @@ const Ask: React.FC = () => {
             value={values.title}
             maxLength={300}
             placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
-            onChange={handleChange}
+            onChange={handleTitleChange}
           />
-          {errors.title && values.title.length < 5 ? (
-            <p className={styles.errorMessage}>{errors.title}</p>
+          {submit && removeSpace(values.title).length < 5 ? (
+            <p className={styles.errorMessage}>
+              {"Title must be at least 5 characters without space."}
+            </p>
           ) : null}
         </div>
 
@@ -87,12 +91,9 @@ const Ask: React.FC = () => {
             Include all the information someone would need to answer your
             question
           </p>
-          <MarkdownEditor
-            value={values.body}
-            onChange={(e) => setFieldValue("body", e)}
-          />
-          {errors.body && values.body.length < 5 ? (
-            <p className={styles.errorMessage}>{errors.body}</p>
+          <MarkdownEditor value={values.body} onChange={handleBodyChange} />
+          {submit && !removeSpace(values.body || "") ? (
+            <p className={styles.errorMessage}>{"Body is missing."}</p>
           ) : null}
         </div>
 
@@ -108,7 +109,11 @@ const Ask: React.FC = () => {
         </div> */}
 
         <div className={styles.postButton}>
-          <BlueButton type="submit" text={"Post your question"} />
+          <BlueButton
+            type="submit"
+            text={"Post your question"}
+            onClick={() => setSubmit(true)}
+          />
         </div>
       </form>
     </div>

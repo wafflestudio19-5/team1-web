@@ -110,8 +110,12 @@ const Questions = () => {
       <div className={styles.header}>
         <div className={styles.topBar}>
           <h1>All Questions</h1>
-          {userInfo && (
+          {userInfo ? (
             <Link to="/questions/ask">
+              <BlueButton text={"Ask Question"} />
+            </Link>
+          ) : (
+            <Link to="/login">
               <BlueButton text={"Ask Question"} />
             </Link>
           )}
