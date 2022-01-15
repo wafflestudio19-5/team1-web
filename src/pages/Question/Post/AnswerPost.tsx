@@ -138,12 +138,14 @@ const AnswerPost: React.FC<PostProps> = ({
             <div />
           )}
           <div className={styles.activityContainer}>
-            <UserCard
-              user={answer.user}
-              date={new Date(answer.createdAt + "Z")}
-              isQuestion={false}
-              isEdited={false}
-            />
+            <Link to={`/users/${userInfo?.id}`}>
+              <UserCard
+                user={answer.user}
+                date={new Date(answer.createdAt + "Z")}
+                isQuestion={false}
+                isEdited={false}
+              />
+            </Link>
           </div>
         </div>
         <div className={styles.commentList}>
