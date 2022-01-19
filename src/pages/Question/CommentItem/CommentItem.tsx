@@ -143,7 +143,6 @@ const CommentItem: React.FC<CommentProps> = ({
           </div>
         ) : (
           <>
-            {/* <p>{comment.body}</p> */}
             <MarkdownViewer
               className={styles.commentBody}
               source={comment.body}
@@ -159,18 +158,17 @@ const CommentItem: React.FC<CommentProps> = ({
                   date={new Date(comment.createdAt + "Z")}
                 />
               </p>
+              {auth && !onEdit && (
+                <>
+                  <button onClick={handleEdit}>
+                    <Edit className={styles.editButton} />
+                  </button>
+                  <button onClick={handleDelete}>
+                    <Delete className={styles.deleteButton} />
+                  </button>
+                </>
+              )}
             </label>
-          </>
-        )}
-
-        {auth && !onEdit && (
-          <>
-            <button onClick={handleEdit}>
-              <Edit className={styles.editButton} />
-            </button>
-            <button onClick={handleDelete}>
-              <Delete className={styles.deleteButton} />
-            </button>
           </>
         )}
       </div>
