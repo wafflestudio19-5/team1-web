@@ -89,6 +89,8 @@ const Question: React.FC = () => {
           } else console.error(err);
         } else console.error(err);
       }
+    } else {
+      toast.error("Post is empty!");
     }
   };
 
