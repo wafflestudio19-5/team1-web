@@ -34,6 +34,14 @@ const AnswerPost: React.FC<PostProps> = ({
   const [onAdd, setOnAdd] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
 
+  const handleAddCommentButton = () => {
+    if (userInfo) {
+      setOnAdd(!onAdd);
+    } else {
+      toast.warn("로그인을 먼저 해주세요");
+    }
+  };
+
   const handleDelete = () => {
     confirmAlert({
       title: "Confirm",
@@ -73,7 +81,7 @@ const AnswerPost: React.FC<PostProps> = ({
     e.preventDefault();
     try {
       if (comment === "") {
-        toast.error("답변을 입력해주세요!");
+        toast.error("댓글을 입력해주세요!");
         return;
       }
       await api.postAnswerComment(answer.id, comment);
@@ -171,9 +179,7 @@ const AnswerPost: React.FC<PostProps> = ({
         ) : (
           <button
             className={styles.addComment}
-            onClick={() => {
-              setOnAdd(!onAdd);
-            }}
+            onClick={handleAddCommentButton}
           >
             Add a comment
           </button>

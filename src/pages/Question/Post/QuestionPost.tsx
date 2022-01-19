@@ -28,13 +28,21 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
   const [comment, setComment] = useState<string>("");
   const navigate = useNavigate();
 
+  const handleAddCommentButton = () => {
+    if (userInfo) {
+      setOnAdd(!onAdd);
+    } else {
+      toast.warn("로그인을 먼저 해주세요");
+    }
+  };
+
   const handleCommentSubmit: React.FormEventHandler<HTMLFormElement> = async (
     e
   ) => {
     e.preventDefault();
     try {
       if (comment === "") {
-        toast.error("답변을 입력해주세요!");
+        toast.error("댓글을 입력해주세요!");
         return;
       }
       await api.postQuestionComment(question.id, comment);
@@ -87,22 +95,6 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
       ],
     });
   };
-
-  // const addComment = async () => {
-  //   try {
-  //     if (comment === "") {
-  //       toast.error("답변을 입력해주세요!");
-  //       return;
-  //     }
-  //     await api.postQuestionComment(question.id, comment);
-
-  //     // setReset(!reset);
-  //     setComment("");
-  //     navigate(`/questions/${question.id}`);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
 
   return (
     <div className={styles.questionPostLayout}>
@@ -190,9 +182,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
         ) : (
           <button
             className={styles.addComment}
-            onClick={() => {
-              setOnAdd(!onAdd);
-            }}
+            onClick={handleAddCommentButton}
           >
             Add a comment
           </button>

@@ -73,3 +73,7 @@ export const countVotes = (data: QuestionInterface | Answer) => {
 export const isAnswered = (question: QuestionInterface) => {
   return question.answers.some((answer) => answer.accepted);
 };
+
+export const removeSpace = (content: string) => {
+  return content.replace(/(\s*)/g, "");
+};

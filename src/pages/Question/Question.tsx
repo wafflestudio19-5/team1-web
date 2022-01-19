@@ -35,7 +35,6 @@ const Question: React.FC = () => {
   // const filter = query.get("answertab") ?? "Votes";
   const { userInfo } = useSessionContext();
   const { id } = useParams();
-  const [loading, setLoading] = useState<boolean>(true);
   const isQuestionAnswered = useMemo(() => {
     return questionData ? isAnswered(questionData) : false;
   }, [questionData]);
@@ -54,7 +53,6 @@ const Question: React.FC = () => {
     const doIt = async () => {
       try {
         setQuestionData(await api.getQuestion(Number(id)));
-        setLoading(false);
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
@@ -96,39 +94,34 @@ const Question: React.FC = () => {
 
   return questionData ? (
     <div className={styles.Question}>
-      {loading ? (
-        <div className={styles.Loading}>
-          <BeatLoader size={20} />
-        </div>
-      ) : (
-        <div className={styles.Content}>
-          <section className={styles.questionHeader}>
-            <h1>{questionData?.title}</h1>
-            <Link to="/questions/ask">
-              <BlueButton text={"Ask Question"} />
-            </Link>
-          </section>
-          <ul className={styles.postInfo}>
-            <li>
-              <span>Asked</span>
-              <ReactTimeAgo date={new Date(questionData.createdAt + "Z")} />
-            </li>
-          </ul>
+      <div className={styles.Content}>
+        <section className={styles.questionHeader}>
+          <h1>{questionData?.title}</h1>
+          <Link to="/questions/ask">
+            <BlueButton text={"Ask Question"} />
+          </Link>
+        </section>
+        <ul className={styles.postInfo}>
+          <li>
+            <span>Asked</span>
+            <ReactTimeAgo date={new Date(questionData.createdAt + "Z")} />
+          </li>
+        </ul>
 
-          <section className={styles.main}>
-            <QuestionPost
-              question={questionData}
-              reset={reset}
-              setReset={setReset}
-            />
-            <div className={styles.Answers}>
-              <div className={styles.answerBar}>
-                <h2>
-                  {questionData.answers
-                    ? `${questionData.answers.length} Answers`
-                    : "Your Answer"}
-                </h2>
-                {/*
+        <section className={styles.main}>
+          <QuestionPost
+            question={questionData}
+            reset={reset}
+            setReset={setReset}
+          />
+          <div className={styles.Answers}>
+            <div className={styles.answerBar}>
+              <h2>
+                {questionData.answers
+                  ? `${questionData.answers.length} Answers`
+                  : "Your Answer"}
+              </h2>
+              {/*
                 <div className={styles.filterList}>
                   {FILTERS.map((value) => (
                     <Link
@@ -143,34 +136,37 @@ const Question: React.FC = () => {
                   ))}
                 </div>
                 */}
+            </div>
+            {sortedAnswerPosts?.map((answer) => (
+              <AnswerPost
+                key={answer.id}
+                answer={answer}
+                questionId={questionData.id}
+                reset={reset}
+                setReset={setReset}
+                isAcceptable={
+                  !isQuestionAnswered && userInfo?.id === questionData.user.id
+                }
+              />
+            ))}
+          </div>
+          <div className={styles.writeAnswer}>
+            <h2>Your Answer</h2>
+            <form onSubmit={handleSubmit}>
+              <MarkdownEditor value={answer} onChange={setAnswer} />
+              <div>
+                <BlueButton type="submit" text={"Post Your Answer"} />
               </div>
-              {sortedAnswerPosts?.map((answer) => (
-                <AnswerPost
-                  key={answer.id}
-                  answer={answer}
-                  questionId={questionData.id}
-                  reset={reset}
-                  setReset={setReset}
-                  isAcceptable={
-                    !isQuestionAnswered && userInfo?.id === questionData.user.id
-                  }
-                />
-              ))}
-            </div>
-            <div className={styles.writeAnswer}>
-              <h2>Your Answer</h2>
-              <form onSubmit={handleSubmit}>
-                <MarkdownEditor value={answer} onChange={setAnswer} />
-                <div>
-                  <BlueButton type="submit" text={"Post Your Answer"} />
-                </div>
-              </form>
-            </div>
-          </section>
-        </div>
-      )}
+            </form>
+          </div>
+        </section>
+      </div>
     </div>
-  ) : null;
+  ) : (
+    <div className={styles.Loading}>
+      <BeatLoader size={20} />
+    </div>
+  );
 };
 
 export default Question;
