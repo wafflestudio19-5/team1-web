@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   Answer,
   AnswerComment,
+  EditInfo,
   QuestionComment,
   QuestionInterface,
   UserInfoResponse,
@@ -191,4 +192,10 @@ export const api = {
         status: vote > 0 ? "Up" : "Down",
       })
     ).data,
+
+  editProfile: async (formData: FormData) =>
+    (await instance.post(`/api/user/me/image/`, formData)).data,
+
+  editUserInfo: async (editInfo: EditInfo) =>
+    (await instance.put(`/api/user/me/edit/`, editInfo)).data,
 };

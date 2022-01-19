@@ -1,5 +1,13 @@
 .Settings {
   display: flex;
+
+  .loadingOn {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   h2 {
     font-size: 27px;
     font-weight: normal;

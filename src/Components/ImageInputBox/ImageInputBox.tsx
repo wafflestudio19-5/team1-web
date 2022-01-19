@@ -7,6 +7,7 @@ type ImageInputBoxProps = {
   state: File | null;
   setState(e: File | null): void;
   closeBox(): void;
+  submit(e: File): void;
 };
 
 const DEFAULTIMAGE = "/icons/dummyProfile.png";
@@ -15,6 +16,7 @@ const ImageInputBox: React.FC<ImageInputBoxProps> = ({
   state,
   setState,
   closeBox,
+  submit,
 }) => {
   const [imgSrc, setImgSrc] = useState<string>(DEFAULTIMAGE);
   const [tempFile, setTempFile] = useState<File | null>(null);
@@ -48,13 +50,6 @@ const ImageInputBox: React.FC<ImageInputBoxProps> = ({
     }
   };
 
-  const sendImgToMyPage = () => {
-    if (tempFile) {
-      setState(tempFile);
-    }
-    closeBox();
-  };
-
   return (
     <div className={styles.imageInputBox}>
       <span className={styles.close} onClick={closeBox}>
@@ -68,7 +63,16 @@ const ImageInputBox: React.FC<ImageInputBoxProps> = ({
       />
 
       <div className={styles.buttonLine}>
-        <BlueButton text={"확인"} onClick={sendImgToMyPage} />
+        <BlueButton
+          text={"확인"}
+          onClick={
+            tempFile === null
+              ? () => {}
+              : () => {
+                  submit(tempFile);
+                }
+          }
+        />
       </div>
     </div>
   );

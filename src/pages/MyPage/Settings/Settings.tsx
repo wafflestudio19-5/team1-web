@@ -6,20 +6,24 @@ import BlueButton from "../../../Components/BlueButton/BlueButton";
 import ImageInputBox from "../../../Components/ImageInputBox/ImageInputBox";
 import dummyProfile from "../../../icons/dummyProfile.svg";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { api } from "../../../api/api";
+import { useSessionContext } from "../../../contexts/SessionContext";
+import { EditInfo } from "../../../interface/interface";
+import BeatLoader from "react-spinners/BeatLoader";
 
 interface SettingsProps {}
 
 export const Settings: FC<SettingsProps> = () => {
-  const [displayName, setDisplayName] = useState("");
-  const [location, setLocation] = useState("");
-  const [title, setTitle] = useState("");
-  const [aboutMe, setAboutMe] = useState("");
-  const [websiteLink, setWebsiteLink] = useState("");
-  const [githubLink, setGithubLink] = useState("");
+  const { userInfo } = useSessionContext();
+
+  const [editInfo, setEditInfo] = useState<EditInfo | null>(null);
 
   const [profile, setProfile] = useState<File | null>(null);
 
   const [imgSrc, setImgSrc] = useState<string>("");
+
+  const [loadingOn, setLoadingOn] = useState<boolean>(false);
 
   useEffect(() => {
     if (profile) {
@@ -31,18 +35,67 @@ export const Settings: FC<SettingsProps> = () => {
         }
       };
     }
+    setEditInfo({
+      displayName: userInfo?.username ?? null,
+      location: userInfo?.location ?? null,
+      userTitle: userInfo?.userTitle ?? null,
+      aboutMe: userInfo?.aboutMe ?? null,
+      websiteLink: userInfo?.websiteLink ?? null,
+      githubLink: userInfo?.githubLink ?? null,
+    });
   }, [profile]);
 
   const [changeProfileOn, setChangeProfileOn] = useState<boolean>(false);
-  const saveProfile = useCallback(() => {
+  const saveProfileImage = async (profileImage: File) => {
+    if (profileImage === null) {
+      return;
+    }
+    const object = new FormData();
+    object.append("image", profileImage);
+    await api.editProfile(object);
     toast.error("Not Implemented!");
-  }, []);
+  };
   const cancel = useCallback(() => {
     toast.error("Not Implemented!");
   }, []);
 
+  const submit = async () => {
+    try {
+      setLoadingOn(true);
+      if (editInfo !== null) {
+        await api.editUserInfo(editInfo);
+        toast.success("수정되었습니다", { autoClose: 3000 });
+      } else {
+        toast.error("수정된 정보가 없습니다", { autoClose: 3000 });
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        toast.error(e.request?.data?.msg, { autoClose: 3000 });
+      }
+    }
+    setLoadingOn(false);
+  };
+
+  const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (editInfo !== null) {
+      setEditInfo({ ...editInfo, [name]: value });
+    }
+  };
+
+  const changeAboutMe = (text: string | undefined) => {
+    if (editInfo !== null) {
+      setEditInfo({ ...editInfo, aboutMe: text ?? null });
+    }
+  };
+
   return (
     <div className={styles.Settings}>
+      {loadingOn && (
+        <div className={styles.loadingOn}>
+          <BeatLoader />
+        </div>
+      )}
       {changeProfileOn && (
         <div className={styles.addImageContainer}>
           <ImageInputBox
@@ -51,6 +104,7 @@ export const Settings: FC<SettingsProps> = () => {
             closeBox={() => {
               setChangeProfileOn(false);
             }}
+            submit={saveProfileImage}
           />
         </div>
       )}
@@ -82,25 +136,29 @@ export const Settings: FC<SettingsProps> = () => {
           <label htmlFor={"display-name"}>Display name</label>
           <input
             id={"display-name"}
-            value={displayName}
-            onInput={(e) => setDisplayName(e.currentTarget.value)}
+            name={"displayName"}
+            value={editInfo?.displayName ?? ""}
+            onChange={inputChange}
+            readOnly={true}
           />
           <label htmlFor={"location"}>Location</label>
           <input
             id={"location"}
-            value={location}
-            onInput={(e) => setLocation(e.currentTarget.value)}
+            name={"location"}
+            value={editInfo?.location ?? ""}
+            onInput={inputChange}
           />
           <label htmlFor={"title"}>Title</label>
           <input
             id={"title"}
-            value={title}
-            onInput={(e) => setTitle(e.currentTarget.value)}
+            name={"userTitle"}
+            value={editInfo?.userTitle ?? ""}
+            onInput={inputChange}
           />
           <label htmlFor={"about-me"}>About me</label>
           <Markdown
-            onChange={(value) => setAboutMe(value ?? "")}
-            value={aboutMe}
+            onChange={(value) => changeAboutMe(value)}
+            value={editInfo?.aboutMe ?? ""}
           />
         </div>
         <h3>Links</h3>
@@ -109,21 +167,28 @@ export const Settings: FC<SettingsProps> = () => {
             <label htmlFor={"website-link"}>Website link</label>
             <input
               id={"website-link"}
-              value={websiteLink}
-              onInput={(e) => setWebsiteLink(e.currentTarget.value)}
+              name={"websiteLink"}
+              value={editInfo?.websiteLink ?? ""}
+              onInput={inputChange}
             />
           </div>
           <div className={styles.linkItem}>
             <label htmlFor={"github-link"}>Github link or username</label>
             <input
               id={"github-link"}
-              value={githubLink}
-              onInput={(e) => setGithubLink(e.currentTarget.value)}
+              name={"githubLink"}
+              value={editInfo?.githubLink ?? ""}
+              onInput={inputChange}
             />
           </div>
         </div>
         <div className={styles.buttons}>
-          <BlueButton text={"Save profile"} onClick={saveProfile} />
+          <BlueButton
+            text={"Save profile"}
+            onClick={() => {
+              submit();
+            }}
+          />
           <button className={styles.cancel} onClick={cancel}>
             Cancel
           </button>

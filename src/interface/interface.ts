@@ -64,6 +64,12 @@ export interface QuestionInterface {
 export interface UserInfoResponse extends User {
   questions: { id: number; title: string }[];
   answers: { id: number; questionTitle: string }[];
+
+  location: string | null;
+  userTitle: string | null;
+  aboutMe: string | null;
+  websiteLink: string | null;
+  githubLink: string | null;
 }
 
 export const countVotes = (data: QuestionInterface | Answer) => {
@@ -72,4 +78,13 @@ export const countVotes = (data: QuestionInterface | Answer) => {
 
 export const isAnswered = (question: QuestionInterface) => {
   return question.answers.some((answer) => answer.accepted);
+};
+
+export type EditInfo = {
+  displayName: string | null;
+  location: string | null;
+  userTitle: string | null;
+  aboutMe: string | null;
+  websiteLink: string | null;
+  githubLink: string | null;
 };
