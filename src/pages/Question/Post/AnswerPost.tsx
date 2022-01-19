@@ -165,10 +165,6 @@ const AnswerPost: React.FC<PostProps> = ({
         {onAdd ? (
           <>
             <form className={styles.commentForm} onSubmit={handleCommentSubmit}>
-              {/* <textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              /> */}
               <MarkdownCommentEditor value={comment} onChange={setComment} />
               <BlueButton type="submit" text={"Add Comment"} />
             </form>

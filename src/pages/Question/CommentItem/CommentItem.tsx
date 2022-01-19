@@ -147,17 +147,18 @@ const CommentItem: React.FC<CommentProps> = ({
               className={styles.commentBody}
               source={comment.body}
             />
+
             <label>
-              <p>–</p>
+              <div>–</div>
               <Link to={`/users/${comment.user.id}`}>
                 <p className={styles.username}>{comment.user.username}</p>
               </Link>
-              <p>
+              <div>
                 <ReactTimeAgo
                   className={styles.date}
                   date={new Date(comment.createdAt + "Z")}
                 />
-              </p>
+              </div>
               {auth && !onEdit && (
                 <>
                   <button onClick={handleEdit}>
