@@ -72,10 +72,8 @@ const Edit: React.FC = () => {
               console.error(err.response.data);
             } else if (err.response.status === 401) {
               toast.error("Please sign in first");
-              navigate("/login");
             } else if (err.response.status === 404) {
               toast.error("The question does not exist");
-              navigate("/questions");
             } else console.error(err.response.data);
           } else console.error(err);
         } else console.error(err);

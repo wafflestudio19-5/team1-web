@@ -58,10 +58,10 @@ const Question: React.FC = () => {
           if (e.response) {
             if (e.response.status === 400) {
               toast.error("Invalid question id");
-              navigate("/questions");
+              navigate("/questions", { replace: true });
             } else if (e.response.status === 404) {
               toast.error("The question does not exist");
-              navigate("/questions");
+              navigate("/questions", { replace: true });
             } else console.error(e.response.data);
           } else console.error(e);
         } else console.error(e);
@@ -85,11 +85,12 @@ const Question: React.FC = () => {
               toast.error("Invalid answer id");
             } else if (err.response.status === 401) {
               toast.error("Please sign in first!");
-              navigate("/login");
             } else console.error(err.response.data);
           } else console.error(err);
         } else console.error(err);
       }
+    } else {
+      toast.error("Post is empty!");
     }
   };
 

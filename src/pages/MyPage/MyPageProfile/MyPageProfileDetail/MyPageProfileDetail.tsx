@@ -18,8 +18,8 @@ const MyPageProfileDetail = () => {
             }))
             .concat(
               /* TODO make proper answer url */
-              userInfo.answers.map(({ id, questionTitle }) => ({
-                url: `/questions/{question_id}#${id}`,
+              userInfo.answers.map(({ questionTitle }) => ({
+                url: "",
                 title: questionTitle,
                 type: "answer",
               }))
@@ -38,12 +38,6 @@ const MyPageProfileDetail = () => {
           </Link>
         </div>
       </div>
-
-      {/*
-      <div className={styles.detailBox}>
-        <span className={styles.title}>Badges</span>
-      </div>
-       */}
       <div className={styles.detailBox}>
         <span className={styles.title}>Posts</span>
         <ul
