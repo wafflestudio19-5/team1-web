@@ -63,3 +63,24 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
     />
   );
 };
+
+export const MarkdownCommentEditor: React.FC<MarkdownEditorProps> = ({
+  value,
+  onChange,
+}) => {
+  return (
+    <div className={styles.container}>
+      <MDEditor
+        height={80}
+        preview={"edit"}
+        hideToolbar={true}
+        extraCommands={[]}
+        value={value}
+        onChange={onChange}
+        previewOptions={{
+          rehypePlugins: [[rehypeSanitize]],
+        }}
+      />
+    </div>
+  );
+};

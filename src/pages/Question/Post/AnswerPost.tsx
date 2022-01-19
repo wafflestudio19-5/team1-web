@@ -12,7 +12,10 @@ import { api } from "../../../api/api";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
-import { MarkdownViewer } from "../../../Components/Markdown/Markdown";
+import {
+  MarkdownViewer,
+  MarkdownCommentEditor,
+} from "../../../Components/Markdown/Markdown";
 
 interface PostProps {
   answer: Answer;
@@ -32,7 +35,7 @@ const AnswerPost: React.FC<PostProps> = ({
   const { userInfo } = useSessionContext();
   const auth = userInfo?.id === answer.user.id;
   const [onAdd, setOnAdd] = useState<boolean>(false);
-  const [comment, setComment] = useState<string>("");
+  const [comment, setComment] = useState<string | undefined>("");
   const navigate = useNavigate();
 
   const handleAddCommentButton = () => {
@@ -86,7 +89,7 @@ const AnswerPost: React.FC<PostProps> = ({
         toast.error("댓글을 입력해주세요!");
         return;
       }
-      await api.postAnswerComment(answer.id, comment);
+      await api.postAnswerComment(answer.id, comment || "");
       setReset(!reset);
       setOnAdd(false);
       setComment("");
@@ -165,10 +168,11 @@ const AnswerPost: React.FC<PostProps> = ({
         {onAdd ? (
           <>
             <form className={styles.commentForm} onSubmit={handleCommentSubmit}>
-              <textarea
+              {/* <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-              />
+              /> */}
+              <MarkdownCommentEditor value={comment} onChange={setComment} />
               <BlueButton type="submit" text={"Add Comment"} />
             </form>
             <button
