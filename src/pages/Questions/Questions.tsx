@@ -30,7 +30,7 @@ const makePageList = (
     return l;
   } else if (currentPage <= 4) {
     return [1, 2, 3, 4, 5, "...", totalPages];
-  } else if (currentPage >= totalPages - 4) {
+  } else if (currentPage > totalPages - 4) {
     return [
       1,
       "...",
