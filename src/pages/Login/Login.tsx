@@ -10,7 +10,7 @@ import { useSessionContext } from "../../contexts/SessionContext";
 const Login = () => {
   const { userInfo } = useSessionContext();
   return userInfo ? (
-    <Navigate to={"/questions"} />
+    <Navigate to={"/questions"} replace />
   ) : (
     <div className={styles.login}>
       <img

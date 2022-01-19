@@ -55,7 +55,7 @@ const Register = () => {
             } else if (e.response.status === 401) {
               toast.error("Invalid email or password");
             } else if (e.response.status === 409) {
-              toast.error("User name already exists");
+              toast.error("Account with the same email already exists");
             } else {
               console.error(e.response.status, e.response.data);
             }
@@ -68,7 +68,7 @@ const Register = () => {
   };
 
   return userInfo ? (
-    <Navigate to={"/questions"} />
+    <Navigate to={"/questions"} replace />
   ) : (
     <div className={styles.register}>
       <img

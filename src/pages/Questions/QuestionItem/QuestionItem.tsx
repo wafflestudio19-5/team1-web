@@ -4,19 +4,23 @@ import { Link } from "react-router-dom";
 import TagItem from "../../../Components/TagItem/TagItem";
 import { isAnswered, QuestionInterface } from "../../../interface/interface";
 import UserCard from "../../../Components/UserCard/UserCard";
+import RemoveMarkdown from "remove-markdown";
 
 interface QuestionItemProps {
   question: QuestionInterface;
 }
 
+const useQuestionSummary = (markdown: string) => {
+  return useMemo(() => {
+    const pureText = RemoveMarkdown(markdown);
+    return pureText.length > 100
+      ? pureText.substring(0, 100) + "..."
+      : pureText;
+  }, [markdown]);
+};
+
 export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
-  const questionSummary = useMemo(
-    () =>
-      question.body.length > 100
-        ? question.body.substring(0, 100) + "..."
-        : question.body,
-    [question]
-  );
+  const questionSummary = useQuestionSummary(question.body);
   return (
     <div className={styles.questionItem}>
       <div className={styles.sideBar}>

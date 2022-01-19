@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
 import styles from "./Settings.module.scss";
 import { SettingsMenu } from "./SettingsMenu/SettingsMenu";
-import Markdown from "../../../Components/Markdown/Markdown";
+import { MarkdownEditor } from "../../../Components/Markdown/Markdown";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import ImageInputBox from "../../../Components/ImageInputBox/ImageInputBox";
 import dummyProfile from "../../../icons/dummyProfile.svg";
@@ -156,9 +156,11 @@ export const Settings: FC<SettingsProps> = () => {
             onInput={inputChange}
           />
           <label htmlFor={"about-me"}>About me</label>
+
           <Markdown
             onChange={(value) => changeAboutMe(value)}
             value={editInfo?.aboutMe ?? ""}
+
           />
         </div>
         <h3>Links</h3>

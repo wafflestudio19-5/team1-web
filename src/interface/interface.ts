@@ -87,4 +87,5 @@ export type EditInfo = {
   aboutMe: string | null;
   websiteLink: string | null;
   githubLink: string | null;
+
 };

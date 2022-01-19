@@ -1,15 +1,24 @@
-import React from "react";
+import React, { FC } from "react";
 
 import MDEditor from "@uiw/react-md-editor";
-
 import styles from "./Markdown.module.scss";
+import rehypeSanitize from "rehype-sanitize";
+import { uriTransformer } from "react-markdown";
 
-interface MarkdownProps {
+interface MarkdownEditorProps {
   value: string | undefined;
   onChange: (state: string | undefined) => void;
 }
 
-const Markdown: React.FC<MarkdownProps> = ({ value, onChange }) => {
+interface MarkdownViewerProps {
+  className?: string;
+  source?: string;
+}
+
+export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
+  value,
+  onChange,
+}) => {
   return (
     <div className={styles.container}>
       <MDEditor
@@ -19,10 +28,35 @@ const Markdown: React.FC<MarkdownProps> = ({ value, onChange }) => {
         extraCommands={[]}
         value={value}
         onChange={onChange}
+        previewOptions={{
+          rehypePlugins: [[rehypeSanitize]],
+        }}
       />
-      <MDEditor.Markdown source={value} />
+      <MarkdownViewer source={value} />
     </div>
   );
 };
 
-export default Markdown;
+const myUriTransformer = (url: string) => {
+  const transformed = uriTransformer(url);
+  const protocols = ["http", "https", "mailto", "tel"];
+  return transformed === "" ||
+    protocols.some((protocol) => transformed.startsWith(protocol))
+    ? transformed
+    : "https://" + transformed;
+};
+
+export const MarkdownViewer: FC<MarkdownViewerProps> = ({
+  className,
+  source,
+}) => {
+  return (
+    <MDEditor.Markdown
+      className={className}
+      source={source}
+      rehypePlugins={[[rehypeSanitize]]}
+      transformLinkUri={myUriTransformer}
+      transformImageUri={myUriTransformer}
+    />
+  );
+};

@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
-import Markdown from "../../Components/Markdown/Markdown";
+import { MarkdownEditor } from "../../Components/Markdown/Markdown";
 import { api } from "../../api/api";
 import { isAnswered, QuestionInterface } from "../../interface/interface";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -35,7 +35,6 @@ const Question: React.FC = () => {
   // const filter = query.get("answertab") ?? "Votes";
   const { userInfo } = useSessionContext();
   const { id } = useParams();
-  const [loading, setLoading] = useState<boolean>(true);
   const isQuestionAnswered = useMemo(() => {
     return questionData ? isAnswered(questionData) : false;
   }, [questionData]);
@@ -54,16 +53,15 @@ const Question: React.FC = () => {
     const doIt = async () => {
       try {
         setQuestionData(await api.getQuestion(Number(id)));
-        setLoading(false);
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
             if (e.response.status === 400) {
               toast.error("Invalid question id");
-              navigate("/questions");
+              navigate("/questions", { replace: true });
             } else if (e.response.status === 404) {
               toast.error("The question does not exist");
-              navigate("/questions");
+              navigate("/questions", { replace: true });
             } else console.error(e.response.data);
           } else console.error(e);
         } else console.error(e);
@@ -87,49 +85,45 @@ const Question: React.FC = () => {
               toast.error("Invalid answer id");
             } else if (err.response.status === 401) {
               toast.error("Please sign in first!");
-              navigate("/login");
             } else console.error(err.response.data);
           } else console.error(err);
         } else console.error(err);
       }
+    } else {
+      toast.error("Post is empty!");
     }
   };
 
   return questionData ? (
     <div className={styles.Question}>
-      {loading ? (
-        <div className={styles.Loading}>
-          <BeatLoader size={20} />
-        </div>
-      ) : (
-        <div className={styles.Content}>
-          <section className={styles.questionHeader}>
-            <h1>{questionData?.title}</h1>
-            <Link to="/questions/ask">
-              <BlueButton text={"Ask Question"} />
-            </Link>
-          </section>
-          <ul className={styles.postInfo}>
-            <li>
-              <span>Asked</span>
-              <ReactTimeAgo date={new Date(questionData.createdAt + "Z")} />
-            </li>
-          </ul>
+      <div className={styles.Content}>
+        <section className={styles.questionHeader}>
+          <h1>{questionData?.title}</h1>
+          <Link to="/questions/ask">
+            <BlueButton text={"Ask Question"} />
+          </Link>
+        </section>
+        <ul className={styles.postInfo}>
+          <li>
+            <span>Asked</span>
+            <ReactTimeAgo date={new Date(questionData.createdAt + "Z")} />
+          </li>
+        </ul>
 
-          <section className={styles.main}>
-            <QuestionPost
-              question={questionData}
-              reset={reset}
-              setReset={setReset}
-            />
-            <div className={styles.Answers}>
-              <div className={styles.answerBar}>
-                <h2>
-                  {questionData.answers
-                    ? `${questionData.answers.length} Answers`
-                    : "Your Answer"}
-                </h2>
-                {/*
+        <section className={styles.main}>
+          <QuestionPost
+            question={questionData}
+            reset={reset}
+            setReset={setReset}
+          />
+          <div className={styles.Answers}>
+            <div className={styles.answerBar}>
+              <h2>
+                {questionData.answers
+                  ? `${questionData.answers.length} Answers`
+                  : "Your Answer"}
+              </h2>
+              {/*
                 <div className={styles.filterList}>
                   {FILTERS.map((value) => (
                     <Link
@@ -144,34 +138,37 @@ const Question: React.FC = () => {
                   ))}
                 </div>
                 */}
+            </div>
+            {sortedAnswerPosts?.map((answer) => (
+              <AnswerPost
+                key={answer.id}
+                answer={answer}
+                questionId={questionData.id}
+                reset={reset}
+                setReset={setReset}
+                isAcceptable={
+                  !isQuestionAnswered && userInfo?.id === questionData.user.id
+                }
+              />
+            ))}
+          </div>
+          <div className={styles.writeAnswer}>
+            <h2>Your Answer</h2>
+            <form onSubmit={handleSubmit}>
+              <MarkdownEditor value={answer} onChange={setAnswer} />
+              <div>
+                <BlueButton type="submit" text={"Post Your Answer"} />
               </div>
-              {sortedAnswerPosts?.map((answer) => (
-                <AnswerPost
-                  key={answer.id}
-                  answer={answer}
-                  questionId={questionData.id}
-                  reset={reset}
-                  setReset={setReset}
-                  isAcceptable={
-                    !isQuestionAnswered && userInfo?.id === questionData.user.id
-                  }
-                />
-              ))}
-            </div>
-            <div className={styles.writeAnswer}>
-              <h2>Your Answer</h2>
-              <form onSubmit={handleSubmit}>
-                <Markdown value={answer} onChange={setAnswer} />
-                <div>
-                  <BlueButton type="submit" text={"Post Your Answer"} />
-                </div>
-              </form>
-            </div>
-          </section>
-        </div>
-      )}
+            </form>
+          </div>
+        </section>
+      </div>
     </div>
-  ) : null;
+  ) : (
+    <div className={styles.Loading}>
+      <BeatLoader size={20} />
+    </div>
+  );
 };
 
 export default Question;

@@ -1,21 +1,18 @@
 import React, { useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
-
-import MDEditor from "@uiw/react-md-editor";
-
+import { Link } from "react-router-dom";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import UserCard from "../../../Components/UserCard/UserCard";
 import { Answer } from "../../../interface/interface";
 import CommentItem from "../CommentItem/CommentItem";
 import Vote from "../Vote/Vote";
 import { useSessionContext } from "../../../contexts/SessionContext";
-
 import styles from "./Post.module.scss";
 import { api } from "../../../api/api";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
+import { MarkdownViewer } from "../../../Components/Markdown/Markdown";
 
 interface PostProps {
   answer: Answer;
@@ -36,7 +33,14 @@ const AnswerPost: React.FC<PostProps> = ({
   const auth = userInfo?.id === answer.user.id;
   const [onAdd, setOnAdd] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
-  const navigate = useNavigate();
+
+  const handleAddCommentButton = () => {
+    if (userInfo) {
+      setOnAdd(!onAdd);
+    } else {
+      toast.warn("로그인을 먼저 해주세요");
+    }
+  };
 
   const handleDelete = () => {
     confirmAlert({
@@ -54,7 +58,6 @@ const AnswerPost: React.FC<PostProps> = ({
               if (axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 401) {
                   toast.error("Please sign in first!");
-                  navigate("/singin");
                 } else if (err.response.status === 403) {
                   toast.error("Cannot delete other user's answer");
                 } else if (err.response.status === 404) {
@@ -78,7 +81,7 @@ const AnswerPost: React.FC<PostProps> = ({
     e.preventDefault();
     try {
       if (comment === "") {
-        toast.error("답변을 입력해주세요!");
+        toast.error("댓글을 입력해주세요!");
         return;
       }
       await api.postAnswerComment(answer.id, comment);
@@ -90,7 +93,6 @@ const AnswerPost: React.FC<PostProps> = ({
       if (axios.isAxiosError(err) && err.response) {
         if (err.response.status === 401) {
           toast.error("Please sign in first!");
-          navigate("/login");
         } else if (err.response.status === 404) {
           toast.error("The answer does not exist");
         } else if (err.response.status === 405) {
@@ -101,7 +103,7 @@ const AnswerPost: React.FC<PostProps> = ({
   };
 
   return (
-    <div className={styles.answerPostLayout}>
+    <div className={styles.answerPostLayout} id={`answer-${answer.id}`}>
       <div className={styles.voteCell}>
         <Vote
           vote={answer.votes}
@@ -115,7 +117,7 @@ const AnswerPost: React.FC<PostProps> = ({
       </div>
       <div className={styles.postCell}>
         <div className={styles.postBody}>
-          <MDEditor.Markdown className={styles.body} source={answer.body} />
+          <MarkdownViewer className={styles.body} source={answer.body} />
         </div>
 
         <div className={styles.itemFooter}>
@@ -177,9 +179,7 @@ const AnswerPost: React.FC<PostProps> = ({
         ) : (
           <button
             className={styles.addComment}
-            onClick={() => {
-              setOnAdd(!onAdd);
-            }}
+            onClick={handleAddCommentButton}
           >
             Add a comment
           </button>

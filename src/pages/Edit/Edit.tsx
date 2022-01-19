@@ -3,13 +3,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
-import Markdown from "../../Components/Markdown/Markdown";
+import { MarkdownEditor } from "../../Components/Markdown/Markdown";
+import { removeSpace } from "../../interface/interface";
 
 import { api } from "../../api/api";
-
-import styles from "./Edit.module.scss";
 import axios from "axios";
 import { toast } from "react-toastify";
+
+import styles from "./Edit.module.scss";
 
 const Edit: React.FC = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const Edit: React.FC = () => {
   //   title: string;
   //   body: string | undefined;
   // }>({ title: "", body: "" });
+  const [submit, setSubmit] = useState<boolean>(false);
   const [values, setValues] = useState<{
     title: string;
     body: string | undefined;
@@ -43,13 +45,20 @@ const Edit: React.FC = () => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (values.body) {
+      if (removeSpace(values.body).length < 1) {
+        return;
+      }
       try {
         // const editedTitle =
         //   values.title === orgValues.title ? "" : values.title;
         // const editedBody = values.body === orgValues.body ? "" : values.body;
-        if (Number(questionId) === Number(id) && values.title.length > 5) {
-          await api.editQuestion(Number(id), values.title, values.body);
-          toast.info("Question edited!");
+        if (Number(questionId) === Number(id)) {
+          if (removeSpace(values.title).length < 5) {
+            return;
+          } else {
+            await api.editQuestion(Number(id), values.title, values.body);
+            toast.info("Question edited!");
+          }
         } else {
           await api.editAnswer(Number(id), values.body);
           toast.info("Answer edited!");
@@ -63,10 +72,8 @@ const Edit: React.FC = () => {
               console.error(err.response.data);
             } else if (err.response.status === 401) {
               toast.error("Please sign in first");
-              navigate("/login");
             } else if (err.response.status === 404) {
               toast.error("The question does not exist");
-              navigate("/questions");
             } else console.error(err.response.data);
           } else console.error(err);
         } else console.error(err);
@@ -95,9 +102,9 @@ const Edit: React.FC = () => {
               value={values.title}
               onChange={handleTitleChange}
             />
-            {values.title.length < 5 ? (
+            {submit && removeSpace(values.title).length < 5 ? (
               <p className={styles.errorMessage}>
-                {"Title must be at least 5 characters."}
+                {"Title must be at least 5 characters without space."}
               </p>
             ) : null}
           </div>
@@ -109,8 +116,8 @@ const Edit: React.FC = () => {
             Include all the information someone would need to answer your
             question
           </p>
-          <Markdown value={values.body} onChange={handleBodyChange} />
-          {!values.body ? (
+          <MarkdownEditor value={values.body} onChange={handleBodyChange} />
+          {submit && !removeSpace(values.body || "") ? (
             <p className={styles.errorMessage}>{"Body is missing."}</p>
           ) : null}
         </div>
@@ -125,7 +132,11 @@ const Edit: React.FC = () => {
           />
         </div> */}
         <div className={styles.postButtons}>
-          <BlueButton type="submit" text={"Save edits"} />
+          <BlueButton
+            type="submit"
+            text={"Save edits"}
+            onClick={() => setSubmit(true)}
+          />
           <button
             className={styles.cancelButton}
             onClick={() => navigate(`/questions/${questionId}`)}

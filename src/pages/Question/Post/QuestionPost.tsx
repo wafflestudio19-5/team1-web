@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-
-import MDEditor from "@uiw/react-md-editor";
-
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import TagItem from "../../../Components/TagItem/TagItem";
 import UserCard from "../../../Components/UserCard/UserCard";
@@ -13,10 +10,10 @@ import Vote from "../Vote/Vote";
 import { api } from "../../../api/api";
 import { useSessionContext } from "../../../contexts/SessionContext";
 import { toast } from "react-toastify";
-
 import styles from "./Post.module.scss";
 import axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
+import { MarkdownViewer } from "../../../Components/Markdown/Markdown";
 
 interface PostProps {
   question: QuestionInterface;
@@ -31,13 +28,21 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
   const [comment, setComment] = useState<string>("");
   const navigate = useNavigate();
 
+  const handleAddCommentButton = () => {
+    if (userInfo) {
+      setOnAdd(!onAdd);
+    } else {
+      toast.warn("로그인을 먼저 해주세요");
+    }
+  };
+
   const handleCommentSubmit: React.FormEventHandler<HTMLFormElement> = async (
     e
   ) => {
     e.preventDefault();
     try {
       if (comment === "") {
-        toast.error("답변을 입력해주세요!");
+        toast.error("댓글을 입력해주세요!");
         return;
       }
       await api.postQuestionComment(question.id, comment);
@@ -49,7 +54,6 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
       if (axios.isAxiosError(err) && err.response) {
         if (err.response.status === 401) {
           toast.error("Please sign in first!");
-          navigate("/login");
         } else if (err.response.status === 400) {
           toast.error("Invalid question id");
         } else console.error(err.response.data);
@@ -78,7 +82,6 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
                     toast.error("Cannot delete other user's question");
                   } else {
                     toast.error("Please sign in first");
-                    navigate("/login");
                   }
                 }
               } else console.error(err);
@@ -92,22 +95,6 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
       ],
     });
   };
-
-  // const addComment = async () => {
-  //   try {
-  //     if (comment === "") {
-  //       toast.error("답변을 입력해주세요!");
-  //       return;
-  //     }
-  //     await api.postQuestionComment(question.id, comment);
-
-  //     // setReset(!reset);
-  //     setComment("");
-  //     navigate(`/questions/${question.id}`);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
 
   return (
     <div className={styles.questionPostLayout}>
@@ -124,7 +111,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
       </div>
       <div className={styles.postCell}>
         <div className={styles.postBody}>
-          <MDEditor.Markdown className={styles.body} source={question.body} />
+          <MarkdownViewer className={styles.body} source={question.body} />
         </div>
 
         <div className={styles.tagList}>
@@ -195,9 +182,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
         ) : (
           <button
             className={styles.addComment}
-            onClick={() => {
-              setOnAdd(!onAdd);
-            }}
+            onClick={handleAddCommentButton}
           >
             Add a comment
           </button>

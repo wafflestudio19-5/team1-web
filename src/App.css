@@ -4,7 +4,7 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
-  font-family: "BMHANNA_11yrs";
+  font-family: "Noto Sans CJK KR";
 }
 
 ul {
@@ -29,6 +29,37 @@ a {
 }
 
 @font-face {
-  font-family: "BMHANNA_11yrs";
-  src: url("./fonts/BMHANNA_11yrs_ttf.ttf");
+  font-family: "Noto Sans CJK KR";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./fonts/NotoSansKR-Light.woff2") format("woff2"),
+    url("./fonts/NotoSansKR-Light.woff") format("woff"),
+    url("./fonts/NotoSansKR-Light.otf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans CJK KR";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./fonts/NotoSansKR-Regular.woff2") format("woff2"),
+    url("./fonts/NotoSansKR-Regular.woff") format("woff"),
+    url("./fonts/NotoSansKR-Regular.otf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans CJK KR";
+  font-style: normal;
+  font-weight: 500;
+  src: url("./fonts/NotoSansKR-Medium.woff2") format("woff2"),
+    url("./fonts/NotoSansKR-Medium.woff") format("woff"),
+    url("./fonts/NotoSansKR-Medium.otf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans CJK KR";
+  font-style: normal;
+  font-weight: bold;
+  src: url("./fonts/NotoSansKR-Bold.woff2") format("woff2"),
+    url("./fonts/NotoSansKR-Bold.woff") format("woff"),
+    url("./fonts/NotoSansKR-Bold.otf") format("truetype");
 }
