@@ -1,4 +1,11 @@
-import React, { useCallback } from "react";
+import React, {
+  ChangeEventHandler,
+  KeyboardEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import styles from "./NavBar.module.scss";
@@ -7,6 +14,11 @@ import { toast } from "react-toastify";
 
 type NavBarProps = {
   noLeftBarPage: Array<string>;
+};
+
+const useQuery = () => {
+  const { search } = useLocation();
+  return useMemo(() => new URLSearchParams(search), [search]);
 };
 
 const NavBar: React.FC<NavBarProps> = () => {
@@ -25,6 +37,28 @@ const NavBar: React.FC<NavBarProps> = () => {
     };
     doIt().then();
   }, [navigate, signout]);
+  const query = useQuery();
+  const initialSearch = useMemo(() => query.get("q"), [query]);
+  const [search, setSearch] = useState("");
+  useEffect(() => {
+    setSearch(initialSearch || "");
+  }, [initialSearch]);
+  const onSearchChange: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      setSearch(e.target.value);
+    },
+    []
+  );
+  const onSearchEnter: KeyboardEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const params = new URLSearchParams({ q: search });
+        navigate("/questions?" + params.toString());
+      }
+    },
+    [navigate, search]
+  );
 
   return (
     <div className={styles.navBar}>
@@ -46,7 +80,12 @@ const NavBar: React.FC<NavBarProps> = () => {
             <Link to="/questions">Questions</Link>
           </li>
         </ul>
-        {/* <input className={styles.searchBox} /> */}
+        <input
+          className={styles.searchBox}
+          onChange={onSearchChange}
+          onKeyPress={onSearchEnter}
+          value={search}
+        />
         {!userInfo ? (
           <div className={styles.buttonList}>
             <Link

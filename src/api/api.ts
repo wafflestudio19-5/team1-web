@@ -51,6 +51,12 @@ setHeaderToken(loadToken());
 
 export interface EmptyBody {}
 
+interface QuestionListResponse {
+  content: QuestionInterface[];
+  totalElements: number;
+  totalPages: number;
+}
+
 export const api = {
   ping: async () => (await instance.get<string>("/api/ping/")).data,
 
@@ -89,11 +95,25 @@ export const api = {
     params.set("page", String(page));
     params.set("sort", `${sortCriteria},${order}`);
     return (
-      await instance.get<{
-        content: QuestionInterface[];
-        totalElements: number;
-        totalPages: number;
-      }>("/api/question/?" + params.toString())
+      await instance.get<QuestionListResponse>(
+        "/api/question/?" + params.toString()
+      )
+    ).data;
+  },
+  searchQuestion: async (
+    keyword: string,
+    page: number,
+    sortCriteria: SortCriteria,
+    order: SortOrder
+  ) => {
+    const params = new URLSearchParams({
+      page: String(page),
+      sort: `${sortCriteria},${order}`,
+    });
+    return (
+      await instance.get<QuestionListResponse>(
+        `/api/question/search/${keyword}/?` + params.toString()
+      )
     ).data;
   },
   postQuestion: async (title: string, body: string) =>
