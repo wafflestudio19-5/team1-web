@@ -1,8 +1,7 @@
 .commentContent {
-  display: flex;
   width: 100%;
   font-size: 13px;
-  line-height: 1.4;
+  padding: 10px;
 
   border-color: hsl(210, 8%, 95%);
   border-bottom-style: solid;
@@ -24,18 +23,13 @@
   }
 
   span {
-    margin: 10px;
-    color: hsl(210, 8%, 55%);
-  }
-
-  p {
-    word-wrap: break-word;
-    margin: 10px;
-    flex-wrap: wrap;
+    overflow-wrap: break-word;
   }
 
   label {
-    display: flex;
+    display: inline-flex;
+    white-space: nowrap;
+    align-items: center;
 
     .username {
       border: none;
@@ -53,6 +47,10 @@
       margin-left: 0;
       color: hsl(210, 8%, 55%);
     }
+
+    div {
+      margin: 0 3px;
+    }
   }
 }
 
@@ -60,8 +58,6 @@
 .deleteButton {
   width: 15px;
   height: 15px;
-  margin: 5px;
-  margin-left: 0;
   color: hsl(210, 8%, 55%);
 }
 
