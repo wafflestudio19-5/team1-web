@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import UserCard from "../../../Components/UserCard/UserCard";
 import { Answer } from "../../../interface/interface";
@@ -36,7 +36,6 @@ const AnswerPost: React.FC<PostProps> = ({
   const auth = userInfo?.id === answer.user.id;
   const [onAdd, setOnAdd] = useState<boolean>(false);
   const [comment, setComment] = useState<string | undefined>("");
-  const navigate = useNavigate();
 
   const handleAddCommentButton = () => {
     if (userInfo) {
@@ -62,7 +61,6 @@ const AnswerPost: React.FC<PostProps> = ({
               if (axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 401) {
                   toast.error("Please sign in first!");
-                  navigate("/singin");
                 } else if (err.response.status === 403) {
                   toast.error("Cannot delete other user's answer");
                 } else if (err.response.status === 404) {
@@ -98,7 +96,6 @@ const AnswerPost: React.FC<PostProps> = ({
       if (axios.isAxiosError(err) && err.response) {
         if (err.response.status === 401) {
           toast.error("Please sign in first!");
-          navigate("/login");
         } else if (err.response.status === 404) {
           toast.error("The answer does not exist");
         } else if (err.response.status === 405) {
@@ -109,7 +106,7 @@ const AnswerPost: React.FC<PostProps> = ({
   };
 
   return (
-    <div className={styles.answerPostLayout}>
+    <div className={styles.answerPostLayout} id={`answer-${answer.id}`}>
       <div className={styles.voteCell}>
         <Vote
           vote={answer.votes}

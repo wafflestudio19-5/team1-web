@@ -8,7 +8,6 @@ import BlueButton from "../../Components/BlueButton/BlueButton";
 import { QuestionInterface } from "../../interface/interface";
 import { api, SortCriteria, SortOrder } from "../../api/api";
 import axios from "axios";
-import { useSessionContext } from "../../contexts/SessionContext";
 import BeatLoader from "react-spinners/BeatLoader";
 
 const useQuery = () => {
@@ -81,7 +80,6 @@ const Questions = () => {
     () => makePageList(page, pageCount),
     [page, pageCount]
   );
-  const { userInfo } = useSessionContext();
 
   // get data
   useEffect(() => {
@@ -110,15 +108,9 @@ const Questions = () => {
       <div className={styles.header}>
         <div className={styles.topBar}>
           <h1>All Questions</h1>
-          {userInfo ? (
-            <Link to="/questions/ask">
-              <BlueButton text={"Ask Question"} />
-            </Link>
-          ) : (
-            <Link to="/login">
-              <BlueButton text={"Ask Question"} />
-            </Link>
-          )}
+          <Link to="/questions/ask">
+            <BlueButton text={"Ask Question"} />
+          </Link>
         </div>
         <div className={styles.secondBar}>
           <div className={styles.total}>

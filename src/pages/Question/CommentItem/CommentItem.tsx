@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { QuestionComment, AnswerComment } from "../../../interface/interface";
 
@@ -39,7 +39,6 @@ const CommentItem: React.FC<CommentProps> = ({
   const auth = userInfo?.id === comment.user.id;
   const [onEdit, setOnEdit] = useState<boolean>(false);
   const [edited, setEdited] = useState<string | undefined>("");
-  const navigate = useNavigate();
 
   const handleEdit = () => {
     setOnEdit(!onEdit);
@@ -71,7 +70,6 @@ const CommentItem: React.FC<CommentProps> = ({
                         toast.error("Cannot remove other user's comment");
                       } else {
                         toast.error("Please sign in first");
-                        navigate("/login");
                       }
                     } else if (err.response.status === 404) {
                       toast.error("The comment does not exist");
@@ -114,7 +112,6 @@ const CommentItem: React.FC<CommentProps> = ({
               toast.error("Invalid comment id or content");
             } else if (err.response.status === 401) {
               toast.error("Please sign in first");
-              navigate("/login");
             } else if (err.response.status === 404) {
               toast.error("The comment does not exist");
             } else console.error(err.response.data);

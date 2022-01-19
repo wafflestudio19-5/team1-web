@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { MarkdownEditor } from "../../Components/Markdown/Markdown";
@@ -53,13 +53,14 @@ const Ask: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!userInfo) {
+    if (userInfo === null) {
       toast.error("Please sign in to ask a question!");
-      navigate("/login");
     }
   }, [navigate, userInfo]);
 
-  return (
+  return userInfo === null ? (
+    <Navigate to={"/login"} replace />
+  ) : (
     <div className={styles.ask}>
       <div className={styles.header}>
         <h1>Ask a public question</h1>
