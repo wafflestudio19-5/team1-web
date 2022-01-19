@@ -1,5 +1,9 @@
 import React from "react";
+
+import { Link } from "react-router-dom";
+
 import { User } from "../../interface/interface";
+
 import styles from "./UserCard.module.scss";
 import dummyProfile from "../../icons/dummyProfile.svg";
 import ReactTimeAgo from "react-time-ago";
@@ -10,12 +14,18 @@ const UserCard: React.FC<{
   isQuestion?: boolean;
   isEdited: boolean;
   questionId?: number;
-}> = ({ user, date, isQuestion = false }) => {
+}> = ({ user, date, isQuestion = false, questionId }) => {
   return (
     <div className={styles.activity}>
-      <span className={styles.action}>
-        {isQuestion ? "asked" : "answered"} <ReactTimeAgo date={date} />
-      </span>
+      {isQuestion ? (
+        <Link to={`/questions/${questionId}`} className={styles.action}>
+          asked <ReactTimeAgo date={date} />
+        </Link>
+      ) : (
+        <span className={styles.action}>
+          answered <ReactTimeAgo date={date} />
+        </span>
+      )}
       <div>
         <img
           src={dummyProfile}
