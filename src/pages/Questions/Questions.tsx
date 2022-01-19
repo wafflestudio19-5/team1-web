@@ -17,10 +17,7 @@ const useQuery = () => {
 
 const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
   { label: "Newest", criteria: "createdAt", order: "desc" },
-  // "Active",
-  // "Unanswered",
-  // "Frequent",
-  // { label: "Votes", criteria: "votes", order: "desc" },
+  // { label: "Votes", criteria: "voteCount", order: "asc" },
 ];
 
 const makePageList = (

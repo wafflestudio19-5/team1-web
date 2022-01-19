@@ -18,7 +18,7 @@ interface SignupResponse extends UserInfoResponse {
   accessToken: string;
 }
 
-export type SortCriteria = "id" | "createdAt" | "updatedAt" | "votes";
+export type SortCriteria = "createdAt" | "voteCount";
 export type SortOrder = "asc" | "desc";
 
 const setHeaderToken = (newToken: string | null) => {
@@ -82,7 +82,7 @@ export const api = {
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
   getQuestionList: async (
     page = 0,
-    sortCriteria: SortCriteria = "id",
+    sortCriteria: SortCriteria = "createdAt",
     order: SortOrder = "desc"
   ) => {
     const params = new URLSearchParams();
