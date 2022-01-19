@@ -168,7 +168,11 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
         {onAdd ? (
           <>
             <form className={styles.commentForm} onSubmit={handleCommentSubmit}>
-              <MarkdownCommentEditor value={comment} onChange={setComment} />
+              <MarkdownCommentEditor
+                className={styles.container}
+                value={comment}
+                onChange={setComment}
+              />
               <BlueButton type="submit" text={"Add Comment"} />
             </form>
             <button

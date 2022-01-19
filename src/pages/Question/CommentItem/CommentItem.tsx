@@ -127,11 +127,11 @@ const CommentItem: React.FC<CommentProps> = ({
         {onEdit ? (
           <div className={styles.commetEdit}>
             <form onSubmit={handleEditSubmit}>
-              {/* <textarea
+              <MarkdownCommentEditor
+                className={styles.container}
                 value={edited}
-                onChange={(e) => setEdited(e.target.value)}
-              /> */}
-              <MarkdownCommentEditor value={edited} onChange={setEdited} />
+                onChange={setEdited}
+              />
               <BlueButton type="submit" text={"Save edits"} />
             </form>
             <button
