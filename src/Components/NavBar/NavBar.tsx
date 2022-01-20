@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import styles from "./NavBar.module.scss";
 import { useSessionContext } from "../../contexts/SessionContext";
@@ -10,9 +10,7 @@ type NavBarProps = {
 };
 
 const NavBar: React.FC<NavBarProps> = () => {
-  useLocation();
   const { signout, userInfo } = useSessionContext();
-  const navigate = useNavigate();
   const onSignoutButton = useCallback(() => {
     const doIt = async () => {
       try {
@@ -20,11 +18,10 @@ const NavBar: React.FC<NavBarProps> = () => {
       } catch (e) {
         console.error(e);
       }
-      navigate("/login");
       toast.info("signed out");
     };
     doIt().then();
-  }, [navigate, signout]);
+  }, [signout]);
 
   return (
     <div className={styles.navBar}>
