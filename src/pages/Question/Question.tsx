@@ -1,7 +1,6 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 
-import { useParams, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { MarkdownEditor } from "../../Components/Markdown/Markdown";
@@ -94,14 +93,20 @@ const Question: React.FC = () => {
     }
   };
 
+  const onAskButtonClick = useCallback(() => {
+    if (userInfo) {
+      navigate("/questions/ask");
+    } else {
+      toast.error("Please log in first");
+    }
+  }, [navigate, userInfo]);
+
   return questionData ? (
     <div className={styles.Question}>
       <div className={styles.Content}>
         <section className={styles.questionHeader}>
           <h1>{questionData?.title}</h1>
-          <Link to="/questions/ask">
-            <BlueButton text={"Ask Question"} />
-          </Link>
+          <BlueButton text={"Ask Question"} onClick={onAskButtonClick} />
         </section>
         <ul className={styles.postInfo}>
           <li>
