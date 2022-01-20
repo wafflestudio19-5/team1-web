@@ -15,7 +15,7 @@ const UserCard: React.FC<{
   isQuestion?: boolean;
   isEdited: boolean;
   questionId?: number;
-}> = ({ user, date, isQuestion = false, questionId }) => {
+}> = ({ user, date, isQuestion = false, isEdited, questionId }) => {
   const daysBetween = new Date().getDate() - new Date(date).getDate();
   const dayFormat =
     dayjs(date).format(" YY/MM/DD") + " at " + dayjs(date).format("HH:mm");
@@ -41,6 +41,7 @@ const UserCard: React.FC<{
         <Link to={`/users/${user.id}`} className={styles.name}>
           {user.username}
         </Link>
+        {isEdited && <span className={styles.edited}>(edited)</span>}
       </div>
     </div>
   );
