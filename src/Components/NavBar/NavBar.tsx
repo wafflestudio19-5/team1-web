@@ -31,11 +31,10 @@ const NavBar: React.FC<NavBarProps> = () => {
       } catch (e) {
         console.error(e);
       }
-      navigate("/login");
       toast.info("signed out");
     };
     doIt().then();
-  }, [navigate, signout]);
+  }, [signout]);
   const query = useQuery();
   const initialSearch = useMemo(() => query.get("q"), [query]);
   const [search, setSearch] = useState("");

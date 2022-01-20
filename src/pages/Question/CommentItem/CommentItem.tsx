@@ -118,7 +118,6 @@ const CommentItem: React.FC<CommentProps> = ({
   return (
     <>
       <div className={styles.commentContent}>
-        <span />
         {onEdit ? (
           <div>
             <form onSubmit={handleEditSubmit}>
@@ -137,30 +136,29 @@ const CommentItem: React.FC<CommentProps> = ({
           </div>
         ) : (
           <>
-            <p>{comment.body}</p>
+            <span>{comment.body}</span>
             <label>
-              <p>–</p>
+              <div>–</div>
               {/*<Link to={`/users/${comment.user.id}`}>*/}
-              <p className={styles.username}>{comment.user.username}</p>
+              <div className={styles.username}>{comment.user.username}</div>
               {/*</Link>*/}
-              <p>
+              <div>
                 <ReactTimeAgo
                   className={styles.date}
                   date={new Date(comment.createdAt + "Z")}
                 />
-              </p>
+              </div>
+              {auth && !onEdit && (
+                <>
+                  <button onClick={handleEdit}>
+                    <Edit className={styles.editButton} />
+                  </button>
+                  <button onClick={handleDelete}>
+                    <Delete className={styles.deleteButton} />
+                  </button>
+                </>
+              )}
             </label>
-          </>
-        )}
-
-        {auth && !onEdit && (
-          <>
-            <button onClick={handleEdit}>
-              <Edit className={styles.editButton} />
-            </button>
-            <button onClick={handleDelete}>
-              <Delete className={styles.deleteButton} />
-            </button>
           </>
         )}
       </div>
