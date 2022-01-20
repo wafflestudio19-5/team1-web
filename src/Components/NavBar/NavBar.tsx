@@ -22,7 +22,6 @@ const useQuery = () => {
 };
 
 const NavBar: React.FC<NavBarProps> = () => {
-  useLocation();
   const { signout, userInfo } = useSessionContext();
   const navigate = useNavigate();
   const onSignoutButton = useCallback(() => {
