@@ -18,7 +18,7 @@ interface SignupResponse extends UserInfoResponse {
   accessToken: string;
 }
 
-export type SortCriteria = "id" | "createdAt" | "updatedAt" | "votes";
+export type SortCriteria = "createdAt" | "voteCount";
 export type SortOrder = "asc" | "desc";
 
 const setHeaderToken = (newToken: string | null) => {
@@ -51,6 +51,12 @@ setHeaderToken(loadToken());
 
 export interface EmptyBody {}
 
+interface QuestionListResponse {
+  content: QuestionInterface[];
+  totalElements: number;
+  totalPages: number;
+}
+
 export const api = {
   ping: async () => (await instance.get<string>("/api/ping/")).data,
 
@@ -82,18 +88,32 @@ export const api = {
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
   getQuestionList: async (
     page = 0,
-    sortCriteria: SortCriteria = "id",
+    sortCriteria: SortCriteria = "createdAt",
     order: SortOrder = "desc"
   ) => {
     const params = new URLSearchParams();
     params.set("page", String(page));
     params.set("sort", `${sortCriteria},${order}`);
     return (
-      await instance.get<{
-        content: QuestionInterface[];
-        totalElements: number;
-        totalPages: number;
-      }>("/api/question/?" + params.toString())
+      await instance.get<QuestionListResponse>(
+        "/api/question/?" + params.toString()
+      )
+    ).data;
+  },
+  searchQuestion: async (
+    keyword: string,
+    page: number,
+    sortCriteria: SortCriteria,
+    order: SortOrder
+  ) => {
+    const params = new URLSearchParams({
+      page: String(page),
+      sort: `${sortCriteria},${order}`,
+    });
+    return (
+      await instance.get<QuestionListResponse>(
+        `/api/question/search/${keyword}/?` + params.toString()
+      )
     ).data;
   },
   postQuestion: async (title: string, body: string) =>
