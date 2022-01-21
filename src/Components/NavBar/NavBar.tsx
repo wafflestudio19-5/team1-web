@@ -105,6 +105,7 @@ const NavBar: React.FC<NavBarProps> = () => {
             <Link
               to={"/mypage?tab=profile"}
               className={styles.profileContainer}
+              title={userInfo.username}
             >
               <img
                 className={styles.profile}
