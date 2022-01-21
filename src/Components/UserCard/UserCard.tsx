@@ -14,23 +14,37 @@ const UserCard: React.FC<{
   date: Date;
   isQuestion?: boolean;
   isEdited: boolean;
+  edited?: Date;
   questionId?: number;
-}> = ({ user, date, isQuestion = false, isEdited, questionId }) => {
+}> = ({ user, date, isQuestion = false, isEdited, edited, questionId }) => {
   const daysBetween = new Date().getDate() - new Date(date).getDate();
   const dayFormat =
     dayjs(date).format(" YY/MM/DD") + " at " + dayjs(date).format("HH:mm");
+  const editedDayFormat = edited
+    ? dayjs(edited).format(" YY/MM/DD") + " at " + dayjs(edited).format("HH:mm")
+    : null;
 
   return (
     <div className={styles.activity}>
       {isQuestion ? (
-        <Link to={`/questions/${questionId}`} className={styles.action}>
-          asked {daysBetween < 1 ? <ReactTimeAgo date={date} /> : dayFormat}
-        </Link>
+        <div className={styles.date}>
+          {isEdited && (
+            <span className={styles.action}>edited {editedDayFormat}</span>
+          )}
+          <Link to={`/questions/${questionId}`} className={styles.action}>
+            asked {daysBetween < 1 ? <ReactTimeAgo date={date} /> : dayFormat}
+          </Link>
+        </div>
       ) : (
-        <span className={styles.action}>
-          answered
-          {daysBetween < 1 ? <ReactTimeAgo date={date} /> : dayFormat}
-        </span>
+        <div className={styles.date}>
+          {isEdited && (
+            <span className={styles.action}>edited {editedDayFormat}</span>
+          )}
+          <span className={styles.action}>
+            answered
+            {daysBetween < 1 ? <ReactTimeAgo date={date} /> : dayFormat}
+          </span>
+        </div>
       )}
       <div>
         <img
@@ -41,7 +55,6 @@ const UserCard: React.FC<{
         <Link to={`/users/${user.id}`} className={styles.name}>
           {user.username}
         </Link>
-        {isEdited && <span className={styles.edited}>(edited)</span>}
       </div>
     </div>
   );
