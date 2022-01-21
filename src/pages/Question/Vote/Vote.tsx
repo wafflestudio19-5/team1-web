@@ -51,12 +51,17 @@ const Vote: React.FC<VoteProps> = ({
   };
   const handleVoteUp = () => handleVote(1);
   const handleVoteDown = () => handleVote(-1);
-  const handleAnswerAccept = useCallback(async () => {
+  const handleAcceptToggle = useCallback(async () => {
     if (!answerId) return;
     try {
-      await api.acceptAnswer(questionId, answerId);
+      const wasAccepted = isAccepted;
+      await api.toggleAnswerAccept(questionId, answerId);
       setReset(!reset);
-      toast.info("Answer accepted!");
+      if (wasAccepted) {
+        toast.info("Accept canceled!");
+      } else {
+        toast.info("Answer accepted!");
+      }
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         if (err.response.status === 401) {
@@ -65,12 +70,14 @@ const Vote: React.FC<VoteProps> = ({
           } else {
             toast.error("Please sign in first");
           }
+        } else if (err.response.status === 400) {
+          toast.error("Another answer is already accepted!");
         } else if (err.response.status === 404) {
           toast.error("Question or answer does not exist");
         } else console.error(err.response.data);
       } else console.error(err);
     }
-  }, [answerId, questionId, reset, setReset, userInfo]);
+  }, [answerId, isAccepted, questionId, reset, setReset, userInfo]);
 
   return (
     <>
@@ -82,12 +89,12 @@ const Vote: React.FC<VoteProps> = ({
         <ArrowDown />
       </button>
       {isAccepted && (
-        <div className={styles.answerChecked}>
+        <button className={styles.answerChecked} onClick={handleAcceptToggle}>
           <Check />
-        </div>
+        </button>
       )}
-      {answerId && isAcceptable && (
-        <button onClick={handleAnswerAccept}>
+      {!isAccepted && answerId && isAcceptable && (
+        <button onClick={handleAcceptToggle}>
           <GreyCheck />
         </button>
       )}
