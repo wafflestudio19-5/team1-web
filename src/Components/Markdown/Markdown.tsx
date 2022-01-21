@@ -8,6 +8,7 @@ import { uriTransformer } from "react-markdown";
 interface MarkdownEditorProps {
   value: string | undefined;
   onChange: (state: string | undefined) => void;
+  className?: string;
 }
 
 interface MarkdownViewerProps {
@@ -58,5 +59,28 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
       transformLinkUri={myUriTransformer}
       transformImageUri={myUriTransformer}
     />
+  );
+};
+
+export const MarkdownCommentEditor: React.FC<MarkdownEditorProps> = ({
+  className,
+  value,
+  onChange,
+}) => {
+  return (
+    <div className={styles.container}>
+      <MDEditor
+        className={className}
+        height={80}
+        preview={"edit"}
+        hideToolbar={true}
+        extraCommands={[]}
+        value={value}
+        onChange={onChange}
+        previewOptions={{
+          rehypePlugins: [[rehypeSanitize]],
+        }}
+      />
+    </div>
   );
 };

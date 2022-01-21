@@ -53,7 +53,7 @@ export const QuestionItem: FC<QuestionItemProps> = ({ question }) => {
               user={question.user}
               date={new Date(question.createdAt + "Z")}
               isQuestion={true}
-              isEdited={!!question?.updatedAt}
+              isEdited={false}
               questionId={question.id}
             />
           </div>

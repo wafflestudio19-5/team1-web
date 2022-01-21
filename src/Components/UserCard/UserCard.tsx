@@ -7,6 +7,7 @@ import { User } from "../../interface/interface";
 import styles from "./UserCard.module.scss";
 import dummyProfile from "../../icons/dummyProfile.svg";
 import ReactTimeAgo from "react-time-ago";
+import dayjs from "dayjs";
 
 const UserCard: React.FC<{
   user: User;
@@ -14,16 +15,21 @@ const UserCard: React.FC<{
   isQuestion?: boolean;
   isEdited: boolean;
   questionId?: number;
-}> = ({ user, date, isQuestion = false, questionId }) => {
+}> = ({ user, date, isQuestion = false, isEdited, questionId }) => {
+  const daysBetween = new Date().getDate() - new Date(date).getDate();
+  const dayFormat =
+    dayjs(date).format(" YY/MM/DD") + " at " + dayjs(date).format("HH:mm");
+
   return (
     <div className={styles.activity}>
       {isQuestion ? (
         <Link to={`/questions/${questionId}`} className={styles.action}>
-          asked <ReactTimeAgo date={date} />
+          asked {daysBetween < 1 ? <ReactTimeAgo date={date} /> : dayFormat}
         </Link>
       ) : (
         <span className={styles.action}>
-          answered <ReactTimeAgo date={date} />
+          answered
+          {daysBetween < 1 ? <ReactTimeAgo date={date} /> : dayFormat}
         </span>
       )}
       <div>
@@ -32,12 +38,10 @@ const UserCard: React.FC<{
           alt="profile_image"
           className={styles.profileImage}
         />
-        {/*
         <Link to={`/users/${user.id}`} className={styles.name}>
           {user.username}
         </Link>
-          */}
-        <span className={styles.name}>{user.username}</span>
+        {isEdited && <span className={styles.edited}>(edited)</span>}
       </div>
     </div>
   );

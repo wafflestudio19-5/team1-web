@@ -1,18 +1,22 @@
 .activity {
   text-align: left;
   width: 150px;
+
   .action {
     white-space: nowrap;
     font-size: 12px;
     color: #6a737c;
   }
+
   .profileImage {
     overflow: hidden;
     display: inline-block;
     width: 32px;
     height: 32px;
   }
+
   .name {
+    margin-left: 5px;
     font-size: 12px;
     color: rgb(0, 116, 204);
     :visited {
@@ -21,5 +25,12 @@
     :hover {
       color: rgb(10, 149, 255);
     }
+  }
+
+  .edited {
+    white-space: nowrap;
+    font-size: 12px;
+    color: #6a737c;
+    margin-left: 10px;
   }
 }

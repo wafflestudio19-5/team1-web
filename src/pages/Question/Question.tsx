@@ -34,9 +34,11 @@ const Question: React.FC = () => {
   // const filter = query.get("answertab") ?? "Votes";
   const { userInfo } = useSessionContext();
   const { id } = useParams();
+
   const isQuestionAnswered = useMemo(() => {
     return questionData ? isAnswered(questionData) : false;
   }, [questionData]);
+
   const sortedAnswerPosts = useMemo(
     () =>
       questionData?.answers

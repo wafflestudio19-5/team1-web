@@ -13,7 +13,10 @@ import { toast } from "react-toastify";
 import styles from "./Post.module.scss";
 import axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
-import { MarkdownViewer } from "../../../Components/Markdown/Markdown";
+import {
+  MarkdownCommentEditor,
+  MarkdownViewer,
+} from "../../../Components/Markdown/Markdown";
 
 interface PostProps {
   question: QuestionInterface;
@@ -25,7 +28,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
   const { userInfo } = useSessionContext();
   const auth = userInfo?.id === question.user.id;
   const [onAdd, setOnAdd] = useState<boolean>(false);
-  const [comment, setComment] = useState<string>("");
+  const [comment, setComment] = useState<string | undefined>("");
   const navigate = useNavigate();
 
   const handleAddCommentButton = () => {
@@ -45,7 +48,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
         toast.error("댓글을 입력해주세요!");
         return;
       }
-      await api.postQuestionComment(question.id, comment);
+      await api.postQuestionComment(question.id, comment || "");
       setReset(!reset);
       setOnAdd(false);
       setComment("");
@@ -140,13 +143,15 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
           )}
 
           <div className={styles.activityContainer}>
-            <UserCard
-              user={question.user}
-              date={new Date(question.createdAt + "Z")}
-              isQuestion={true}
-              questionId={question.id}
-              isEdited={!!question.updatedAt}
-            />
+            <Link to={`/users/${userInfo?.id}`}>
+              <UserCard
+                user={question.user}
+                date={new Date(question.createdAt + "Z")}
+                isQuestion={true}
+                questionId={question.id}
+                isEdited={question.updatedAt !== question.createdAt}
+              />
+            </Link>
           </div>
         </div>
         <div className={styles.commentList}>
@@ -163,9 +168,10 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
         {onAdd ? (
           <>
             <form className={styles.commentForm} onSubmit={handleCommentSubmit}>
-              <textarea
+              <MarkdownCommentEditor
+                className={styles.container}
                 value={comment}
-                onChange={(e) => setComment(e.target.value)}
+                onChange={setComment}
               />
               <BlueButton type="submit" text={"Add Comment"} />
             </form>
