@@ -7,7 +7,6 @@ import { QuestionComment, AnswerComment } from "../../../interface/interface";
 import { ReactComponent as Edit } from "../../../icons/iconEdit.svg";
 import { ReactComponent as Delete } from "../../../icons/iconDelete.svg";
 
-import styles from "./CommentItem.module.scss";
 import { api } from "../../../api/api";
 import BlueButton from "../../../Components/BlueButton/BlueButton";
 import { useSessionContext } from "../../../contexts/SessionContext";
@@ -19,6 +18,9 @@ import {
   MarkdownCommentEditor,
   MarkdownViewer,
 } from "../../../Components/Markdown/Markdown";
+import dayjs from "dayjs";
+
+import styles from "./CommentItem.module.scss";
 
 interface CommentProps {
   comment: QuestionComment | AnswerComment;
@@ -39,6 +41,12 @@ const CommentItem: React.FC<CommentProps> = ({
   const auth = userInfo?.id === comment.user.id;
   const [onEdit, setOnEdit] = useState<boolean>(false);
   const [edited, setEdited] = useState<string | undefined>("");
+  const daysBetween =
+    new Date().getDate() - new Date(comment.createdAt).getDate();
+  const dayFormat =
+    dayjs(comment.createdAt).format(" YY/MM/DD") +
+    " at " +
+    dayjs(comment.createdAt).format("HH:mm");
 
   const handleEdit = () => {
     setOnEdit(!onEdit);
@@ -151,13 +159,16 @@ const CommentItem: React.FC<CommentProps> = ({
             <label>
               <div>–</div>
               <div className={styles.username}>
-                <Link to={`/users/${comment.user.id}`}>{comment.user.username}</Link>
+                <Link to={`/users/${comment.user.id}`}>
+                  {comment.user.username}
+                </Link>
               </div>
-              <div>
-                <ReactTimeAgo
-                  className={styles.date}
-                  date={new Date(comment.createdAt + "Z")}
-                />
+              <div className={styles.date}>
+                {daysBetween < 1 ? (
+                  <ReactTimeAgo date={new Date(comment.createdAt + "Z")} />
+                ) : (
+                  dayFormat
+                )}
               </div>
               {auth && !onEdit && (
                 <>

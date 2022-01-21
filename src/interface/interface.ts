@@ -45,7 +45,8 @@ export interface Answer {
   votes: number;
   comments: AnswerComment[];
   accepted: boolean;
-  createdAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface QuestionInterface {
