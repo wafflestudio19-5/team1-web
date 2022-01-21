@@ -150,9 +150,9 @@ const CommentItem: React.FC<CommentProps> = ({
 
             <label>
               <div>–</div>
-              <Link to={`/users/${comment.user.id}`}>
-                <p className={styles.username}>{comment.user.username}</p>
-              </Link>
+              <div className={styles.username}>
+                <Link to={`/users/${comment.user.id}`}>{comment.user.username}</Link>
+              </div>
               <div>
                 <ReactTimeAgo
                   className={styles.date}
