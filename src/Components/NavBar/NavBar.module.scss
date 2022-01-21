@@ -82,3 +82,14 @@
     top: -10px;
   }
 }
+
+.profileContainer {
+  display: flex;
+  align-items: center;
+  .profile {
+    overflow: hidden;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+  }
+}

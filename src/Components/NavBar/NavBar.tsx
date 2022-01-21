@@ -11,6 +11,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.scss";
 import { useSessionContext } from "../../contexts/SessionContext";
 import { toast } from "react-toastify";
+import dummyProfile from "../../icons/dummyProfile.svg";
 
 type NavBarProps = {
   noLeftBarPage: Array<string>;
@@ -103,9 +104,13 @@ const NavBar: React.FC<NavBarProps> = () => {
           <div className={styles.buttonList}>
             <Link
               to={"/mypage?tab=profile"}
-              className={`${styles.navBarButton} ${styles.profileButton}`}
+              className={styles.profileContainer}
             >
-              {userInfo.username}
+              <img
+                className={styles.profile}
+                alt={"profile"}
+                src={userInfo.image || dummyProfile}
+              />
             </Link>
             <button
               className={`${styles.navBarButton} ${styles.signoutButton}`}

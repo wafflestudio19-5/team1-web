@@ -2,7 +2,12 @@ export interface User {
   id: number;
   username: string;
   email: string;
-  // profile: string;
+  image: string | null;
+  location: string | null;
+  userTitle: string | null;
+  aboutMe: string | null;
+  websiteLink: string | null;
+  githubLink: string | null;
 }
 
 export interface Tag {
