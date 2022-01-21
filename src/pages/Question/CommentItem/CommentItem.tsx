@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { Link } from "react-router-dom";
+
 import { QuestionComment, AnswerComment } from "../../../interface/interface";
 
 import { ReactComponent as Edit } from "../../../icons/iconEdit.svg";
@@ -13,6 +15,10 @@ import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import axios from "axios";
 import ReactTimeAgo from "react-time-ago";
+import {
+  MarkdownCommentEditor,
+  MarkdownViewer,
+} from "../../../Components/Markdown/Markdown";
 
 interface CommentProps {
   comment: QuestionComment | AnswerComment;
@@ -32,7 +38,7 @@ const CommentItem: React.FC<CommentProps> = ({
   const { userInfo } = useSessionContext();
   const auth = userInfo?.id === comment.user.id;
   const [onEdit, setOnEdit] = useState<boolean>(false);
-  const [edited, setEdited] = useState<string>("");
+  const [edited, setEdited] = useState<string | undefined>("");
 
   const handleEdit = () => {
     setOnEdit(!onEdit);
@@ -93,8 +99,8 @@ const CommentItem: React.FC<CommentProps> = ({
           return;
         }
         answerId
-          ? await api.editAnswerComment(comment.id, edited)
-          : await api.editQuestionComment(comment.id, edited);
+          ? await api.editAnswerComment(comment.id, edited || "")
+          : await api.editQuestionComment(comment.id, edited || "");
         setReset(!reset);
         setOnEdit(false);
         setEdited("");
@@ -118,13 +124,13 @@ const CommentItem: React.FC<CommentProps> = ({
   return (
     <>
       <div className={styles.commentContent}>
-        <span />
         {onEdit ? (
-          <div>
+          <div className={styles.commetEdit}>
             <form onSubmit={handleEditSubmit}>
-              <textarea
+              <MarkdownCommentEditor
+                className={styles.container}
                 value={edited}
-                onChange={(e) => setEdited(e.target.value)}
+                onChange={setEdited}
               />
               <BlueButton type="submit" text={"Save edits"} />
             </form>
@@ -137,30 +143,33 @@ const CommentItem: React.FC<CommentProps> = ({
           </div>
         ) : (
           <>
-            <p>{comment.body}</p>
+            <MarkdownViewer
+              className={styles.commentBody}
+              source={comment.body}
+            />
+
             <label>
-              <p>–</p>
-              {/*<Link to={`/users/${comment.user.id}`}>*/}
-              <p className={styles.username}>{comment.user.username}</p>
-              {/*</Link>*/}
-              <p>
+              <div>–</div>
+              <div className={styles.username}>
+                <Link to={`/users/${comment.user.id}`}>{comment.user.username}</Link>
+              </div>
+              <div>
                 <ReactTimeAgo
                   className={styles.date}
                   date={new Date(comment.createdAt + "Z")}
                 />
-              </p>
+              </div>
+              {auth && !onEdit && (
+                <>
+                  <button onClick={handleEdit}>
+                    <Edit className={styles.editButton} />
+                  </button>
+                  <button onClick={handleDelete}>
+                    <Delete className={styles.deleteButton} />
+                  </button>
+                </>
+              )}
             </label>
-          </>
-        )}
-
-        {auth && !onEdit && (
-          <>
-            <button onClick={handleEdit}>
-              <Edit className={styles.editButton} />
-            </button>
-            <button onClick={handleDelete}>
-              <Delete className={styles.deleteButton} />
-            </button>
           </>
         )}
       </div>

@@ -62,14 +62,22 @@ export interface QuestionInterface {
 }
 
 export interface UserInfoResponse extends User {
-  questions: { id: number; title: string }[];
-  answers: { id: number; questionTitle: string }[];
-
   location: string | null;
   userTitle: string | null;
   aboutMe: string | null;
   websiteLink: string | null;
   githubLink: string | null;
+  questions: {
+    id: number;
+    title: string;
+    createdAt: string;
+  }[];
+  answers: {
+    id: number;
+    questionTitle: string;
+    questionId: number;
+    createdAt: string;
+  }[];
 }
 
 export const countVotes = (data: QuestionInterface | Answer) => {

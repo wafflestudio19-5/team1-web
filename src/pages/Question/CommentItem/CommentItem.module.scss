@@ -1,41 +1,48 @@
 .commentContent {
-  display: flex;
   width: 100%;
   font-size: 13px;
-  line-height: 1.4;
+  padding: 10px;
 
   border-color: hsl(210, 8%, 95%);
   border-bottom-style: solid;
   border-bottom-width: 1px;
 
-  form {
-    display: flex;
-    margin-top: 3px;
+  .commetEdit {
+    width: 800px;
 
-    textarea {
-      width: 500px;
-      margin: 0 10px 3px 0;
-      font-family: sans-serif;
-    }
-
-    button {
-      height: 30px;
+    .container {
+      width: 700px;
     }
   }
 
-  span {
-    margin: 10px;
-    color: hsl(210, 8%, 55%);
+  form {
+    display: flex;
+    margin-top: 3px;
+    width: 100%;
+
+    button {
+      height: 30px;
+      margin-left: 12px;
+    }
   }
 
   p {
     word-wrap: break-word;
     margin: 10px;
     flex-wrap: wrap;
+    display: inline;
+  }
+
+  .commentBody {
+    overflow-wrap: break-word;
+    font-size: 13px;
+    display: inline;
   }
 
   label {
-    display: flex;
+    display: inline-flex;
+    white-space: nowrap;
+    align-items: center;
 
     .username {
       border: none;
@@ -53,6 +60,10 @@
       margin-left: 0;
       color: hsl(210, 8%, 55%);
     }
+
+    div {
+      margin: 0 3px;
+    }
   }
 }
 
@@ -60,13 +71,11 @@
 .deleteButton {
   width: 15px;
   height: 15px;
-  margin: 5px;
-  margin-left: 0;
   color: hsl(210, 8%, 55%);
 }
 
 button.cancelEdit {
-  margin: 20px 0 0;
+  margin: 5px 0 0;
   flex-direction: row;
   align-self: flex-start;
   height: 28px;

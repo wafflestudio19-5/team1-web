@@ -1,7 +1,7 @@
 .leftBar {
   display: flex;
   flex-direction: column;
-  width: 164px;
+  width: 167px;
   border-right: 1px solid #e9e9e9;
   height: 100%;
   font-size: 11px;
@@ -14,7 +14,7 @@
 }
 
 .menu {
-  margin: 16px 0px 4px 8px;
+  margin: 16px 0 4px 8px;
   cursor: pointer;
   &:hover {
     font-weight: bold;

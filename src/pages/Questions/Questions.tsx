@@ -17,10 +17,7 @@ const useQuery = () => {
 
 const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
   { label: "Newest", criteria: "createdAt", order: "desc" },
-  // "Active",
-  // "Unanswered",
-  // "Frequent",
-  // { label: "Votes", criteria: "votes", order: "desc" },
+  // { label: "Votes", criteria: "voteCount", order: "asc" },
 ];
 
 const makePageList = (
@@ -33,7 +30,7 @@ const makePageList = (
     return l;
   } else if (currentPage <= 4) {
     return [1, 2, 3, 4, 5, "...", totalPages];
-  } else if (currentPage >= totalPages - 4) {
+  } else if (currentPage > totalPages - 4) {
     return [
       1,
       "...",
@@ -80,14 +77,21 @@ const Questions = () => {
     () => makePageList(page, pageCount),
     [page, pageCount]
   );
+  const search = useMemo(() => query.get("q"), [query]);
 
   // get data
   useEffect(() => {
     const doIt = async () => {
       try {
         setQuestionList(null);
-        const { content, totalElements, totalPages } =
-          await api.getQuestionList(page - 1, filter.criteria, filter.order);
+        const { content, totalElements, totalPages } = search
+          ? await api.searchQuestion(
+              search,
+              page - 1,
+              filter.criteria,
+              filter.order
+            )
+          : await api.getQuestionList(page - 1, filter.criteria, filter.order);
         setQuestionList(content);
         setCount(totalElements);
         setPageCount(totalPages);
@@ -101,20 +105,23 @@ const Questions = () => {
       }
     };
     doIt().then();
-  }, [page, filter]);
+  }, [page, filter, search]);
 
   return questionList ? (
     <div className={styles.questions}>
       <div className={styles.header}>
         <div className={styles.topBar}>
-          <h1>All Questions</h1>
+          <h1>{search ? "Search Results" : "All Questions"}</h1>
           <Link to="/questions/ask">
             <BlueButton text={"Ask Question"} />
           </Link>
         </div>
+        {search && (
+          <div className={styles.queryDisplay}>Results for "{search}"</div>
+        )}
         <div className={styles.secondBar}>
           <div className={styles.total}>
-            {count ? `${count} questions` : `No question`}
+            {count} {search ? "results" : "questions"}
           </div>
           <div className={styles.filterList}>
             {FILTERS.map((elem) => (

@@ -11,18 +11,24 @@ const MyPageProfileDetail = () => {
     () =>
       userInfo
         ? userInfo.questions
-            .map(({ id, title }) => ({
+            .map(({ id, title, createdAt }) => ({
               url: `/questions/${id}`,
               title,
               type: "question",
+              createdAt,
             }))
             .concat(
-              /* TODO make proper answer url */
-              userInfo.answers.map(({ questionTitle }) => ({
-                url: "",
-                title: questionTitle,
-                type: "answer",
-              }))
+              userInfo.answers.map(
+                ({ questionTitle, createdAt, questionId, id }) => ({
+                  url: `/questions/${questionId}#answer-${id}`,
+                  title: questionTitle,
+                  type: "answer",
+                  createdAt,
+                })
+              )
+            )
+            .sort(({ createdAt: a }, { createdAt: b }) =>
+              a > b ? -1 : a < b ? +1 : 0
             )
         : null,
     [userInfo]
@@ -46,11 +52,12 @@ const MyPageProfileDetail = () => {
           }`}
         >
           {posts?.length
-            ? posts.map(({ url, title, type }) => (
+            ? posts.map(({ url, title, type, createdAt }) => (
                 <ProfilePostItem
                   url={url}
                   title={title}
                   type={type}
+                  createdAt={createdAt}
                   key={url}
                 />
               ))
