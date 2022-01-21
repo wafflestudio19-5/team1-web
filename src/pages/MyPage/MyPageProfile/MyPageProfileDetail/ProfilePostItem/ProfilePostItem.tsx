@@ -1,16 +1,23 @@
-import { Link } from "react-router-dom";
 import React, { FC } from "react";
 import styles from "./ProfilePostItem.module.scss";
 import answerType from "./a.png";
 import questionType from "./q.png";
+import { HashLink } from "react-router-hash-link";
 
 interface ProfilePostItemProps {
   url: string;
   title: string;
   type: string;
+  createdAt: string;
 }
 
-const ProfilePostItem: FC<ProfilePostItemProps> = ({ url, title, type }) => {
+const ProfilePostItem: FC<ProfilePostItemProps> = ({
+  url,
+  title,
+  type,
+  createdAt,
+}) => {
+  const formattedDate = new Date(createdAt + "Z").toDateString();
   return (
     <li className={styles.item} key={url}>
       {type === "answer" ? (
@@ -18,7 +25,8 @@ const ProfilePostItem: FC<ProfilePostItemProps> = ({ url, title, type }) => {
       ) : (
         <img src={questionType} alt={"question"} />
       )}
-      <Link to={url}>{title}</Link>
+      <HashLink to={url}>{title}</HashLink>
+      <div className={styles.date}>{formattedDate}</div>
     </li>
   );
 };
