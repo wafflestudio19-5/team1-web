@@ -5,16 +5,20 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../../api/api";
+import { useSessionContext } from "../../../../contexts/SessionContext";
 
 const Unregister = () => {
   const [checked, setChecked] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
+  const { refreshMyProfile } = useSessionContext();
+
   const deleteProfile = async () => {
     try {
       await api.deleteProfile();
       toast.success("삭제되었습니다", { autoClose: 3000 });
+      await refreshMyProfile();
       navigate("/");
     } catch (e) {
       if (axios.isAxiosError(e)) {
