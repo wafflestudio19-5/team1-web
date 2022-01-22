@@ -63,6 +63,11 @@ export interface QuestionInterface {
 }
 
 export interface UserInfoResponse extends User {
+  location: string | null;
+  userTitle: string | null;
+  aboutMe: string | null;
+  websiteLink: string | null;
+  githubLink: string | null;
   questions: {
     id: number;
     title: string;
@@ -84,6 +89,12 @@ export const isAnswered = (question: QuestionInterface) => {
   return question.answers.some((answer) => answer.accepted);
 };
 
-export const removeSpace = (content: string) => {
-  return content.replace(/(\s*)/g, "");
+export type EditInfo = {
+  displayName: string | null;
+  location: string | null;
+  userTitle: string | null;
+  aboutMe: string | null;
+  websiteLink: string | null;
+  githubLink: string | null;
+
 };
