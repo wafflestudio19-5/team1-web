@@ -96,5 +96,8 @@ export type EditInfo = {
   aboutMe: string | null;
   websiteLink: string | null;
   githubLink: string | null;
+};
 
+export const removeSpace = (content: string) => {
+  return content.replace(/(\s*)/g, "");
 };
