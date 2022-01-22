@@ -16,7 +16,7 @@ import Unregister from "./Unregister/Unregister";
 interface SettingsProps {}
 
 export const Settings: FC<SettingsProps> = () => {
-  const { userInfo } = useSessionContext();
+  const { userInfo, refreshMyProfile } = useSessionContext();
 
   const [mode, setMode] = useState<string>("edit");
 
@@ -68,6 +68,7 @@ export const Settings: FC<SettingsProps> = () => {
       if (editInfo !== null) {
         await api.editUserInfo(editInfo);
         toast.success("수정되었습니다", { autoClose: 3000 });
+        await refreshMyProfile();
       } else {
         toast.error("수정된 정보가 없습니다", { autoClose: 3000 });
       }
