@@ -43,7 +43,7 @@ export const Settings: FC<SettingsProps> = () => {
       websiteLink: userInfo?.websiteLink ?? null,
       githubLink: userInfo?.githubLink ?? null,
     });
-  }, [profile]);
+  }, [profile, userInfo]);
 
   const [changeProfileOn, setChangeProfileOn] = useState<boolean>(false);
   const saveProfileImage = async (profileImage: File) => {
@@ -157,10 +157,9 @@ export const Settings: FC<SettingsProps> = () => {
           />
           <label htmlFor={"about-me"}>About me</label>
 
-          <Markdown
+          <MarkdownEditor
             onChange={(value) => changeAboutMe(value)}
             value={editInfo?.aboutMe ?? ""}
-
           />
         </div>
         <h3>Links</h3>
