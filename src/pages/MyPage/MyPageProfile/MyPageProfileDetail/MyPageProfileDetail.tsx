@@ -1,12 +1,14 @@
-import React, { useMemo } from "react";
+import React, { FC, useMemo } from "react";
 
 import styles from "./MyPageProfileDetail.module.scss";
 import ProfilePostItem from "./ProfilePostItem/ProfilePostItem";
-import { useSessionContext } from "../../../../contexts/SessionContext";
 import { Link } from "react-router-dom";
+import { UserInfoResponse } from "../../../../interface/interface";
 
-const MyPageProfileDetail = () => {
-  const { userInfo } = useSessionContext();
+const MyPageProfileDetail: FC<{ userInfo: UserInfoResponse; me: boolean }> = ({
+  userInfo,
+  me,
+}) => {
   const posts = useMemo(
     () =>
       userInfo
@@ -33,15 +35,21 @@ const MyPageProfileDetail = () => {
         : null,
     [userInfo]
   );
-  return userInfo ? (
+  return (
     <div className={styles.myPageProfileDetail}>
       <div className={styles.detailBox}>
         <span className={styles.title}>About</span>
         <div className={`${styles.detailInfo} ${styles.about}`}>
-          Your about me section is currently blank. Would you like to &nbsp;
-          <Link className={styles.goEdit} to={"/users/me?tab=settings"}>
-            add one?
-          </Link>
+          {userInfo.aboutMe ??
+            (me && (
+              <>
+                Your about me section is currently blank. Would you like to
+                &nbsp;
+                <Link className={styles.goEdit} to={"/users/me?tab=settings"}>
+                  add one?
+                </Link>
+              </>
+            ))}
         </div>
       </div>
       <div className={styles.detailBox}>
@@ -65,7 +73,7 @@ const MyPageProfileDetail = () => {
         </ul>
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default MyPageProfileDetail;

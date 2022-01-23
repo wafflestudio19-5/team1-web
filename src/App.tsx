@@ -42,9 +42,14 @@ const App: React.FC = () => {
                 <Route path="/questions/:id" element={<Question />} />
                 <Route path="/questions/ask" element={<Ask />} />
                 <Route path="/posts/:id/edit" element={<Edit />} />
-                <Route path="/users/me" element={<MyPage />} />
+                <Route path="/users/me" element={<MyPage me={true} />} />
+                <Route path="/users/:id" element={<MyPage me={false} />} />
                 <Route
                   path="/"
+                  element={<Navigate to="/questions" replace />}
+                />
+                <Route
+                  path="/*"
                   element={<Navigate to="/questions" replace />}
                 />
               </Routes>

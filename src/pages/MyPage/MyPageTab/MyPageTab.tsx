@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 
 type MyPageTabProps = {
   mode: string | null;
+  me: boolean;
 };
 
-const MyPageTab: React.FC<MyPageTabProps> = ({ mode }) => {
+const MyPageTab: React.FC<MyPageTabProps> = ({ mode, me }) => {
   return (
     <div className={styles.myPageTab}>
-      <Link to={"/users/me?tab=profile"}>
+      <Link to={"?tab=profile"}>
         <span
           className={`${styles.tabList} ${
             mode === "profile" ? styles.selected : ""
@@ -30,15 +31,17 @@ const MyPageTab: React.FC<MyPageTabProps> = ({ mode }) => {
         </span>
       </Link>
         */}
-      <Link to={"/mypage?tab=settings"}>
-        <span
-          className={`${styles.tabList} ${
-            mode === "settings" ? styles.selected : ""
-          }`}
-        >
-          Settings
-        </span>
-      </Link>
+      {me && (
+        <Link to={"?tab=settings"}>
+          <span
+            className={`${styles.tabList} ${
+              mode === "settings" ? styles.selected : ""
+            }`}
+          >
+            Settings
+          </span>
+        </Link>
+      )}
     </div>
   );
 };
