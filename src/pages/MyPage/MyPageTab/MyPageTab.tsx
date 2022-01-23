@@ -10,7 +10,7 @@ type MyPageTabProps = {
 const MyPageTab: React.FC<MyPageTabProps> = ({ mode }) => {
   return (
     <div className={styles.myPageTab}>
-      <Link to={"/mypage?tab=profile"}>
+      <Link to={"/users/me?tab=profile"}>
         <span
           className={`${styles.tabList} ${
             mode === "profile" ? styles.selected : ""
@@ -20,7 +20,7 @@ const MyPageTab: React.FC<MyPageTabProps> = ({ mode }) => {
         </span>
       </Link>
       {/*
-      <Link to={"/mypage?tab=activity"}>
+      <Link to={"/users/me?tab=activity"}>
         <span
           className={`${styles.tabList} ${
             mode === "activity" ? styles.selected : ""

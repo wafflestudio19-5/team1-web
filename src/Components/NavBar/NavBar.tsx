@@ -103,7 +103,7 @@ const NavBar: React.FC<NavBarProps> = () => {
         ) : (
           <div className={styles.buttonList}>
             <Link
-              to={"/mypage?tab=profile"}
+              to={"/users/me?tab=profile"}
               className={styles.profileContainer}
               title={userInfo.username}
             >

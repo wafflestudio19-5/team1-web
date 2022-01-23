@@ -16,8 +16,7 @@ export const SettingsMenu: FC<SettingsMenuProps> = ({}) => {
           selectedMenu === SETTINGS_MENU_ITEM ? styles.selected : ""
         }`}
       >
-        {/* TODO: change url */}
-        <Link to={`/mypage?tab=settings`}>Edit profile</Link>
+        <Link to={`/users/me?tab=settings`}>Edit profile</Link>
       </li>
     </ul>
   );

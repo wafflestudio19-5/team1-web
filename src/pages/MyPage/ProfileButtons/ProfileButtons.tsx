@@ -7,7 +7,7 @@ const ProfileButtons = () => {
     <div className={styles.profileButtons}>
       {/*
       TODO: edit profile
-      <Link to={"/mypage?tab=settings"}>
+      <Link to={"/users/me?tab=settings"}>
         <button className={styles.profileButton}>Edit profile</button>
       </Link>
         */}

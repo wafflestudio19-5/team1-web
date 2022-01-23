@@ -39,7 +39,7 @@ const MyPageProfileDetail = () => {
         <span className={styles.title}>About</span>
         <div className={`${styles.detailInfo} ${styles.about}`}>
           Your about me section is currently blank. Would you like to &nbsp;
-          <Link className={styles.goEdit} to={"/mypage?tab=settings"}>
+          <Link className={styles.goEdit} to={"/users/me?tab=settings"}>
             add one?
           </Link>
         </div>
