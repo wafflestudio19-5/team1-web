@@ -11,7 +11,7 @@ interface MyInfoProps {
 
 const MyInfo: FC<MyInfoProps> = ({ userInfo }) => {
   return userInfo ? (
-    <div className={styles.myInfo}>
+    <div className={styles.userInfo}>
       <img
         className={styles.profileImg}
         src={dummyProfile}
