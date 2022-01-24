@@ -1,19 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-import styles from "./Questions.module.scss";
 import { Link } from "react-router-dom";
 import { QuestionItem } from "./QuestionItem/QuestionItem";
-import { useLocation } from "react-router";
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { QuestionInterface } from "../../interface/interface";
 import { api, SortCriteria, SortOrder } from "../../api/api";
 import axios from "axios";
 import BeatLoader from "react-spinners/BeatLoader";
-
-const useQuery = () => {
-  const { search } = useLocation();
-  return useMemo(() => new URLSearchParams(search), [search]);
-};
+import { useQuery } from "../../hooks/hooks";
+import styles from "./Questions.module.scss";
 
 const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
   { label: "Newest", criteria: "createdAt", order: "desc" },
