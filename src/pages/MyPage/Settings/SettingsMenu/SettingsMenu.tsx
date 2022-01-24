@@ -2,21 +2,41 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import styles from "./SettingsMenu.module.scss";
 
-interface SettingsMenuProps {}
+interface SettingsMenuProps {
+  mode: string;
+  setMode(e: string): void;
+}
 
-enum SETTINGS_MENU_ITEM {}
-
-export const SettingsMenu: FC<SettingsMenuProps> = () => {
-  const selectedMenu = SETTINGS_MENU_ITEM;
+export const SettingsMenu: FC<SettingsMenuProps> = ({ mode, setMode }) => {
+  const selectedMenu = mode;
   return (
     <ul className={styles.SettingsMenu}>
       <li className={styles.header}>PERSONAL INFORMATION</li>
       <li
         className={`${styles.item} ${
-          selectedMenu === SETTINGS_MENU_ITEM ? styles.selected : ""
+          selectedMenu === "edit" ? styles.selected : ""
         }`}
       >
-        <Link to={`?tab=settings`}>Edit profile</Link>
+        <span
+          onClick={() => {
+            setMode("edit");
+          }}
+        >
+          Edit profile
+        </span>
+      </li>
+      <li
+        className={`${styles.item} ${
+          selectedMenu === "unregister" ? styles.selected : ""
+        }`}
+      >
+        <span
+          onClick={() => {
+            setMode("unregister");
+          }}
+        >
+          Delete profile
+        </span>
       </li>
     </ul>
   );

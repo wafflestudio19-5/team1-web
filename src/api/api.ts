@@ -220,4 +220,8 @@ export const api = {
 
   editUserInfo: async (editInfo: EditInfo) =>
     (await instance.put(`/api/user/me/edit/`, editInfo)).data,
+
+  deleteProfile: async () => {
+    await instance.delete(`/api/user/me/remove/`);
+  },
 };
