@@ -4,7 +4,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { MarkdownEditor } from "../../Components/Markdown/Markdown";
-import { removeSpace } from "../../interface/interface";
+import { removeSpace } from "../../hooks/hooks";
 
 import { api } from "../../api/api";
 import axios from "axios";
@@ -53,7 +53,10 @@ const Edit: React.FC = () => {
         //   values.title === orgValues.title ? "" : values.title;
         // const editedBody = values.body === orgValues.body ? "" : values.body;
         if (Number(questionId) === Number(id)) {
-          if (removeSpace(values.title).length < 5) {
+          if (
+            removeSpace(values.title).length < 5 &&
+            removeSpace(values.body).length > 1
+          ) {
             return;
           } else {
             await api.editQuestion(Number(id), values.title, values.body);

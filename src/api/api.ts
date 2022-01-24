@@ -87,6 +87,8 @@ export const api = {
   },
   _getMyProfile: async () =>
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
+  getUserProfile: async (userId: number) =>
+    (await instance.get<UserInfoResponse>(`/api/user/${userId}/`)).data,
   getQuestionList: async (
     page = 0,
     sortCriteria: SortCriteria = "createdAt",

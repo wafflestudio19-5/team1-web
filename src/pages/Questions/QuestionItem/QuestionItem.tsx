@@ -10,11 +10,13 @@ interface QuestionItemProps {
   question: QuestionInterface;
 }
 
+const MAXIMUM_SUMMARY_LENGTH = 200;
+
 const useQuestionSummary = (markdown: string) => {
   return useMemo(() => {
     const pureText = RemoveMarkdown(markdown);
-    return pureText.length > 100
-      ? pureText.substring(0, 100) + "..."
+    return pureText.length > MAXIMUM_SUMMARY_LENGTH
+      ? pureText.substring(0, MAXIMUM_SUMMARY_LENGTH) + "..."
       : pureText;
   }, [markdown]);
 };

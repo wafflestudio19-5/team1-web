@@ -1,10 +1,10 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
 
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { MarkdownEditor } from "../../Components/Markdown/Markdown";
-import { api } from "../../api/api";
+import { api, SortCriteria, SortOrder } from "../../api/api";
 import { isAnswered, QuestionInterface } from "../../interface/interface";
 import BeatLoader from "react-spinners/BeatLoader";
 
@@ -16,26 +16,32 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import ReactTimeAgo from "react-time-ago";
 import { useSessionContext } from "../../contexts/SessionContext";
-import { daysBetween, dayFormat } from "../../hooks/hooks";
+import {
+  hoursBetween,
+  dayFormat,
+  useQuery,
+  handleSorting,
+} from "../../hooks/hooks";
 
-// const FILTERS = ["Active", "Oldest", "Votes"];
+const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
+  { label: "Newest", criteria: "createdAt", order: "desc" },
+  { label: "Votes", criteria: "voteCount", order: "asc" },
+];
 
-/*
-const useQuery = () => {
-  const { search } = useLocation();
-  return useMemo(() => new URLSearchParams(search), [search]);
-};
- */
+const makeQuery = (filter: string) => `?answertab=${filter}`;
 
 const Question: React.FC = () => {
   const [questionData, setQuestionData] = useState<QuestionInterface>();
   const [answer, setAnswer] = useState<string>();
-  // const query = useQuery();
+  const query = useQuery();
+  const filter = useMemo(() => {
+    const rawFilter = query.get("answertab") ?? "Newest";
+    return FILTERS.find((e) => e.label === rawFilter) ?? FILTERS[0];
+  }, [query]);
   const navigate = useNavigate();
-  // const filter = query.get("answertab") ?? "Votes";
   const { userInfo } = useSessionContext();
   const { id } = useParams();
-  const between = daysBetween(new Date(questionData?.createdAt + "Z"));
+  const between = hoursBetween(new Date(questionData?.createdAt + "Z"));
   const dateFormat = dayFormat(new Date(questionData?.createdAt + "Z"));
 
   const isQuestionAnswered = useMemo(() => {
@@ -46,8 +52,9 @@ const Question: React.FC = () => {
     () =>
       questionData?.answers
         ?.slice()
+        ?.sort(handleSorting(filter.label))
         ?.sort((a, b) => (b.accepted ? 1 : 0) - (a.accepted ? 1 : 0)),
-    [questionData]
+    [questionData, filter]
   );
 
   // 리셋 필요할 때,
@@ -72,7 +79,7 @@ const Question: React.FC = () => {
       }
     };
     doIt().then();
-  }, [reset, id, navigate]);
+  }, [reset, id, navigate, filter]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -116,7 +123,7 @@ const Question: React.FC = () => {
         <ul className={styles.postInfo}>
           <li>
             <span>Asked</span>
-            {between < 1 ? (
+            {between < 24 ? (
               <ReactTimeAgo date={new Date(questionData.createdAt + "Z")} />
             ) : (
               dateFormat
@@ -137,21 +144,20 @@ const Question: React.FC = () => {
                   ? `${questionData.answers.length} Answers`
                   : "Your Answer"}
               </h2>
-              {/*
-                <div className={styles.filterList}>
-                  {FILTERS.map((value) => (
-                    <Link
-                      className={`${styles.filterItem} ${
-                        value === filter ? styles.selected : ""
-                      }`}
-                      key={value}
-                      to={`${location.pathname}?answertab=${value}`}
-                    >
-                      {value}
-                    </Link>
-                  ))}
-                </div>
-                */}
+
+              <div className={styles.filterList}>
+                {FILTERS.map((elem) => (
+                  <Link
+                    className={`${styles.filterItem} ${
+                      elem === filter ? styles.selected : ""
+                    }`}
+                    key={elem.label}
+                    to={makeQuery(elem.label)}
+                  >
+                    {elem.label}
+                  </Link>
+                ))}
+              </div>
             </div>
             {sortedAnswerPosts?.map((answer) => (
               <AnswerPost

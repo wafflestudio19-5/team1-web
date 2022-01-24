@@ -9,7 +9,6 @@ interface SettingsMenuProps {
 
 export const SettingsMenu: FC<SettingsMenuProps> = ({ mode, setMode }) => {
   const selectedMenu = mode;
-
   return (
     <ul className={styles.SettingsMenu}>
       <li className={styles.header}>PERSONAL INFORMATION</li>
