@@ -4,7 +4,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { MarkdownEditor } from "../../Components/Markdown/Markdown";
-import { removeSpace } from "../../interface/interface";
+import { removeSpace } from "../../hooks/hooks";
 
 import { api } from "../../api/api";
 import axios from "axios";
