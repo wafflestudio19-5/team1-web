@@ -12,7 +12,7 @@ import styles from "./Questions.module.scss";
 
 const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
   { label: "Newest", criteria: "createdAt", order: "desc" },
-  { label: "Votes", criteria: "voteCount", order: "asc" },
+  { label: "Votes", criteria: "voteCount", order: "desc" },
 ];
 
 const makePageList = (
