@@ -16,7 +16,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import ReactTimeAgo from "react-time-ago";
 import { useSessionContext } from "../../contexts/SessionContext";
-import { hoursBetween, dayFormat, useQuery } from "../../hooks/hooks";
+import {
+  hoursBetween,
+  dayFormat,
+  useQuery,
+  handleSorting,
+} from "../../hooks/hooks";
 
 const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
   { label: "Newest", criteria: "createdAt", order: "desc" },
@@ -47,8 +52,9 @@ const Question: React.FC = () => {
     () =>
       questionData?.answers
         ?.slice()
+        ?.sort(handleSorting(filter.label))
         ?.sort((a, b) => (b.accepted ? 1 : 0) - (a.accepted ? 1 : 0)),
-    [questionData]
+    [questionData, filter]
   );
 
   // 리셋 필요할 때,
