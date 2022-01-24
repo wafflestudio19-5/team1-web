@@ -1,12 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import NumberAndKeyword from "./NumberAndKeyword/NumberAndKeyword";
 
 import styles from "./MyStats.module.scss";
-import { useSessionContext } from "../../../../contexts/SessionContext";
+import { UserInfoResponse } from "../../../../interface/interface";
 
-const MyStats = () => {
-  const { userInfo } = useSessionContext();
-  return userInfo ? (
+const MyStats: FC<{
+  userInfo: UserInfoResponse;
+}> = ({ userInfo }) => {
+  return (
     <div className={styles.myStats}>
       <span className={styles.title}>Stats</span>
       <div className={styles.statBox}>
@@ -28,7 +29,7 @@ const MyStats = () => {
         </div>
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default MyStats;

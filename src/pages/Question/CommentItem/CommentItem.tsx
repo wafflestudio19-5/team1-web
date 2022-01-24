@@ -18,7 +18,7 @@ import {
   MarkdownCommentEditor,
   MarkdownViewer,
 } from "../../../Components/Markdown/Markdown";
-import dayjs from "dayjs";
+import { dayFormat } from "../../../hooks/hooks";
 
 import styles from "./CommentItem.module.scss";
 
@@ -43,11 +43,7 @@ const CommentItem: React.FC<CommentProps> = ({
   const [edited, setEdited] = useState<string | undefined>("");
   const daysBetween =
     new Date().getDate() - new Date(comment.createdAt).getDate();
-  const dayFormat =
-    dayjs(comment.createdAt).format(" YY/MM/DD") +
-    " at " +
-    dayjs(comment.createdAt).format("HH:mm");
-
+  const dateFormat = dayFormat(new Date(comment.createdAt + "Z"));
   const handleEdit = () => {
     setOnEdit(!onEdit);
     setEdited(comment.body);
@@ -167,7 +163,7 @@ const CommentItem: React.FC<CommentProps> = ({
                 {daysBetween < 1 ? (
                   <ReactTimeAgo date={new Date(comment.createdAt + "Z")} />
                 ) : (
-                  dayFormat
+                  dateFormat
                 )}
               </div>
               {auth && !onEdit && (

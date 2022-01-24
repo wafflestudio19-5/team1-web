@@ -11,7 +11,7 @@ import styles from "./Ask.module.scss";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useSessionContext } from "../../contexts/SessionContext";
-import { removeSpace } from "../../interface/interface";
+import { removeSpace } from "../../hooks/hooks";
 
 const Ask: React.FC = () => {
   const navigate = useNavigate();

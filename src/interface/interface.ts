@@ -102,7 +102,3 @@ export type EditInfo = {
   websiteLink: string | null;
   githubLink: string | null;
 };
-
-export const removeSpace = (content: string) => {
-  return content.replace(/(\s*)/g, "");
-};

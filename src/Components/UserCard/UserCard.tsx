@@ -27,7 +27,14 @@ const UserCard: React.FC<{
       {isQuestion ? (
         <div className={styles.date}>
           {isEdited && (
-            <span className={styles.action}>edited {editedDayFormat}</span>
+            <span className={styles.action}>
+              edited{" "}
+              {between < 24 && edited ? (
+                <ReactTimeAgo date={edited} />
+              ) : (
+                editedDayFormat
+              )}
+            </span>
           )}
           <Link to={`/questions/${questionId}`} className={styles.action}>
             asked {between < 24 ? <ReactTimeAgo date={date} /> : dateFormat}
@@ -36,11 +43,17 @@ const UserCard: React.FC<{
       ) : (
         <div className={styles.date}>
           {isEdited && (
-            <span className={styles.action}>edited {editedDayFormat}</span>
+            <span className={styles.action}>
+              edited{" "}
+              {between < 24 && edited ? (
+                <ReactTimeAgo date={edited} />
+              ) : (
+                editedDayFormat
+              )}
+            </span>
           )}
           <span className={styles.action}>
-            answered
-            {between < 24 ? <ReactTimeAgo date={date} /> : dateFormat}
+            answered {between < 24 ? <ReactTimeAgo date={date} /> : dateFormat}
           </span>
         </div>
       )}
