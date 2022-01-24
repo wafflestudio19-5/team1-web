@@ -7,7 +7,7 @@ import { User } from "../../interface/interface";
 import styles from "./UserCard.module.scss";
 import dummyProfile from "../../icons/dummyProfile.svg";
 import ReactTimeAgo from "react-time-ago";
-import { daysBetween, dayFormat } from "../../hooks/hooks";
+import { hoursBetween, dayFormat } from "../../hooks/hooks";
 
 const UserCard: React.FC<{
   user: User;
@@ -17,7 +17,8 @@ const UserCard: React.FC<{
   edited?: Date;
   questionId?: number;
 }> = ({ user, date, isQuestion = false, isEdited, edited, questionId }) => {
-  const between = daysBetween(date);
+  const between = hoursBetween(date);
+  console.log(between);
   const dateFormat = dayFormat(date);
   const editedDayFormat = edited ? dayFormat(edited) : null;
 
@@ -29,7 +30,7 @@ const UserCard: React.FC<{
             <span className={styles.action}>edited {editedDayFormat}</span>
           )}
           <Link to={`/questions/${questionId}`} className={styles.action}>
-            asked {between < 1 ? <ReactTimeAgo date={date} /> : dateFormat}
+            asked {between < 24 ? <ReactTimeAgo date={date} /> : dateFormat}
           </Link>
         </div>
       ) : (
@@ -39,7 +40,7 @@ const UserCard: React.FC<{
           )}
           <span className={styles.action}>
             answered
-            {between < 1 ? <ReactTimeAgo date={date} /> : dateFormat}
+            {between < 24 ? <ReactTimeAgo date={date} /> : dateFormat}
           </span>
         </div>
       )}

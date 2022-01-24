@@ -16,7 +16,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import ReactTimeAgo from "react-time-ago";
 import { useSessionContext } from "../../contexts/SessionContext";
-import { daysBetween, dayFormat, useQuery } from "../../hooks/hooks";
+import { hoursBetween, dayFormat, useQuery } from "../../hooks/hooks";
 
 const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
   { label: "Newest", criteria: "createdAt", order: "desc" },
@@ -36,7 +36,7 @@ const Question: React.FC = () => {
   const navigate = useNavigate();
   const { userInfo } = useSessionContext();
   const { id } = useParams();
-  const between = daysBetween(new Date(questionData?.createdAt + "Z"));
+  const between = hoursBetween(new Date(questionData?.createdAt + "Z"));
   const dateFormat = dayFormat(new Date(questionData?.createdAt + "Z"));
 
   const isQuestionAnswered = useMemo(() => {
@@ -117,10 +117,10 @@ const Question: React.FC = () => {
         <ul className={styles.postInfo}>
           <li>
             <span>Asked</span>
-            {between < 1 ? (
+            {between < 24 ? (
               <ReactTimeAgo date={new Date(questionData.createdAt + "Z")} />
             ) : (
-              <span>{dateFormat}</span>
+              dateFormat
             )}
           </li>
         </ul>

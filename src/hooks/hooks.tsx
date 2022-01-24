@@ -7,8 +7,11 @@ export const useQuery = () => {
   return useMemo(() => new URLSearchParams(search), [search]);
 };
 
-export const daysBetween = (date: Date) => {
-  return new Date().getDate() - new Date(date).getDate();
+export const hoursBetween = (date: Date) => {
+  // calculate past time amount
+  return Math.floor(
+    (new Date().getTime() - new Date(date).getTime()) / 1000 / 60 / 60
+  );
 };
 
 export const dayFormat = (date: Date) => {
