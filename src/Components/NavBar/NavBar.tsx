@@ -7,10 +7,11 @@ import React, {
   useState,
 } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSessionContext } from "../../contexts/SessionContext";
+import { ReactComponent as Search } from "../../icons/iconSearch.svg";
+import { toast } from "react-toastify";
 
 import styles from "./NavBar.module.scss";
-import { useSessionContext } from "../../contexts/SessionContext";
-import { toast } from "react-toastify";
 
 type NavBarProps = {
   noLeftBarPage: Array<string>;
@@ -78,12 +79,16 @@ const NavBar: React.FC<NavBarProps> = () => {
             <Link to="/questions">Questions</Link>
           </li>
         </ul>
-        <input
-          className={styles.searchBox}
-          onChange={onSearchChange}
-          onKeyPress={onSearchEnter}
-          value={search}
-        />
+        <div className={styles.searchSection}>
+          <input
+            className={styles.searchBox}
+            onChange={onSearchChange}
+            onKeyPress={onSearchEnter}
+            value={search}
+            placeholder={"Search..."}
+          />
+          <Search className={styles.iconSearch} />
+        </div>
         {!userInfo ? (
           <div className={styles.buttonList}>
             <Link
