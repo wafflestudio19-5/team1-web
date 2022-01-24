@@ -25,9 +25,24 @@
   font-size: 13px;
 }
 
-.searchBox {
+.searchSection {
+  position: relative;
   width: 50%;
   height: 100%;
+  color: hsl(210, 8%, 75%);
+
+  .searchBox {
+    padding-left: 35px;
+    height: 33px;
+  }
+
+  .iconSearch {
+    position: absolute;
+    pointer-events: none;
+    top: 8px;
+    left: 10px;
+    fill: hsl(210, 8%, 75%);
+  }
 }
 
 .buttonList {
