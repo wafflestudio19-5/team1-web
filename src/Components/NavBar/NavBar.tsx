@@ -82,6 +82,7 @@ const NavBar: React.FC<NavBarProps> = () => {
         </ul>
         <div className={styles.searchSection}>
           <input
+            id="search-box"
             className={styles.searchBox}
             onChange={onSearchChange}
             onKeyPress={onSearchEnter}
