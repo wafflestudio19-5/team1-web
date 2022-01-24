@@ -45,7 +45,7 @@ const MyPageProfileDetail: FC<{ userInfo: UserInfoResponse; me: boolean }> = ({
               <>
                 Your about me section is currently blank. Would you like to
                 &nbsp;
-                <Link className={styles.goEdit} to={"/users/me?tab=settings"}>
+                <Link className={styles.goEdit} to={"?tab=settings"}>
                   add one?
                 </Link>
               </>

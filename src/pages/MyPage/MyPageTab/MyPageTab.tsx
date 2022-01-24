@@ -21,7 +21,7 @@ const MyPageTab: React.FC<MyPageTabProps> = ({ mode, me }) => {
         </span>
       </Link>
       {/*
-      <Link to={"/users/me?tab=activity"}>
+      <Link to={"?tab=activity"}>
         <span
           className={`${styles.tabList} ${
             mode === "activity" ? styles.selected : ""
