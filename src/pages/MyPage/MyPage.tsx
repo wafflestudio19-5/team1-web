@@ -77,7 +77,7 @@ const MyPage: FC<MyPageProps> = () => {
   }, [navigate, refreshUserInfo]);
 
   return userInfo ? (
-    <div className={styles.myPage}>
+    <div className={styles.userPage}>
       {me && <ProfileButtons />}
       <MyInfo userInfo={userInfo} />
       <MyPageTab mode={tab} me={me} />
