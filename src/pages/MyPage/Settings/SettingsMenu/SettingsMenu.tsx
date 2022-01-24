@@ -6,7 +6,7 @@ interface SettingsMenuProps {}
 
 enum SETTINGS_MENU_ITEM {}
 
-export const SettingsMenu: FC<SettingsMenuProps> = ({}) => {
+export const SettingsMenu: FC<SettingsMenuProps> = () => {
   const selectedMenu = SETTINGS_MENU_ITEM;
   return (
     <ul className={styles.SettingsMenu}>
@@ -16,8 +16,7 @@ export const SettingsMenu: FC<SettingsMenuProps> = ({}) => {
           selectedMenu === SETTINGS_MENU_ITEM ? styles.selected : ""
         }`}
       >
-        {/* TODO: change url */}
-        <Link to={`/mypage?tab=settings`}>Edit profile</Link>
+        <Link to={`?tab=settings`}>Edit profile</Link>
       </li>
     </ul>
   );

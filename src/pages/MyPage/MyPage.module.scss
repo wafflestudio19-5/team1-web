@@ -1,6 +1,13 @@
-.myPage {
+.userPage {
   position: relative;
   display: flex;
   flex-direction: column;
   padding: 24px;
+}
+
+.loaderContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
