@@ -1,8 +1,11 @@
 import React, { FC } from "react";
-import styles from "./ProfilePostItem.module.scss";
+
 import answerType from "./a.png";
 import questionType from "./q.png";
 import { HashLink } from "react-router-hash-link";
+import { dayFormat } from "../../../../../hooks/hooks";
+
+import styles from "./ProfilePostItem.module.scss";
 
 interface ProfilePostItemProps {
   url: string;
@@ -17,7 +20,8 @@ const ProfilePostItem: FC<ProfilePostItemProps> = ({
   type,
   createdAt,
 }) => {
-  const formattedDate = new Date(createdAt + "Z").toDateString();
+  // const formattedDate = new Date(createdAt + "Z").toDateString();
+  const formattedDate = dayFormat(new Date(createdAt + "Z")).split("at")[0];
   return (
     <li className={styles.item} key={url}>
       {type === "answer" ? (

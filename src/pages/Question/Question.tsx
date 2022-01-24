@@ -120,7 +120,7 @@ const Question: React.FC = () => {
             {between < 1 ? (
               <ReactTimeAgo date={new Date(questionData.createdAt + "Z")} />
             ) : (
-              dateFormat
+              <span>{dateFormat}</span>
             )}
           </li>
         </ul>

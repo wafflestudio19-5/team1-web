@@ -8,7 +8,6 @@ import styles from "./UserCard.module.scss";
 import dummyProfile from "../../icons/dummyProfile.svg";
 import ReactTimeAgo from "react-time-ago";
 import { daysBetween, dayFormat } from "../../hooks/hooks";
-import dayjs from "dayjs";
 
 const UserCard: React.FC<{
   user: User;
@@ -20,9 +19,7 @@ const UserCard: React.FC<{
 }> = ({ user, date, isQuestion = false, isEdited, edited, questionId }) => {
   const between = daysBetween(date);
   const dateFormat = dayFormat(date);
-  const editedDayFormat = edited
-    ? dayjs(edited).format(" YY/MM/DD") + " at " + dayjs(edited).format("HH:mm")
-    : null;
+  const editedDayFormat = edited ? dayFormat(edited) : null;
 
   return (
     <div className={styles.activity}>

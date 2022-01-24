@@ -12,5 +12,5 @@ export const daysBetween = (date: Date) => {
 };
 
 export const dayFormat = (date: Date) => {
-  return dayjs(date).format(" YY/MM/DD") + " at " + dayjs(date).format("HH:mm");
+  return dayjs(date).format(" YY.MM.DD") + " at " + dayjs(date).format("HH:mm");
 };
