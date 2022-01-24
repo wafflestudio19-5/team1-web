@@ -34,9 +34,16 @@ const Ask: React.FC = () => {
     e.preventDefault();
     if (values.body) {
       try {
-        const question = await api.postQuestion(values.title, values.body);
-        toast.info("Question created!");
-        navigate(`/questions/${question.id}`);
+        if (
+          removeSpace(values.title).length < 5 &&
+          removeSpace(values.body).length > 1
+        ) {
+          return;
+        } else {
+          const question = await api.postQuestion(values.title, values.body);
+          toast.info("Question created!");
+          navigate(`/questions/${question.id}`);
+        }
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response) {

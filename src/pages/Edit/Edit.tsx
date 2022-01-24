@@ -53,7 +53,10 @@ const Edit: React.FC = () => {
         //   values.title === orgValues.title ? "" : values.title;
         // const editedBody = values.body === orgValues.body ? "" : values.body;
         if (Number(questionId) === Number(id)) {
-          if (removeSpace(values.title).length < 5) {
+          if (
+            removeSpace(values.title).length < 5 &&
+            removeSpace(values.body).length > 1
+          ) {
             return;
           } else {
             await api.editQuestion(Number(id), values.title, values.body);
