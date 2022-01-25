@@ -5,7 +5,9 @@ import {
   EditInfo,
   QuestionComment,
   QuestionInterface,
+  QuestionListResponse,
   UserInfoResponse,
+  UserListResponse,
 } from "../interface/interface";
 
 const API_ENDPOINT =
@@ -19,7 +21,7 @@ interface SignupResponse extends UserInfoResponse {
   accessToken: string;
 }
 
-export type SortCriteria = "createdAt" | "voteCount";
+export type SortCriteria = "createdAt" | "voteCount" | "id";
 export type SortOrder = "asc" | "desc";
 
 const setHeaderToken = (newToken: string | null) => {
@@ -52,12 +54,6 @@ setHeaderToken(loadToken());
 
 export interface EmptyBody {}
 
-interface QuestionListResponse {
-  content: QuestionInterface[];
-  totalElements: number;
-  totalPages: number;
-}
-
 export const api = {
   ping: async () => (await instance.get<string>("/api/ping/")).data,
 
@@ -87,6 +83,18 @@ export const api = {
   },
   _getMyProfile: async () =>
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
+  getUserList: async (
+    page = 0,
+    sortCriteria: SortCriteria = "id",
+    order: SortOrder = "desc"
+  ) => {
+    const params = new URLSearchParams();
+    params.set("page", String(page));
+    params.set("sort", `${sortCriteria},${order}`);
+    return (
+      await instance.get<UserListResponse>("/api/user/?" + params.toString())
+    ).data;
+  },
   getQuestionList: async (
     page = 0,
     sortCriteria: SortCriteria = "createdAt",

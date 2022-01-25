@@ -1,6 +1,5 @@
 .users {
   max-width: 1100px;
-  // width: calc(100% - 164px);
   background-color: hsl(0, 0%, 100%);
   border-radius: 0;
   border: 1px solid hsl(210, 8%, 85%);
@@ -10,17 +9,8 @@
   border-right-width: 0;
   padding: 24px;
   box-sizing: border-box;
-  // display: flex;
-  // flex-direction: row;
-  // flex-wrap: wrap;
-  // box-sizing: initial;
-  // * {
-  //   box-sizing: initial;
-  // }
 
   .header {
-    // margin: 30px;
-    // align-items: center;
     margin-bottom: 24px;
 
     h1 {
@@ -34,6 +24,34 @@
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px;
-    // column-gap: 50px;
   }
+}
+
+.pageNumberList {
+  margin: 50px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .pageButton {
+    border: 1px #d6d9dc solid;
+    border-radius: 3px;
+    padding: 0 8px;
+    line-height: 2;
+    margin: 2px;
+    font-size: 13px;
+    &.current {
+      border-color: white;
+      background-color: #f48225;
+      color: white;
+    }
+  }
+  .pageSpan {
+  }
+}
+
+.loaderContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

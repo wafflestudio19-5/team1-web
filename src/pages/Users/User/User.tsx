@@ -2,22 +2,15 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
+import { UserSummary } from "../../../interface/interface";
 import dummyProfile from "../../../icons/dummyProfile.svg";
 import answerType from "../../../icons/a.png";
 import questionType from "../../../icons/q.png";
 
 import styles from "./User.module.scss";
 
-interface UserProps {
-  id: number;
-  username: string;
-  location: string | null;
-  questionCount: number;
-  answerCount: number;
-}
-
 interface Props {
-  user: UserProps;
+  user: UserSummary;
 }
 
 const User: React.FC<Props> = ({ user }) => {
