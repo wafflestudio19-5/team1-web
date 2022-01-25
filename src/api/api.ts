@@ -1,10 +1,12 @@
 import axios from "axios";
 import {
   Answer,
+  AnswerListResponse,
   AnswerComment,
   EditInfo,
   QuestionComment,
   QuestionInterface,
+  QuestionListResponse,
   UserInfoResponse,
 } from "../interface/interface";
 
@@ -51,12 +53,6 @@ export const _getAccessToken = () => loadToken();
 setHeaderToken(loadToken());
 
 export interface EmptyBody {}
-
-interface QuestionListResponse {
-  content: QuestionInterface[];
-  totalElements: number;
-  totalPages: number;
-}
 
 export const api = {
   ping: async () => (await instance.get<string>("/api/ping/")).data,
@@ -162,6 +158,19 @@ export const api = {
   deleteQuestionComment: async (commentId: number) =>
     (await instance.delete<EmptyBody>(`api/question/comment/${commentId}/`))
       .data,
+  getAnswerList: async (
+    questionId: number,
+    sortCriteria: SortCriteria = "createdAt",
+    order: SortOrder = "desc"
+  ) => {
+    const params = new URLSearchParams();
+    params.set("sort", `${sortCriteria},${order}`);
+    return (
+      await instance.get<AnswerListResponse>(
+        `/api/question/${questionId}/answer/?` + params.toString()
+      )
+    ).data;
+  },
   postAnswer: async (questionId: number, body: string) =>
     (
       await instance.post<Answer>(`/api/question/${questionId}/answer/`, {

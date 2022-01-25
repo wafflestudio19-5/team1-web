@@ -54,6 +54,12 @@ export interface Answer {
   updatedAt: string;
 }
 
+export interface AnswerListResponse {
+  content: Answer[];
+  totalElements: number;
+  totalPages: number;
+}
+
 export interface QuestionInterface {
   id: number;
   user: User;
@@ -65,6 +71,12 @@ export interface QuestionInterface {
   answers: Answer[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface QuestionListResponse {
+  content: QuestionInterface[];
+  totalElements: number;
+  totalPages: number;
 }
 
 export interface UserInfoResponse extends User {
