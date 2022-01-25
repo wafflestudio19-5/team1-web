@@ -1,0 +1,61 @@
+.card {
+  height: 90px;
+  display: flex;
+  transition: transform 0.3s ease;
+  //   box-shadow: 0 0 28px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 5px 6px 7px 7px;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  .card__image {
+    float: left;
+    .profile {
+      overflow: hidden;
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  .userDetail {
+    margin-left: 9px;
+    line-height: 1.3;
+    font-weight: normal;
+    font-size: 18px;
+
+    .username {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: rgb(0, 116, 204);
+      &:visited {
+        color: rgb(0, 99, 191);
+      }
+      &:hover {
+        color: rgb(10, 149, 255);
+      }
+    }
+
+    span {
+      font-size: 12px;
+    }
+
+    .location {
+      display: block;
+    }
+
+    .questionCnt,
+    .answerCnt {
+      img {
+        position: relative;
+        margin-right: 5px;
+        top: 5px;
+      }
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+}
