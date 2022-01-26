@@ -5,7 +5,11 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import BlueButton from "../../Components/BlueButton/BlueButton";
 import { MarkdownEditor } from "../../Components/Markdown/Markdown";
 import { api, SortCriteria, SortOrder } from "../../api/api";
-import { isAnswered, QuestionInterface } from "../../interface/interface";
+import {
+  isAnswered,
+  QuestionInterface,
+  Answer,
+} from "../../interface/interface";
 import BeatLoader from "react-spinners/BeatLoader";
 
 import AnswerPost from "./Post/AnswerPost";
@@ -16,22 +20,18 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import ReactTimeAgo from "react-time-ago";
 import { useSessionContext } from "../../contexts/SessionContext";
-import {
-  hoursBetween,
-  dayFormat,
-  useQuery,
-  handleSorting,
-} from "../../hooks/hooks";
+import { hoursBetween, dayFormat, useQuery } from "../../hooks/hooks";
 
 const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
-  { label: "Newest", criteria: "createdAt", order: "desc" },
-  { label: "Votes", criteria: "voteCount", order: "asc" },
+  { label: "Newest", criteria: "createdAt", order: "asc" },
+  { label: "Votes", criteria: "voteCount", order: "desc" },
 ];
 
 const makeQuery = (filter: string) => `?answertab=${filter}`;
 
 const Question: React.FC = () => {
   const [questionData, setQuestionData] = useState<QuestionInterface>();
+  const [answerList, setAnswerList] = useState<Answer[] | null>(null);
   const [answer, setAnswer] = useState<string>();
   const query = useQuery();
   const filter = useMemo(() => {
@@ -50,11 +50,10 @@ const Question: React.FC = () => {
 
   const sortedAnswerPosts = useMemo(
     () =>
-      questionData?.answers
+      answerList
         ?.slice()
-        ?.sort(handleSorting(filter.label))
         ?.sort((a, b) => (b.accepted ? 1 : 0) - (a.accepted ? 1 : 0)),
-    [questionData, filter]
+    [answerList]
   );
 
   // 리셋 필요할 때,
@@ -64,6 +63,13 @@ const Question: React.FC = () => {
     const doIt = async () => {
       try {
         setQuestionData(await api.getQuestion(Number(id)));
+        const { content } = await api.getAnswerList(
+          Number(id),
+          filter.criteria,
+          filter.order
+        );
+        setAnswerList(content);
+        window.scrollTo(0, 0);
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
@@ -140,9 +146,7 @@ const Question: React.FC = () => {
           <div className={styles.Answers}>
             <div className={styles.answerBar}>
               <h2>
-                {questionData.answers
-                  ? `${questionData.answers.length} Answers`
-                  : "Your Answer"}
+                {answerList ? `${answerList.length} Answers` : "Your Answer"}
               </h2>
 
               <div className={styles.filterList}>

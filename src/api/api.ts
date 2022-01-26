@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   Answer,
+  AnswerListResponse,
   AnswerComment,
   EditInfo,
   QuestionComment,
@@ -168,6 +169,19 @@ export const api = {
   deleteQuestionComment: async (commentId: number) =>
     (await instance.delete<EmptyBody>(`api/question/comment/${commentId}/`))
       .data,
+  getAnswerList: async (
+    questionId: number,
+    sortCriteria: SortCriteria = "createdAt",
+    order: SortOrder = "asc"
+  ) => {
+    const params = new URLSearchParams();
+    params.set("sort", `${sortCriteria},${order}`);
+    return (
+      await instance.get<AnswerListResponse>(
+        `/api/question/${questionId}/answer/?` + params.toString()
+      )
+    ).data;
+  },
   postAnswer: async (questionId: number, body: string) =>
     (
       await instance.post<Answer>(`/api/question/${questionId}/answer/`, {
