@@ -3,7 +3,6 @@ import React from "react";
 import styles from "./OAuthLogin.module.scss";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../api/api";
 
 const OAuthLogin = () => {
   const navigate = useNavigate();
@@ -11,7 +10,12 @@ const OAuthLogin = () => {
     <div className={styles.oAuthLogin}>
       <button
         className={`${styles.oAuthLoginButton} ${styles.google}`}
-        onClick={async () => {}}
+        onClick={() => {
+          window.open(
+            "https://waffleoverflow.shop/oauth2/authorization/google",
+            "_blank"
+          );
+        }}
       >
         <span>Log in with Google</span>
       </button>

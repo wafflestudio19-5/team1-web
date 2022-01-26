@@ -18,6 +18,7 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import MyPage from "./pages/MyPage/MyPage";
 import Users from "./pages/Users/Users";
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
+import SocialLogin from "./Components/SocialLogin/SocialLogin";
 
 const noLeftBarPage = ["register", "login"];
 
@@ -46,6 +47,7 @@ const App: React.FC = () => {
                 <Route path="/posts/:id/edit" element={<Edit />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/users/:id" element={<MyPage />} />
+                <Route path="/social" element={<SocialLogin />} />
                 <Route
                   path="/"
                   element={<Navigate to="/questions" replace />}
