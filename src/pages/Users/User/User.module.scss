@@ -1,4 +1,4 @@
-.card {
+.user {
   height: 90px;
   display: flex;
   transition: transform 0.3s ease;
@@ -11,7 +11,7 @@
     transform: scale(1.1);
   }
 
-  .card__image {
+  .userImage {
     float: left;
     .profile {
       overflow: hidden;
@@ -30,6 +30,7 @@
 
     .username {
       display: inline-block;
+      text-overflow: ellipsis;
       margin-bottom: 8px;
       color: rgb(0, 116, 204);
       &:visited {

@@ -15,8 +15,8 @@ interface Props {
 
 const User: React.FC<Props> = ({ user }) => {
   return (
-    <div className={styles.card}>
-      <div className={styles.card__image}>
+    <div className={styles.user}>
+      <div className={styles.userImage}>
         <img className={styles.profile} alt={"profile"} src={dummyProfile} />
       </div>
       <div className={styles.userDetail}>

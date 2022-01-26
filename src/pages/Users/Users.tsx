@@ -52,7 +52,7 @@ const Users = () => {
       <div className={styles.header}>
         <h1>{"Users"}</h1>
       </div>
-      <div className={styles.cards_container}>
+      <div className={styles.usersContainer}>
         {users.map((user, index) => (
           <User key={index} user={user} />
         ))}
