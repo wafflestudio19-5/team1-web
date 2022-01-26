@@ -8,6 +8,7 @@ import {
   QuestionInterface,
   QuestionListResponse,
   UserInfoResponse,
+  UserListResponse,
 } from "../interface/interface";
 
 const API_ENDPOINT =
@@ -83,6 +84,16 @@ export const api = {
   },
   _getMyProfile: async () =>
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
+  getUserList: async (page = 0, sortCriteria = "id", order = "desc") => {
+    const params = new URLSearchParams();
+    params.set("page", String(page));
+    params.set("sort", `${sortCriteria},${order}`);
+    return (
+      await instance.get<UserListResponse>("/api/user/?" + params.toString())
+    ).data;
+  },
+  getUserProfile: async (userId: number) =>
+    (await instance.get<UserInfoResponse>(`/api/user/${userId}/`)).data,
   getQuestionList: async (
     page = 0,
     sortCriteria: SortCriteria = "createdAt",
@@ -227,4 +238,8 @@ export const api = {
 
   editUserInfo: async (editInfo: EditInfo) =>
     (await instance.put(`/api/user/me/edit/`, editInfo)).data,
+
+  deleteProfile: async () => {
+    await instance.delete(`/api/user/me/remove/`);
+  },
 };

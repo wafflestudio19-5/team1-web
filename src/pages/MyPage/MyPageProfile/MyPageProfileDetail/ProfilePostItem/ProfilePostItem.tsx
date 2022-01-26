@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
-import answerType from "./a.png";
-import questionType from "./q.png";
+import answerType from "../../../../../icons/a.png";
+import questionType from "../../../../../icons/q.png";
 import { HashLink } from "react-router-hash-link";
 import { dayFormat } from "../../../../../hooks/hooks";
 

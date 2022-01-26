@@ -14,7 +14,7 @@ const UserCard: React.FC<{
   date: Date;
   isQuestion?: boolean;
   isEdited: boolean;
-  edited?: Date;
+  edited?: Date | null;
   questionId?: number;
 }> = ({ user, date, isQuestion = false, isEdited, edited, questionId }) => {
   const between = hoursBetween(date);

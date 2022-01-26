@@ -28,10 +28,16 @@ const LeftBar: React.FC<LeftBarProps> = ({ noLeftBarPage }) => {
           >
             <Link to="/questions">Questions</Link>{" "}
           </li>
-          {/*
-          <li className={styles.subMenu}>Tags</li>
-          <li className={styles.subMenu}>Users</li>
-            */}
+          <li
+            className={`${styles.subMenu} ${
+              mode === "users" ? styles.selected : ""
+            }`}
+          >
+            <Link to="/users">Users</Link>{" "}
+          </li>
+
+          {/* <li className={styles.subMenu}>Tags</li>
+          <li className={styles.subMenu}>Users</li> */}
         </ul>
 
         {/*

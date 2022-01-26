@@ -30,7 +30,7 @@ export interface Comment {
   questionId: number | null;
   answerId: number | null;
   createdAt: string;
-  updatedAt: string;
+  updatedAt: string | null;
 }
 
 export interface QuestionComment extends Comment {
@@ -51,7 +51,7 @@ export interface Answer {
   comments: AnswerComment[];
   accepted: boolean;
   createdAt: string;
-  updatedAt: string;
+  editedAt: string | null;
 }
 
 export interface AnswerListResponse {
@@ -70,7 +70,13 @@ export interface QuestionInterface {
   tags: Tag[];
   answers: Answer[];
   createdAt: string;
-  updatedAt: string;
+  editedAt: string | null;
+}
+
+export interface QuestionListResponse {
+  content: QuestionInterface[];
+  totalElements: number;
+  totalPages: number;
 }
 
 export interface QuestionListResponse {
@@ -96,6 +102,21 @@ export interface UserInfoResponse extends User {
     questionId: number;
     createdAt: string;
   }[];
+}
+
+export interface UserSummary {
+  id: number;
+  username: string;
+  // image: string | null;
+  location: string | null;
+  questionCount: number;
+  answerCount: number;
+}
+
+export interface UserListResponse {
+  content: UserSummary[];
+  totalElements: number;
+  totalPages: number;
 }
 
 export const countVotes = (data: QuestionInterface | Answer) => {

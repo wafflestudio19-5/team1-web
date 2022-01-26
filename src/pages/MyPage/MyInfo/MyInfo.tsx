@@ -1,14 +1,17 @@
 import React, { FC } from "react";
 
 import styles from "./MyInfo.module.scss";
-import { useSessionContext } from "../../../contexts/SessionContext";
 
 import dummyProfile from "../../../icons/dummyProfile.svg";
+import { UserInfoResponse } from "../../../interface/interface";
 
-const MyInfo: FC = () => {
-  const { userInfo } = useSessionContext();
+interface MyInfoProps {
+  userInfo: UserInfoResponse;
+}
+
+const MyInfo: FC<MyInfoProps> = ({ userInfo }) => {
   return userInfo ? (
-    <div className={styles.myInfo}>
+    <div className={styles.userInfo}>
       <img
         className={styles.profileImg}
         src={dummyProfile}
@@ -18,7 +21,6 @@ const MyInfo: FC = () => {
       />
       <div className={styles.infoDetail}>
         <span className={styles.userName}>{userInfo?.username}</span>
-
       </div>
     </div>
   ) : null;
