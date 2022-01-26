@@ -172,7 +172,7 @@ export const api = {
   getAnswerList: async (
     questionId: number,
     sortCriteria: SortCriteria = "createdAt",
-    order: SortOrder = "desc"
+    order: SortOrder = "asc"
   ) => {
     const params = new URLSearchParams();
     params.set("sort", `${sortCriteria},${order}`);

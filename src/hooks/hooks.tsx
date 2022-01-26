@@ -1,7 +1,6 @@
 import { useLocation } from "react-router";
 import { useMemo } from "react";
 import dayjs from "dayjs";
-import { Answer } from "../interface/interface";
 
 export const useQuery = () => {
   const { search } = useLocation();
