@@ -30,7 +30,7 @@ export interface Comment {
   questionId: number | null;
   answerId: number | null;
   createdAt: string;
-  updatedAt: string;
+  updatedAt: string | null;
 }
 
 export interface QuestionComment extends Comment {
@@ -51,7 +51,7 @@ export interface Answer {
   comments: AnswerComment[];
   accepted: boolean;
   createdAt: string;
-  updatedAt: string;
+  updatedAt: string | null;
 }
 
 export interface QuestionInterface {
@@ -64,7 +64,7 @@ export interface QuestionInterface {
   tags: Tag[];
   answers: Answer[];
   createdAt: string;
-  updatedAt: string;
+  editedAt: string | null;
 }
 
 export interface UserInfoResponse extends User {
