@@ -23,18 +23,6 @@ export const dayFormat = (date: Date) => {
   return dayjs(date).format(" YY.MM.DD") + " at " + dayjs(date).format("HH:mm");
 };
 
-export const handleSorting = (sortType: string) => {
-  switch (sortType) {
-    case "Newest":
-      return (a: Answer, b: Answer) =>
-        (new Date(b.createdAt) ? 1 : 0) - (new Date(a.createdAt) ? 1 : 0);
-    case "Votes":
-      return (a: Answer, b: Answer) => (b.votes ? 1 : 0) - (a.votes ? 1 : 0);
-    default:
-      break;
-  }
-};
-
 export const makePageList = (
   currentPage: number,
   totalPages: number
