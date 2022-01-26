@@ -21,7 +21,7 @@ interface SignupResponse extends UserInfoResponse {
   accessToken: string;
 }
 
-export type SortCriteria = "createdAt" | "voteCount" | "id";
+export type SortCriteria = "createdAt" | "voteCount";
 export type SortOrder = "asc" | "desc";
 
 const setHeaderToken = (newToken: string | null) => {
@@ -83,11 +83,7 @@ export const api = {
   },
   _getMyProfile: async () =>
     (await instance.get<UserInfoResponse>("/api/user/me/")).data,
-  getUserList: async (
-    page = 0,
-    sortCriteria: SortCriteria = "id",
-    order: SortOrder = "desc"
-  ) => {
+  getUserList: async (page = 0, sortCriteria = "id", order = "desc") => {
     const params = new URLSearchParams();
     params.set("page", String(page));
     params.set("sort", `${sortCriteria},${order}`);
@@ -95,6 +91,8 @@ export const api = {
       await instance.get<UserListResponse>("/api/user/?" + params.toString())
     ).data;
   },
+  getUserProfile: async (userId: number) =>
+    (await instance.get<UserInfoResponse>(`/api/user/${userId}/`)).data,
   getQuestionList: async (
     page = 0,
     sortCriteria: SortCriteria = "createdAt",
@@ -226,4 +224,8 @@ export const api = {
 
   editUserInfo: async (editInfo: EditInfo) =>
     (await instance.put(`/api/user/me/edit/`, editInfo)).data,
+
+  deleteProfile: async () => {
+    await instance.delete(`/api/user/me/remove/`);
+  },
 };

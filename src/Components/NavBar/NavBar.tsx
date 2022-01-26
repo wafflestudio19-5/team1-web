@@ -82,6 +82,7 @@ const NavBar: React.FC<NavBarProps> = () => {
         </ul>
         <div className={styles.searchSection}>
           <input
+            id="search-box"
             className={styles.searchBox}
             onChange={onSearchChange}
             onKeyPress={onSearchEnter}
@@ -108,7 +109,7 @@ const NavBar: React.FC<NavBarProps> = () => {
         ) : (
           <div className={styles.buttonList}>
             <Link
-              to={"/mypage?tab=profile"}
+              to={`/users/${userInfo.id}?tab=profile`}
               className={styles.profileContainer}
               title={userInfo.username}
             >
