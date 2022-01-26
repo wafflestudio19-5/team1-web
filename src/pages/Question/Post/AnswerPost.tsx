@@ -143,8 +143,10 @@ const AnswerPost: React.FC<PostProps> = ({
                 user={answer.user}
                 date={new Date(answer.createdAt + "Z")}
                 isQuestion={false}
-                isEdited={answer.createdAt !== answer.updatedAt}
-                edited={new Date(answer.updatedAt + "Z")}
+                isEdited={!!answer.editedAt}
+                edited={
+                  answer.editedAt ? new Date(answer.editedAt + "Z") : null
+                }
               />
             </Link>
           </div>

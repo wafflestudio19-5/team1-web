@@ -51,7 +51,7 @@ export interface Answer {
   comments: AnswerComment[];
   accepted: boolean;
   createdAt: string;
-  updatedAt: string | null;
+  editedAt: string | null;
 }
 
 export interface QuestionInterface {

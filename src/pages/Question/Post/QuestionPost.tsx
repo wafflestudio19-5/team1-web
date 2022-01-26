@@ -150,7 +150,9 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
                 isQuestion={true}
                 questionId={question.id}
                 isEdited={!!question.editedAt}
-                edited={new Date(question.editedAt + "Z")}
+                edited={
+                  question.editedAt ? new Date(question.editedAt + "Z") : null
+                }
               />
             </Link>
           </div>
