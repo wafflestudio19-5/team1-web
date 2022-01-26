@@ -18,7 +18,6 @@ const UserCard: React.FC<{
   questionId?: number;
 }> = ({ user, date, isQuestion = false, isEdited, edited, questionId }) => {
   const between = hoursBetween(date);
-  console.log(between);
   const dateFormat = dayFormat(date);
   const editedDayFormat = edited ? dayFormat(edited) : null;
 

@@ -22,9 +22,6 @@ const useUserInfo = (userId: number | null) => {
   const [userInfo, setUserInfo] = useState<UserInfoResponse>();
   const navigate = useNavigate();
   const me = myInfo ? userId === myInfo.id : false;
-  console.log("user id", userId);
-  console.log("my id", myInfo?.id);
-  console.log("me", me);
   const refreshUserInfo = useCallback(async () => {
     if (userId === null) {
       setUserInfo(undefined);
