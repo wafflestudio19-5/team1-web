@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { _getAccessToken, _setAccessToken, api } from "../api/api";
-import { UserInfoResponse } from "../interface/interface";
+import { customizedImageLink, UserInfoResponse } from "../interface/interface";
 
 interface SessionContextProps {
   signin: (email: string, password: string) => Promise<void>;
@@ -35,11 +35,12 @@ export const SessionProvider: FC = ({ children }) => {
       if (token) {
         try {
           const newUserInfo = await api._getMyProfile();
+
+          newUserInfo.image = customizedImageLink(newUserInfo.image);
           setUserInfo(newUserInfo);
         } catch (e) {
           _setAccessToken(null);
           setUserInfo(null);
-          console.error(e);
         }
       } else {
         setUserInfo(null);
@@ -52,6 +53,7 @@ export const SessionProvider: FC = ({ children }) => {
       const token = await api._signin(email, password);
       _setAccessToken(token);
       const userInfo = await api._getMyProfile();
+      userInfo.image = customizedImageLink(userInfo.image);
       setUserInfo(userInfo);
     } catch (e) {
       _setAccessToken(null);
@@ -62,6 +64,7 @@ export const SessionProvider: FC = ({ children }) => {
   const signup = useCallback(
     async (username: string, email: string, password: string) => {
       const { token, userInfo } = await api._signup(username, email, password);
+      userInfo.image = customizedImageLink(userInfo.image);
       _setAccessToken(token);
       setUserInfo(userInfo);
     },
@@ -78,6 +81,7 @@ export const SessionProvider: FC = ({ children }) => {
   const refreshMyProfile = useCallback(async () => {
     try {
       const newUserInfo = await api._getMyProfile();
+      newUserInfo.image = customizedImageLink(newUserInfo.image);
       setUserInfo(newUserInfo);
     } catch (e) {
       _setAccessToken(null);

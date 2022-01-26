@@ -135,3 +135,7 @@ export type EditInfo = {
   websiteLink: string | null;
   githubLink: string | null;
 };
+
+export const customizedImageLink = (image: string | null) => {
+  return image ? "https://images.waffleoverflow.shop/" + image : null;
+};
