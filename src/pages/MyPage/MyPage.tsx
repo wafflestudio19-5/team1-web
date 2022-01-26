@@ -11,7 +11,10 @@ import { Settings } from "./Settings/Settings";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { UserInfoResponse } from "../../interface/interface";
+import {
+  customizedImageLink,
+  UserInfoResponse,
+} from "../../interface/interface";
 import { api } from "../../api/api";
 import BeatLoader from "react-spinners/BeatLoader";
 
@@ -32,12 +35,8 @@ const useUserInfo = (userId: number | null) => {
       return;
     }
     try {
-      let newUserInfo = await api.getUserProfile(userId);
-      newUserInfo = {
-        ...newUserInfo,
-        image: "https://images.waffleoverflow.shop/" + newUserInfo.image,
-      };
-
+      const newUserInfo = await api.getUserProfile(userId);
+      newUserInfo.image = customizedImageLink(newUserInfo.image);
       setUserInfo(newUserInfo);
     } catch (e) {
       setUserInfo(undefined);
