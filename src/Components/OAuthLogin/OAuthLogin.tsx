@@ -2,14 +2,19 @@ import React from "react";
 
 import styles from "./OAuthLogin.module.scss";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const OAuthLogin = () => {
+  const navigate = useNavigate();
   return (
     <div className={styles.oAuthLogin}>
       <button
         className={`${styles.oAuthLoginButton} ${styles.google}`}
         onClick={() => {
-          toast.error("coming soon!");
+          window.open(
+            "https://waffleoverflow.shop/oauth2/authorization/google",
+            "_blank"
+          );
         }}
       >
         <span>Log in with Google</span>
