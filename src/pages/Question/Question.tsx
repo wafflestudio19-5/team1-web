@@ -185,8 +185,8 @@ const Question: React.FC = () => {
       </div>
     </div>
   ) : (
-    <div className={styles.Loading}>
-      <BeatLoader size={20} />
+    <div className={styles.loaderContainer}>
+      <BeatLoader />
     </div>
   );
 };

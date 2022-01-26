@@ -51,7 +51,7 @@ export interface Answer {
   comments: AnswerComment[];
   accepted: boolean;
   createdAt: string;
-  updatedAt: string | null;
+  editedAt: string | null;
 }
 
 export interface QuestionInterface {
@@ -65,6 +65,12 @@ export interface QuestionInterface {
   answers: Answer[];
   createdAt: string;
   editedAt: string | null;
+}
+
+export interface QuestionListResponse {
+  content: QuestionInterface[];
+  totalElements: number;
+  totalPages: number;
 }
 
 export interface UserInfoResponse extends User {
@@ -84,6 +90,21 @@ export interface UserInfoResponse extends User {
     questionId: number;
     createdAt: string;
   }[];
+}
+
+export interface UserSummary {
+  id: number;
+  username: string;
+  // image: string | null;
+  location: string | null;
+  questionCount: number;
+  answerCount: number;
+}
+
+export interface UserListResponse {
+  content: UserSummary[];
+  totalElements: number;
+  totalPages: number;
 }
 
 export const countVotes = (data: QuestionInterface | Answer) => {

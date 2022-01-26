@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import MyPage from "./pages/MyPage/MyPage";
+import Users from "./pages/Users/Users";
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
 
 const noLeftBarPage = ["register", "login"];
@@ -43,6 +44,7 @@ const App: React.FC = () => {
                 <Route path="/questions/:id" element={<Question />} />
                 <Route path="/questions/ask" element={<Ask />} />
                 <Route path="/posts/:id/edit" element={<Edit />} />
+                <Route path="/users" element={<Users />} />
                 <Route path="/users/:id" element={<MyPage />} />
                 <Route
                   path="/"
