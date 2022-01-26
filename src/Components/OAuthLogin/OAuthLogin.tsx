@@ -11,10 +11,7 @@ const OAuthLogin = () => {
     <div className={styles.oAuthLogin}>
       <button
         className={`${styles.oAuthLoginButton} ${styles.google}`}
-        onClick={async () => {
-          const res = await api.oAuthLogin();
-          console.log(res);
-        }}
+        onClick={async () => {}}
       >
         <span>Log in with Google</span>
       </button>

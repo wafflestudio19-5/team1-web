@@ -228,7 +228,4 @@ export const api = {
   deleteProfile: async () => {
     await instance.delete(`/api/user/me/remove/`);
   },
-  oAuthLogin: async () => {
-    await instance.post("/oauth2/authorization/google");
-  },
 };
