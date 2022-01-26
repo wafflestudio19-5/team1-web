@@ -2,14 +2,18 @@ import React from "react";
 
 import styles from "./OAuthLogin.module.scss";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../api/api";
 
 const OAuthLogin = () => {
+  const navigate = useNavigate();
   return (
     <div className={styles.oAuthLogin}>
       <button
         className={`${styles.oAuthLoginButton} ${styles.google}`}
-        onClick={() => {
-          toast.error("coming soon!");
+        onClick={async () => {
+          const res = await api.oAuthLogin();
+          console.log(res);
         }}
       >
         <span>Log in with Google</span>

@@ -22,6 +22,29 @@
   text-align: center;
   margin-top: 30px;
 }
+.warning {
+  color: red;
+  font-size: 10px;
+  font-weight: bold;
+  display: none;
+  margin-top: 0;
+
+  &.warningOn {
+    transition: 0.3s ease-out;
+    display: flex;
+    margin-top: 3px;
+  }
+}
+
+.buttonLine {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  button {
+    margin: 0 auto;
+    width: 98%;
+  }
+}
 
 .linkToLogin {
   color: cornflowerblue;

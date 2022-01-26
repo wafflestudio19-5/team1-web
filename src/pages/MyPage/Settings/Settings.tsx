@@ -29,15 +29,7 @@ export const Settings: FC<SettingsProps> = () => {
   const [loadingOn, setLoadingOn] = useState<boolean>(false);
 
   useEffect(() => {
-    if (profile) {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(profile);
-      fileReader.onload = function (e) {
-        if (e.target) {
-          setImgSrc(String(e.target.result));
-        }
-      };
-    }
+    setImgSrc(userInfo?.image ?? "");
     setEditInfo({
       displayName: userInfo?.username ?? null,
       location: userInfo?.location ?? null,
@@ -46,7 +38,7 @@ export const Settings: FC<SettingsProps> = () => {
       websiteLink: userInfo?.websiteLink ?? null,
       githubLink: userInfo?.githubLink ?? null,
     });
-  }, [profile, userInfo]);
+  }, [userInfo]);
 
   const [changeProfileOn, setChangeProfileOn] = useState<boolean>(false);
   const saveProfileImage = async (profileImage: File) => {

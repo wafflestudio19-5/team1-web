@@ -22,10 +22,17 @@ const Register = () => {
     email: "",
     password: "",
   });
+
+  const [warningOn, setWarningOn] = useState<boolean>(false);
+
   const { userInfo, signup } = useSessionContext();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (name === "password") {
+      setWarningOn(true);
+    }
 
     const newRegisterInfo = { ...registerInfo, [name]: value };
     setRegisterInfo(newRegisterInfo);
@@ -104,7 +111,14 @@ const Register = () => {
           value={registerInfo.password}
           onChange={onChange}
         />
-        <BlueButton type={"submit"} text={"Sign up"} onClick={submit} />
+        <span
+          className={`${styles.warning} ${warningOn ? styles.warningOn : ""}`}
+        >
+          * 6~15자, 숫자, 문자, 특수문자 중 2가지 이상
+        </span>
+        <div className={styles.buttonLine}>
+          <BlueButton type={"submit"} text={"Sign up"} onClick={submit} />
+        </div>
       </form>
       <div className={styles.additional}>
         <span>Already have an account? </span>

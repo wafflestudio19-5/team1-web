@@ -14,7 +14,7 @@ const MyInfo: FC<MyInfoProps> = ({ userInfo }) => {
     <div className={styles.userInfo}>
       <img
         className={styles.profileImg}
-        src={dummyProfile}
+        src={userInfo.image ? userInfo.image : dummyProfile}
         alt={"profile"}
         height={128}
         width={128}

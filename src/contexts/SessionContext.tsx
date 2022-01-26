@@ -35,11 +35,13 @@ export const SessionProvider: FC = ({ children }) => {
       if (token) {
         try {
           const newUserInfo = await api._getMyProfile();
+
+          newUserInfo.image =
+            "https://images.waffleoverflow.shop/" + newUserInfo.image;
           setUserInfo(newUserInfo);
         } catch (e) {
           _setAccessToken(null);
           setUserInfo(null);
-          console.error(e);
         }
       } else {
         setUserInfo(null);
@@ -78,6 +80,8 @@ export const SessionProvider: FC = ({ children }) => {
   const refreshMyProfile = useCallback(async () => {
     try {
       const newUserInfo = await api._getMyProfile();
+      newUserInfo.image =
+        "https://images.waffleoverflow.shop/" + newUserInfo.image;
       setUserInfo(newUserInfo);
     } catch (e) {
       _setAccessToken(null);

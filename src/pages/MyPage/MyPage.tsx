@@ -32,7 +32,12 @@ const useUserInfo = (userId: number | null) => {
       return;
     }
     try {
-      const newUserInfo = await api.getUserProfile(userId);
+      let newUserInfo = await api.getUserProfile(userId);
+      newUserInfo = {
+        ...newUserInfo,
+        image: "https://images.waffleoverflow.shop/" + newUserInfo.image,
+      };
+
       setUserInfo(newUserInfo);
     } catch (e) {
       setUserInfo(undefined);
