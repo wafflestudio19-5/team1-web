@@ -22,8 +22,6 @@ export const Settings: FC<SettingsProps> = () => {
 
   const [editInfo, setEditInfo] = useState<EditInfo | null>(null);
 
-  const [profile, setProfile] = useState<File | null>(null);
-
   const [imgSrc, setImgSrc] = useState<string>("");
 
   const [loadingOn, setLoadingOn] = useState<boolean>(false);
@@ -95,8 +93,7 @@ export const Settings: FC<SettingsProps> = () => {
       {changeProfileOn && (
         <div className={styles.addImageContainer}>
           <ImageInputBox
-            state={profile}
-            setState={setProfile}
+            initialSrc={userInfo?.image}
             closeBox={() => {
               setChangeProfileOn(false);
             }}
