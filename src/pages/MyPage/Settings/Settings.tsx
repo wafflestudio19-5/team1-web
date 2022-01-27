@@ -12,6 +12,7 @@ import { useSessionContext } from "../../../contexts/SessionContext";
 import { EditInfo } from "../../../interface/interface";
 import BeatLoader from "react-spinners/BeatLoader";
 import Unregister from "./Unregister/Unregister";
+import { useNavigate } from "react-router-dom";
 
 interface SettingsProps {}
 
@@ -39,14 +40,24 @@ export const Settings: FC<SettingsProps> = () => {
   }, [userInfo]);
 
   const [changeProfileOn, setChangeProfileOn] = useState<boolean>(false);
+  const navigate = useNavigate();
   const saveProfileImage = async (profileImage: File) => {
-    if (profileImage === null) {
-      return;
+    try {
+      if (profileImage === null) {
+        return;
+      }
+      const object = new FormData();
+      object.append("image", profileImage);
+      await api.editProfile(object);
+      toast.error("Not Implemented!");
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response) {
+        if (e.response.status === 401) {
+          toast.error("Please login again!");
+          navigate("/login");
+        } else console.error(e);
+      } else console.error(e);
     }
-    const object = new FormData();
-    object.append("image", profileImage);
-    await api.editProfile(object);
-    toast.error("Not Implemented!");
   };
   const cancel = useCallback(() => {
     toast.error("Not Implemented!");
