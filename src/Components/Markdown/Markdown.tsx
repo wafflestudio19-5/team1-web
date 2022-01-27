@@ -3,7 +3,9 @@ import React, { FC } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import styles from "./Markdown.module.scss";
 import rehypeSanitize from "rehype-sanitize";
+import rehypeHighlight from "rehype-highlight";
 import { uriTransformer } from "react-markdown";
+import "highlight.js/styles/stackoverflow-light.css";
 
 interface MarkdownEditorProps {
   value: string | undefined;
@@ -55,7 +57,7 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
     <MDEditor.Markdown
       className={className}
       source={source}
-      rehypePlugins={[[rehypeSanitize]]}
+      rehypePlugins={[[rehypeSanitize], [rehypeHighlight]]}
       transformLinkUri={myUriTransformer}
       transformImageUri={myUriTransformer}
     />
@@ -70,7 +72,7 @@ export const MarkdownCommentEditor: React.FC<MarkdownEditorProps> = ({
   return (
     <div className={styles.container}>
       <MDEditor
-        className={className}
+        className={`${className} ${styles.editor}`}
         height={80}
         preview={"edit"}
         hideToolbar={true}
