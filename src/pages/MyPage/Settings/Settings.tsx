@@ -12,6 +12,7 @@ import { useSessionContext } from "../../../contexts/SessionContext";
 import { EditInfo } from "../../../interface/interface";
 import BeatLoader from "react-spinners/BeatLoader";
 import Unregister from "./Unregister/Unregister";
+import { useNavigate } from "react-router-dom";
 
 interface SettingsProps {}
 
@@ -22,13 +23,11 @@ export const Settings: FC<SettingsProps> = () => {
 
   const [editInfo, setEditInfo] = useState<EditInfo | null>(null);
 
-  const [profile, setProfile] = useState<File | null>(null);
-
   const [imgSrc, setImgSrc] = useState<string>("");
 
   const [loadingOn, setLoadingOn] = useState<boolean>(false);
 
-  useEffect(() => {
+  const resetUserInfo = useCallback(() => {
     setImgSrc(userInfo?.image ?? "");
     setEditInfo({
       displayName: userInfo?.username ?? null,
@@ -39,38 +38,67 @@ export const Settings: FC<SettingsProps> = () => {
       githubLink: userInfo?.githubLink ?? null,
     });
   }, [userInfo]);
+  useEffect(() => {
+    resetUserInfo();
+  }, [resetUserInfo]);
 
   const [changeProfileOn, setChangeProfileOn] = useState<boolean>(false);
+  const navigate = useNavigate();
   const saveProfileImage = async (profileImage: File) => {
-    if (profileImage === null) {
-      return;
-    }
-    const object = new FormData();
-    object.append("image", profileImage);
-    await api.editProfile(object);
-    toast.error("Not Implemented!");
-  };
-  const cancel = useCallback(() => {
-    toast.error("Not Implemented!");
-  }, []);
-
-  const submit = async () => {
     try {
-      setLoadingOn(true);
-      if (editInfo !== null) {
-        await api.editUserInfo(editInfo);
-        toast.success("수정되었습니다", { autoClose: 3000 });
-        await refreshMyProfile();
-      } else {
-        toast.error("수정된 정보가 없습니다", { autoClose: 3000 });
+      if (profileImage === null) {
+        return;
       }
+      const object = new FormData();
+      object.append("image", profileImage);
+      await api.editProfile(object);
+      await refreshMyProfile();
     } catch (e) {
       if (axios.isAxiosError(e)) {
-        toast.error(e.request?.data?.msg, { autoClose: 3000 });
-      }
+        if (e.response) {
+          if (e.response.status === 401) {
+            toast.error("Please login again!");
+            navigate("/login");
+          } else if (e.response.status === 500) {
+            toast.error("Something went wrong on server...");
+          } else {
+            toast.error(`Unexpected error: ${e.response.status}`);
+          }
+        } else {
+          toast.error("Cannot connect to server");
+        }
+      } else console.error(e);
     }
-    setLoadingOn(false);
   };
+  const cancel = useCallback(() => {
+    resetUserInfo();
+    toast.success("수정사항이 초기화되었습니다");
+  }, [resetUserInfo]);
+
+  const submit = useCallback(() => {
+    const doIt = async () => {
+      try {
+        setLoadingOn(true);
+        if (editInfo !== null) {
+          await api.editUserInfo(editInfo);
+          toast.success("수정되었습니다", { autoClose: 3000 });
+          await refreshMyProfile();
+        } else {
+          toast.error("수정된 정보가 없습니다", { autoClose: 3000 });
+        }
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response) {
+            toast.error(e.response?.data?.msg, { autoClose: 3000 });
+          } else toast.error("Cannot connect to server");
+        } else {
+          console.error(e);
+        }
+      }
+      setLoadingOn(false);
+    };
+    doIt().then();
+  }, [editInfo, refreshMyProfile]);
 
   const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -95,8 +123,7 @@ export const Settings: FC<SettingsProps> = () => {
       {changeProfileOn && (
         <div className={styles.addImageContainer}>
           <ImageInputBox
-            state={profile}
-            setState={setProfile}
+            initialSrc={userInfo?.image}
             closeBox={() => {
               setChangeProfileOn(false);
             }}
@@ -181,12 +208,7 @@ export const Settings: FC<SettingsProps> = () => {
             </div>
           </div>
           <div className={styles.buttons}>
-            <BlueButton
-              text={"Save profile"}
-              onClick={() => {
-                submit();
-              }}
-            />
+            <BlueButton text={"Save profile"} onClick={submit} />
             <button className={styles.cancel} onClick={cancel}>
               Cancel
             </button>

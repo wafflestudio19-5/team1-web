@@ -62,14 +62,13 @@ const Question: React.FC = () => {
   useEffect(() => {
     const doIt = async () => {
       try {
-        setQuestionData(await api.getQuestion(Number(id)));
-        const { content } = await api.getAnswerList(
-          Number(id),
-          filter.criteria,
-          filter.order
-        );
+        const [question, answers] = await Promise.all([
+          api.getQuestion(Number(id)),
+          api.getAnswerList(Number(id), filter.criteria, filter.order),
+        ]);
+        setQuestionData(question);
+        const { content } = answers;
         setAnswerList(content);
-        window.scrollTo(0, 0);
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
@@ -94,7 +93,7 @@ const Question: React.FC = () => {
         await api.postAnswer(Number(id), answer);
         setAnswer("");
         setReset(!reset);
-        toast.info("Answer posted!");
+        toast.success("Answer posted!");
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response) {
@@ -102,8 +101,8 @@ const Question: React.FC = () => {
               toast.error("Invalid answer id");
             } else if (err.response.status === 401) {
               toast.error("Please sign in first!");
-            } else console.error(err.response.data);
-          } else console.error(err);
+            } else toast.error("Unexpected error: " + err.response.status);
+          } else toast.error("Cannot connect to server");
         } else console.error(err);
       }
     } else {

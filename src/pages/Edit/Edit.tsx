@@ -60,13 +60,14 @@ const Edit: React.FC = () => {
             return;
           } else {
             await api.editQuestion(Number(id), values.title, values.body);
-            toast.info("Question edited!");
+            toast.success("Question edited!");
+            navigate(`/questions/${questionId}`);
           }
         } else {
-          await api.editAnswer(Number(id), values.body);
-          toast.info("Answer edited!");
+          const answer = await api.editAnswer(Number(id), values.body);
+          toast.success("Answer edited!");
+          navigate(`/questions/${questionId}#answer-${answer.id}`);
         }
-        navigate(`/questions/${questionId}`);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response) {
@@ -77,8 +78,8 @@ const Edit: React.FC = () => {
               toast.error("Please sign in first");
             } else if (err.response.status === 404) {
               toast.error("The question does not exist");
-            } else console.error(err.response.data);
-          } else console.error(err);
+            } else toast.error("Unexpected error: " + err.response.status);
+          } else toast.error("Cannot connect to server");
         } else console.error(err);
       }
     }

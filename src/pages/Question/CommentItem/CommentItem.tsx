@@ -63,7 +63,7 @@ const CommentItem: React.FC<CommentProps> = ({
                   ? await api.deleteAnswerComment(comment.id)
                   : await api.deleteQuestionComment(comment.id);
                 setReset(!reset);
-                toast.info("Comment deleted!");
+                toast.success("Comment deleted!");
               } catch (err) {
                 if (axios.isAxiosError(err)) {
                   if (err.response) {
@@ -77,8 +77,9 @@ const CommentItem: React.FC<CommentProps> = ({
                       }
                     } else if (err.response.status === 404) {
                       toast.error("The comment does not exist");
-                    } else console.error(err.response.data);
-                  } else console.error(err);
+                    } else
+                      toast.error("Unexpected error: " + err.response.status);
+                  } else toast.error("Cannot connect to server");
                 } else console.error(err);
               }
             },
@@ -98,17 +99,17 @@ const CommentItem: React.FC<CommentProps> = ({
     e.preventDefault();
     if (questionId) {
       try {
-        if (edited === "") {
+        if (!edited || edited === "") {
           toast.error("댓글을 입력해주세요!");
           return;
         }
         answerId
-          ? await api.editAnswerComment(comment.id, edited || "")
-          : await api.editQuestionComment(comment.id, edited || "");
+          ? await api.editAnswerComment(comment.id, edited)
+          : await api.editQuestionComment(comment.id, edited);
         setReset(!reset);
         setOnEdit(false);
         setEdited("");
-        toast.info("Comment edited!");
+        toast.success("Comment edited!");
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response) {
@@ -118,8 +119,8 @@ const CommentItem: React.FC<CommentProps> = ({
               toast.error("Please sign in first");
             } else if (err.response.status === 404) {
               toast.error("The comment does not exist");
-            } else console.error(err.response.data);
-          } else console.error(err);
+            } else toast.error("Unexpected error: " + err.response.status);
+          } else toast.error("Cannot connect to server");
         } else console.error(err);
       }
     }

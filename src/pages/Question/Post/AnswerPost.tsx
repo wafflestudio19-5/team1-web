@@ -56,16 +56,19 @@ const AnswerPost: React.FC<PostProps> = ({
             try {
               await api.deleteAnswer(answer.id);
               setReset(!reset);
-              toast.info("Answer deleted!");
+              toast.success("Answer deleted!");
             } catch (err) {
-              if (axios.isAxiosError(err) && err.response) {
-                if (err.response.status === 401) {
-                  toast.error("Please sign in first!");
-                } else if (err.response.status === 403) {
-                  toast.error("Cannot delete other user's answer");
-                } else if (err.response.status === 404) {
-                  toast.error("The answer does not exist");
-                } else console.error(err.response.data);
+              if (axios.isAxiosError(err)) {
+                if (err.response) {
+                  if (err.response.status === 401) {
+                    toast.error("Please sign in first!");
+                  } else if (err.response.status === 403) {
+                    toast.error("Cannot delete other user's answer");
+                  } else if (err.response.status === 404) {
+                    toast.error("The answer does not exist");
+                  } else
+                    toast.error("Unexpected error: " + err.response.status);
+                } else toast.error("Cannot connect to server");
               } else console.error(err);
             }
           },
@@ -83,24 +86,26 @@ const AnswerPost: React.FC<PostProps> = ({
   ) => {
     e.preventDefault();
     try {
-      if (comment === "") {
+      if (!comment || comment === "") {
         toast.error("댓글을 입력해주세요!");
         return;
       }
-      await api.postAnswerComment(answer.id, comment || "");
+      await api.postAnswerComment(answer.id, comment);
       setReset(!reset);
       setOnAdd(false);
       setComment("");
-      toast.info("Comment created!");
+      toast.success("Comment created!");
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 401) {
-          toast.error("Please sign in first!");
-        } else if (err.response.status === 404) {
-          toast.error("The answer does not exist");
-        } else if (err.response.status === 405) {
-          toast.error("Invalid comment content");
-        } else console.error(err.response.data);
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          if (err.response.status === 401) {
+            toast.error("Please sign in first!");
+          } else if (err.response.status === 404) {
+            toast.error("The answer does not exist");
+          } else if (err.response.status === 405) {
+            toast.error("Invalid comment content");
+          } else toast.error("Unexpected error: " + err.response.status);
+        } else toast.error("Cannot connect to server");
       } else console.error(err);
     }
   };

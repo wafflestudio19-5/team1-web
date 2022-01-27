@@ -22,8 +22,10 @@ const Unregister = () => {
       navigate("/");
     } catch (e) {
       if (axios.isAxiosError(e)) {
-        toast.error(e.response?.data?.msg, { autoClose: 3000 });
-      }
+        if (e.response) {
+          toast.error(e.response?.data?.msg, { autoClose: 3000 });
+        } else toast.error("Cannot connect to server!");
+      } else console.error(e);
     }
   };
 

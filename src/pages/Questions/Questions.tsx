@@ -9,6 +9,7 @@ import axios from "axios";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useQuery, makeQuery, makePageList } from "../../hooks/hooks";
 import styles from "./Questions.module.scss";
+import { toast } from "react-toastify";
 
 const FILTERS: { label: string; criteria: SortCriteria; order: SortOrder }[] = [
   { label: "Newest", criteria: "createdAt", order: "desc" },
@@ -56,8 +57,8 @@ const Questions = () => {
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
-            console.error(e.response.status, e.response.data);
-          } else console.error(e);
+            toast.error("Unexpected error: " + e.response.status);
+          } else toast.error("Cannot connect to server!");
         } else console.error(e);
       }
     };
