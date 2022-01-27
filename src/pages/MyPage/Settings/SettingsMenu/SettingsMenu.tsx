@@ -15,27 +15,21 @@ export const SettingsMenu: FC<SettingsMenuProps> = ({ mode, setMode }) => {
         className={`${styles.item} ${
           selectedMenu === "edit" ? styles.selected : ""
         }`}
+        onClick={() => {
+          setMode("edit");
+        }}
       >
-        <span
-          onClick={() => {
-            setMode("edit");
-          }}
-        >
-          Edit profile
-        </span>
+        <span>Edit profile</span>
       </li>
       <li
         className={`${styles.item} ${
           selectedMenu === "unregister" ? styles.selected : ""
         }`}
+        onClick={() => {
+          setMode("unregister");
+        }}
       >
-        <span
-          onClick={() => {
-            setMode("unregister");
-          }}
-        >
-          Delete profile
-        </span>
+        <span>Delete profile</span>
       </li>
     </ul>
   );

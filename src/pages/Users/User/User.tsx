@@ -15,29 +15,29 @@ interface Props {
 
 const User: React.FC<Props> = ({ user }) => {
   return (
-    <div className={styles.user}>
-      <div className={styles.userImage}>
-        <img
-          className={styles.profile}
-          alt={"profile"}
-          src={customizedImageLink(user.image) ?? dummyProfile}
-        />
+    <Link to={`/users/${user.id}`}>
+      <div className={styles.user}>
+        <div className={styles.userImage}>
+          <img
+            className={styles.profile}
+            alt={"profile"}
+            src={customizedImageLink(user.image) ?? dummyProfile}
+          />
+        </div>
+        <div className={styles.userDetail}>
+          <span className={styles.username}>{user.username}</span>
+          <span className={styles.location}>{user.location}</span>
+          <span className={styles.questionCnt}>
+            <img src={questionType} alt={"question"} />
+            {user.questionCount}
+          </span>
+          <span className={styles.answerCnt}>
+            <img src={answerType} alt={"answer"} />
+            {user.answerCount}
+          </span>
+        </div>
       </div>
-      <div className={styles.userDetail}>
-        <Link to={`/users/${user.id}`} className={styles.username}>
-          {user.username}
-        </Link>
-        <span className={styles.location}>{user.location}</span>
-        <span className={styles.questionCnt}>
-          <img src={questionType} alt={"question"} />
-          {user.questionCount}
-        </span>
-        <span className={styles.answerCnt}>
-          <img src={answerType} alt={"answer"} />
-          {user.answerCount}
-        </span>
-      </div>
-    </div>
+    </Link>
   );
 };
 
