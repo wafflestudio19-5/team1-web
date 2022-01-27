@@ -2,7 +2,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import { User } from "../../interface/interface";
+import { customizedImageLink, User } from "../../interface/interface";
 
 import styles from "./UserCard.module.scss";
 import dummyProfile from "../../icons/dummyProfile.svg";
@@ -58,7 +58,7 @@ const UserCard: React.FC<{
       )}
       <div>
         <img
-          src={dummyProfile}
+          src={customizedImageLink(user.image) ?? dummyProfile}
           alt="profile_image"
           className={styles.profileImage}
         />

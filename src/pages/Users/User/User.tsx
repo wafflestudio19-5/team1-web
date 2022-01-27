@@ -2,7 +2,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import { UserSummary } from "../../../interface/interface";
+import { customizedImageLink, UserSummary } from "../../../interface/interface";
 import dummyProfile from "../../../icons/dummyProfile.svg";
 import answerType from "../../../icons/a.png";
 import questionType from "../../../icons/q.png";
@@ -17,7 +17,11 @@ const User: React.FC<Props> = ({ user }) => {
   return (
     <div className={styles.user}>
       <div className={styles.userImage}>
-        <img className={styles.profile} alt={"profile"} src={dummyProfile} />
+        <img
+          className={styles.profile}
+          alt={"profile"}
+          src={customizedImageLink(user.image) ?? dummyProfile}
+        />
       </div>
       <div className={styles.userDetail}>
         <Link to={`/users/${user.id}`} className={styles.username}>

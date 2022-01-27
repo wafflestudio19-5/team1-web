@@ -107,7 +107,7 @@ export interface UserInfoResponse extends User {
 export interface UserSummary {
   id: number;
   username: string;
-  // image: string | null;
+  image: string | null;
   location: string | null;
   questionCount: number;
   answerCount: number;
