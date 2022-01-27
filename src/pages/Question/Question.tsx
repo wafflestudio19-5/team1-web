@@ -62,14 +62,13 @@ const Question: React.FC = () => {
   useEffect(() => {
     const doIt = async () => {
       try {
-        setQuestionData(await api.getQuestion(Number(id)));
-        const { content } = await api.getAnswerList(
-          Number(id),
-          filter.criteria,
-          filter.order
-        );
+        const [question, answers] = await Promise.all([
+          api.getQuestion(Number(id)),
+          api.getAnswerList(Number(id), filter.criteria, filter.order),
+        ]);
+        setQuestionData(question);
+        const { content } = answers;
         setAnswerList(content);
-        window.scrollTo(0, 0);
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
