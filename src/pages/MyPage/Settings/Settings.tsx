@@ -27,7 +27,7 @@ export const Settings: FC<SettingsProps> = () => {
 
   const [loadingOn, setLoadingOn] = useState<boolean>(false);
 
-  useEffect(() => {
+  const resetUserInfo = useCallback(() => {
     setImgSrc(userInfo?.image ?? "");
     setEditInfo({
       displayName: userInfo?.username ?? null,
@@ -38,6 +38,9 @@ export const Settings: FC<SettingsProps> = () => {
       githubLink: userInfo?.githubLink ?? null,
     });
   }, [userInfo]);
+  useEffect(() => {
+    resetUserInfo();
+  }, [resetUserInfo]);
 
   const [changeProfileOn, setChangeProfileOn] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -49,7 +52,7 @@ export const Settings: FC<SettingsProps> = () => {
       const object = new FormData();
       object.append("image", profileImage);
       await api.editProfile(object);
-      toast.error("Not Implemented!");
+      await refreshMyProfile();
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.status === 401) {
@@ -60,26 +63,30 @@ export const Settings: FC<SettingsProps> = () => {
     }
   };
   const cancel = useCallback(() => {
-    toast.error("Not Implemented!");
-  }, []);
+    resetUserInfo();
+    toast.info("수정사항이 초기화되었습니다");
+  }, [resetUserInfo]);
 
-  const submit = async () => {
-    try {
-      setLoadingOn(true);
-      if (editInfo !== null) {
-        await api.editUserInfo(editInfo);
-        toast.success("수정되었습니다", { autoClose: 3000 });
-        await refreshMyProfile();
-      } else {
-        toast.error("수정된 정보가 없습니다", { autoClose: 3000 });
+  const submit = useCallback(() => {
+    const doIt = async () => {
+      try {
+        setLoadingOn(true);
+        if (editInfo !== null) {
+          await api.editUserInfo(editInfo);
+          toast.success("수정되었습니다", { autoClose: 3000 });
+          await refreshMyProfile();
+        } else {
+          toast.error("수정된 정보가 없습니다", { autoClose: 3000 });
+        }
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          toast.error(e.request?.data?.msg, { autoClose: 3000 });
+        }
       }
-    } catch (e) {
-      if (axios.isAxiosError(e)) {
-        toast.error(e.request?.data?.msg, { autoClose: 3000 });
-      }
-    }
-    setLoadingOn(false);
-  };
+      setLoadingOn(false);
+    };
+    doIt().then();
+  }, [editInfo, refreshMyProfile]);
 
   const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -189,12 +196,7 @@ export const Settings: FC<SettingsProps> = () => {
             </div>
           </div>
           <div className={styles.buttons}>
-            <BlueButton
-              text={"Save profile"}
-              onClick={() => {
-                submit();
-              }}
-            />
+            <BlueButton text={"Save profile"} onClick={submit} />
             <button className={styles.cancel} onClick={cancel}>
               Cancel
             </button>
