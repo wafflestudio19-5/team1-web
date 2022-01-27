@@ -63,6 +63,7 @@ const Edit: React.FC = () => {
             toast.info("Question edited!");
           }
         } else {
+          // TODO navigate to answer anchor
           await api.editAnswer(Number(id), values.body);
           toast.info("Answer edited!");
         }
@@ -77,8 +78,8 @@ const Edit: React.FC = () => {
               toast.error("Please sign in first");
             } else if (err.response.status === 404) {
               toast.error("The question does not exist");
-            } else console.error(err.response.data);
-          } else console.error(err);
+            } else toast.error("Unexpected error: " + err.response.status);
+          } else toast.error("Cannot connect to server");
         } else console.error(err);
       }
     }

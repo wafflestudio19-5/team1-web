@@ -101,8 +101,8 @@ const Question: React.FC = () => {
               toast.error("Invalid answer id");
             } else if (err.response.status === 401) {
               toast.error("Please sign in first!");
-            } else console.error(err.response.data);
-          } else console.error(err);
+            } else toast.error("Unexpected error: " + err.response.status);
+          } else toast.error("Cannot connect to server");
         } else console.error(err);
       }
     } else {

@@ -54,11 +54,19 @@ export const Settings: FC<SettingsProps> = () => {
       await api.editProfile(object);
       await refreshMyProfile();
     } catch (e) {
-      if (axios.isAxiosError(e) && e.response) {
-        if (e.response.status === 401) {
-          toast.error("Please login again!");
-          navigate("/login");
-        } else console.error(e);
+      if (axios.isAxiosError(e)) {
+        if (e.response) {
+          if (e.response.status === 401) {
+            toast.error("Please login again!");
+            navigate("/login");
+          } else if (e.response.status === 500) {
+            toast.error("Something went wrong on server...");
+          } else {
+            toast.error(`Unexpected error: ${e.response.status}`);
+          }
+        } else {
+          toast.error("Cannot connect to server");
+        }
       } else console.error(e);
     }
   };
@@ -80,7 +88,11 @@ export const Settings: FC<SettingsProps> = () => {
         }
       } catch (e) {
         if (axios.isAxiosError(e)) {
-          toast.error(e.request?.data?.msg, { autoClose: 3000 });
+          if (e.response) {
+            toast.error(e.response?.data?.msg, { autoClose: 3000 });
+          } else toast.error("Cannot connect to server");
+        } else {
+          console.error(e);
         }
       }
       setLoadingOn(false);

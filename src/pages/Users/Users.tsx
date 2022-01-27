@@ -10,6 +10,7 @@ import { api } from "../../api/api";
 import axios from "axios";
 
 import styles from "./Users.module.scss";
+import { toast } from "react-toastify";
 
 const Users = () => {
   const [users, setUsers] = useState<UserSummary[]>();
@@ -39,8 +40,8 @@ const Users = () => {
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response) {
-            console.error(e.response.status, e.response.data);
-          } else console.error(e);
+            toast.error("Unexpected error: " + e.response.status);
+          } else toast.error("Cannot connect to server");
         } else console.error(e);
       }
     };

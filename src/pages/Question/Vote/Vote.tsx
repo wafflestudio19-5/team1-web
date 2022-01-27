@@ -38,14 +38,16 @@ const Vote: React.FC<VoteProps> = ({
         : await api.voteQuestion(questionId, vote);
       setReset(!reset);
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 400 || err.response.status === 405) {
-          console.error("Invalid status", err.response.data);
-        } else if (err.response.status === 404) {
-          toast.error("The post does not exists");
-        } else if (err.response.status === 401) {
-          toast.error("Please sign in first");
-        } else console.error(err.response.data);
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          if (err.response.status === 400 || err.response.status === 405) {
+            console.error("Invalid status", err.response.data);
+          } else if (err.response.status === 404) {
+            toast.error("The post does not exists");
+          } else if (err.response.status === 401) {
+            toast.error("Please sign in first");
+          } else toast.error("Unexpected error: " + err.response.status);
+        } else toast.error("Cannot connect to server");
       } else console.error(err);
     }
   };
@@ -63,18 +65,20 @@ const Vote: React.FC<VoteProps> = ({
         toast.info("Answer accepted!");
       }
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 401) {
-          if (userInfo) {
-            toast.error("Cannot accept an answer on other user's question");
-          } else {
-            toast.error("Please sign in first");
-          }
-        } else if (err.response.status === 400) {
-          toast.error("Another answer is already accepted!");
-        } else if (err.response.status === 404) {
-          toast.error("Question or answer does not exist");
-        } else console.error(err.response.data);
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          if (err.response.status === 401) {
+            if (userInfo) {
+              toast.error("Cannot accept an answer on other user's question");
+            } else {
+              toast.error("Please sign in first");
+            }
+          } else if (err.response.status === 400) {
+            toast.error("Another answer is already accepted!");
+          } else if (err.response.status === 404) {
+            toast.error("Question or answer does not exist");
+          } else toast.error("Unexpected error: " + err.response.status);
+        } else toast.error("Cannot connect to server");
       } else console.error(err);
     }
   }, [answerId, isAccepted, questionId, reset, setReset, userInfo]);

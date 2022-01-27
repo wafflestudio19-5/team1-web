@@ -77,8 +77,9 @@ const CommentItem: React.FC<CommentProps> = ({
                       }
                     } else if (err.response.status === 404) {
                       toast.error("The comment does not exist");
-                    } else console.error(err.response.data);
-                  } else console.error(err);
+                    } else
+                      toast.error("Unexpected error: " + err.response.status);
+                  } else toast.error("Cannot connect to server");
                 } else console.error(err);
               }
             },
@@ -98,13 +99,13 @@ const CommentItem: React.FC<CommentProps> = ({
     e.preventDefault();
     if (questionId) {
       try {
-        if (edited === "") {
+        if (!edited || edited === "") {
           toast.error("댓글을 입력해주세요!");
           return;
         }
         answerId
-          ? await api.editAnswerComment(comment.id, edited || "")
-          : await api.editQuestionComment(comment.id, edited || "");
+          ? await api.editAnswerComment(comment.id, edited)
+          : await api.editQuestionComment(comment.id, edited);
         setReset(!reset);
         setOnEdit(false);
         setEdited("");
@@ -118,8 +119,8 @@ const CommentItem: React.FC<CommentProps> = ({
               toast.error("Please sign in first");
             } else if (err.response.status === 404) {
               toast.error("The comment does not exist");
-            } else console.error(err.response.data);
-          } else console.error(err);
+            } else toast.error("Unexpected error: " + err.response.status);
+          } else toast.error("Cannot connect to server");
         } else console.error(err);
       }
     }

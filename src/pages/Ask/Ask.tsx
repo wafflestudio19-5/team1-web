@@ -52,8 +52,8 @@ const Ask: React.FC = () => {
             } else if (err.response.status === 401) {
               toast.error("Please sign in first!");
               navigate("/login");
-            } else console.error(err.response.data);
-          } else console.error(err);
+            } else toast.error(`Unexpected error: ${err.response.status}`);
+          } else toast.error("Cannot connect to server");
         } else console.error(err);
       }
     }

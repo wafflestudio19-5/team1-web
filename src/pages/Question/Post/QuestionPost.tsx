@@ -44,22 +44,24 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
   ) => {
     e.preventDefault();
     try {
-      if (comment === "") {
+      if (!comment || comment === "") {
         toast.error("댓글을 입력해주세요!");
         return;
       }
-      await api.postQuestionComment(question.id, comment || "");
+      await api.postQuestionComment(question.id, comment);
       setReset(!reset);
       setOnAdd(false);
       setComment("");
       toast.info("Comment created!");
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 401) {
-          toast.error("Please sign in first!");
-        } else if (err.response.status === 400) {
-          toast.error("Invalid question id");
-        } else console.error(err.response.data);
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          if (err.response.status === 401) {
+            toast.error("Please sign in first!");
+          } else if (err.response.status === 400) {
+            toast.error("Invalid question id");
+          } else toast.error("Unexpected error: " + err.response.status);
+        } else toast.error("Cannot connect to server!");
       } else console.error(err);
     }
   };
@@ -77,16 +79,19 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
               toast.info("question deleted!");
               navigate(`/questions`);
             } catch (err) {
-              if (axios.isAxiosError(err) && err.response) {
-                if (err.response.status === 400) {
-                  toast.error("Invalid question id");
-                } else if (err.response.status === 401) {
-                  if (userInfo) {
-                    toast.error("Cannot delete other user's question");
-                  } else {
-                    toast.error("Please sign in first");
-                  }
-                }
+              if (axios.isAxiosError(err)) {
+                if (err.response) {
+                  if (err.response.status === 400) {
+                    toast.error("Invalid question id");
+                  } else if (err.response.status === 401) {
+                    if (userInfo) {
+                      toast.error("Cannot delete other user's question");
+                    } else {
+                      toast.error("Please sign in first");
+                    }
+                  } else
+                    toast.error("Unexpected error: " + err.response.status);
+                } else toast.error("Cannot connect to server");
               } else console.error(err);
             }
           },
