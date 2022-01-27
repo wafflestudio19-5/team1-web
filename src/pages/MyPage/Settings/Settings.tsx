@@ -48,6 +48,7 @@ export const Settings: FC<SettingsProps> = () => {
     const object = new FormData();
     object.append("image", profileImage);
     await api.editProfile(object);
+    setChangeProfileOn(false);
     toast.error("Not Implemented!");
   };
   const cancel = useCallback(() => {
