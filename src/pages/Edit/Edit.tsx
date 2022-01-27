@@ -61,13 +61,13 @@ const Edit: React.FC = () => {
           } else {
             await api.editQuestion(Number(id), values.title, values.body);
             toast.info("Question edited!");
+            navigate(`/questions/${questionId}`);
           }
         } else {
-          // TODO navigate to answer anchor
-          await api.editAnswer(Number(id), values.body);
+          const answer = await api.editAnswer(Number(id), values.body);
           toast.info("Answer edited!");
+          navigate(`/questions/${questionId}#answer-${answer.id}`);
         }
-        navigate(`/questions/${questionId}`);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response) {
