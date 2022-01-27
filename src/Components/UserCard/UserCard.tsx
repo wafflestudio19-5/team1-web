@@ -56,16 +56,16 @@ const UserCard: React.FC<{
           </span>
         </div>
       )}
-      <div>
-        <img
-          src={customizedImageLink(user.image) ?? dummyProfile}
-          alt="profile_image"
-          className={styles.profileImage}
-        />
-        <Link to={`/users/${user.id}`} className={styles.name}>
-          {user.username}
-        </Link>
-      </div>
+      <Link to={`/users/${user.id}`}>
+        <div>
+          <img
+            src={customizedImageLink(user.image) ?? dummyProfile}
+            alt="profile_image"
+            className={styles.profileImage}
+          />
+          <span className={styles.name}>{user.username}</span>
+        </div>
+      </Link>
     </div>
   );
 };

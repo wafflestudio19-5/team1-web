@@ -16,6 +16,7 @@ import {
   MarkdownViewer,
   MarkdownCommentEditor,
 } from "../../../Components/Markdown/Markdown";
+import { useLocation } from "react-router";
 
 interface PostProps {
   answer: Answer;
@@ -36,6 +37,7 @@ const AnswerPost: React.FC<PostProps> = ({
   const auth = userInfo?.id === answer.user.id;
   const [onAdd, setOnAdd] = useState<boolean>(false);
   const [comment, setComment] = useState<string | undefined>("");
+  const hash = useLocation().hash.substring(1);
 
   const handleAddCommentButton = () => {
     if (userInfo) {
@@ -110,8 +112,15 @@ const AnswerPost: React.FC<PostProps> = ({
     }
   };
 
+  const elementId = `answer-${answer.id}`;
+
   return (
-    <div className={styles.answerPostLayout} id={`answer-${answer.id}`}>
+    <div
+      className={`${styles.answerPostLayout} ${
+        hash === elementId ? styles.highlightedPost : ""
+      }`}
+      id={elementId}
+    >
       <div className={styles.voteCell}>
         <Vote
           vote={answer.votes}
