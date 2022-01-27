@@ -63,7 +63,7 @@ const CommentItem: React.FC<CommentProps> = ({
                   ? await api.deleteAnswerComment(comment.id)
                   : await api.deleteQuestionComment(comment.id);
                 setReset(!reset);
-                toast.info("Comment deleted!");
+                toast.success("Comment deleted!");
               } catch (err) {
                 if (axios.isAxiosError(err)) {
                   if (err.response) {
@@ -109,7 +109,7 @@ const CommentItem: React.FC<CommentProps> = ({
         setReset(!reset);
         setOnEdit(false);
         setEdited("");
-        toast.info("Comment edited!");
+        toast.success("Comment edited!");
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response) {

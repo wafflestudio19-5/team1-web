@@ -93,7 +93,7 @@ const Question: React.FC = () => {
         await api.postAnswer(Number(id), answer);
         setAnswer("");
         setReset(!reset);
-        toast.info("Answer posted!");
+        toast.success("Answer posted!");
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response) {

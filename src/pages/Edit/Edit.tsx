@@ -60,12 +60,12 @@ const Edit: React.FC = () => {
             return;
           } else {
             await api.editQuestion(Number(id), values.title, values.body);
-            toast.info("Question edited!");
+            toast.success("Question edited!");
             navigate(`/questions/${questionId}`);
           }
         } else {
           const answer = await api.editAnswer(Number(id), values.body);
-          toast.info("Answer edited!");
+          toast.success("Answer edited!");
           navigate(`/questions/${questionId}#answer-${answer.id}`);
         }
       } catch (err) {

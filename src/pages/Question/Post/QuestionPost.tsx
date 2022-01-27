@@ -52,7 +52,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
       setReset(!reset);
       setOnAdd(false);
       setComment("");
-      toast.info("Comment created!");
+      toast.success("Comment created!");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response) {
@@ -76,7 +76,7 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
           onClick: async () => {
             try {
               await api.deleteQuestion(question.id);
-              toast.info("question deleted!");
+              toast.success("question deleted!");
               navigate(`/questions`);
             } catch (err) {
               if (axios.isAxiosError(err)) {

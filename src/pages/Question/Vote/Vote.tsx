@@ -60,9 +60,9 @@ const Vote: React.FC<VoteProps> = ({
       await api.toggleAnswerAccept(questionId, answerId);
       setReset(!reset);
       if (wasAccepted) {
-        toast.info("Accept canceled!");
+        toast.success("Accept canceled!");
       } else {
-        toast.info("Answer accepted!");
+        toast.success("Answer accepted!");
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {

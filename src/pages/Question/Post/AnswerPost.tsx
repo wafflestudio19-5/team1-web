@@ -56,7 +56,7 @@ const AnswerPost: React.FC<PostProps> = ({
             try {
               await api.deleteAnswer(answer.id);
               setReset(!reset);
-              toast.info("Answer deleted!");
+              toast.success("Answer deleted!");
             } catch (err) {
               if (axios.isAxiosError(err)) {
                 if (err.response) {
@@ -94,7 +94,7 @@ const AnswerPost: React.FC<PostProps> = ({
       setReset(!reset);
       setOnAdd(false);
       setComment("");
-      toast.info("Comment created!");
+      toast.success("Comment created!");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response) {

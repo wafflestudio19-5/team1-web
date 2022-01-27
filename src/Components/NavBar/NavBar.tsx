@@ -33,7 +33,7 @@ const NavBar: React.FC<NavBarProps> = () => {
       } catch (e) {
         console.error(e);
       }
-      toast.info("signed out");
+      toast.success("signed out");
     };
     doIt().then();
   }, [signout]);

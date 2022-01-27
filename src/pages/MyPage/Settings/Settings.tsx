@@ -72,7 +72,7 @@ export const Settings: FC<SettingsProps> = () => {
   };
   const cancel = useCallback(() => {
     resetUserInfo();
-    toast.info("수정사항이 초기화되었습니다");
+    toast.success("수정사항이 초기화되었습니다");
   }, [resetUserInfo]);
 
   const submit = useCallback(() => {

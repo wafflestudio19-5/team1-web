@@ -41,7 +41,7 @@ const Ask: React.FC = () => {
           return;
         } else {
           const question = await api.postQuestion(values.title, values.body);
-          toast.info("Question created!");
+          toast.success("Question created!");
           navigate(`/questions/${question.id}`);
         }
       } catch (err) {
