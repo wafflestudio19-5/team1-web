@@ -15,6 +15,21 @@
     .userName {
       font-size: 34px;
     }
+    .userTitle {
+      font-size: 21px;
+      color: rgb(106, 115, 124);
+    }
+    .userMisc {
+      color: rgb(106, 115, 124);
+      .userMiscItem {
+        img {
+          margin-right: 2px;
+        }
+        margin-right: 10px;
+        display: inline-flex;
+        align-items: center;
+      }
+    }
     .dayInfos {
       display: flex;
       font-size: 13px;

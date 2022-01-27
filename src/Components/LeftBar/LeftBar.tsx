@@ -14,35 +14,32 @@ const LeftBar: React.FC<LeftBarProps> = ({ noLeftBarPage }) => {
   return noLeftBarPage.includes(mode) ? null : (
     <div className={styles.leftBar}>
       <ul className={styles.menuList}>
-        <li className={styles.menu}>
-          <span className={styles.menuText}>
-            <Link to="/">Home</Link>
-          </span>
-        </li>
+        <Link to="/">
+          <li className={styles.menu}>
+            <span className={styles.menuText}>Home</span>
+          </li>
+        </Link>
         <li className={`${styles.menu} ${styles.hasSub}`}>PUBLIC</li>
         <ul className={styles.subMenuList}>
-          <li
-            className={`${styles.subMenu} ${
-              mode === "questions" ? styles.selected : ""
-            }`}
-          >
-            <Link to="/questions">Questions</Link>{" "}
-          </li>
-          <li
-            className={`${styles.subMenu} ${
-              mode === "users" ? styles.selected : ""
-            }`}
-          >
-            <Link to="/users">Users</Link>{" "}
-          </li>
-
-          {/* <li className={styles.subMenu}>Tags</li>
-          <li className={styles.subMenu}>Users</li> */}
+          <Link to={"/questions"}>
+            <li
+              className={`${styles.subMenu} ${
+                mode === "questions" ? styles.selected : ""
+              }`}
+            >
+              Questions
+            </li>
+          </Link>
+          <Link to={"/users"}>
+            <li
+              className={`${styles.subMenu} ${
+                mode === "users" ? styles.selected : ""
+              }`}
+            >
+              Users
+            </li>
+          </Link>
         </ul>
-
-        {/*
-        <li className={styles.menu}>COLLECIVES</li>
-        */}
       </ul>
     </div>
   );

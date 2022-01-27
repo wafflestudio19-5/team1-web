@@ -148,18 +148,16 @@ const QuestionPost: React.FC<PostProps> = ({ question, reset, setReset }) => {
           )}
 
           <div className={styles.activityContainer}>
-            <Link to={`/users/${userInfo?.id}`}>
-              <UserCard
-                user={question.user}
-                date={new Date(question.createdAt + "Z")}
-                isQuestion={true}
-                questionId={question.id}
-                isEdited={!!question.editedAt}
-                edited={
-                  question.editedAt ? new Date(question.editedAt + "Z") : null
-                }
-              />
-            </Link>
+            <UserCard
+              user={question.user}
+              date={new Date(question.createdAt + "Z")}
+              isQuestion={true}
+              questionId={question.id}
+              isEdited={!!question.editedAt}
+              edited={
+                question.editedAt ? new Date(question.editedAt + "Z") : null
+              }
+            />
           </div>
         </div>
         <div className={styles.commentList}>

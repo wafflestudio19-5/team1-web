@@ -198,7 +198,7 @@ export const Settings: FC<SettingsProps> = () => {
               />
             </div>
             <div className={styles.linkItem}>
-              <label htmlFor={"github-link"}>Github link or username</label>
+              <label htmlFor={"github-link"}>Github username</label>
               <input
                 id={"github-link"}
                 name={"githubLink"}
