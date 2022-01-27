@@ -136,7 +136,7 @@ export const Settings: FC<SettingsProps> = () => {
               name={"displayName"}
               value={editInfo?.displayName ?? ""}
               onChange={inputChange}
-              readOnly={true}
+              readOnly={false}
             />
             <label htmlFor={"location"}>Location</label>
             <input
