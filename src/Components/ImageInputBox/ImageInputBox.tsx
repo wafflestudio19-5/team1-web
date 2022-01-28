@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import styles from "./ImageInputBox.module.scss";
 import BlueButton from "../BlueButton/BlueButton";
@@ -40,6 +40,13 @@ const ImageInputBox: React.FC<ImageInputBoxProps> = ({
     }
   };
 
+  const onUploadClick = useCallback(() => {
+    if (tempFile) {
+      submit(tempFile);
+      closeBox();
+    }
+  }, [closeBox, submit, tempFile]);
+
   return (
     <div className={styles.imageInputBox}>
       <span className={styles.close} onClick={closeBox}>
@@ -53,12 +60,7 @@ const ImageInputBox: React.FC<ImageInputBoxProps> = ({
       />
 
       <div className={styles.buttonLine}>
-        <BlueButton
-          text={"확인"}
-          onClick={() => {
-            tempFile && submit(tempFile);
-          }}
-        />
+        <BlueButton text={"확인"} onClick={onUploadClick} />
       </div>
     </div>
   );
