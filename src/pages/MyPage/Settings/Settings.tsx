@@ -52,6 +52,7 @@ export const Settings: FC<SettingsProps> = () => {
       const object = new FormData();
       object.append("image", profileImage);
       await api.editProfile(object);
+      toast.success("Image uploaded!");
       await refreshMyProfile();
     } catch (e) {
       if (axios.isAxiosError(e)) {
