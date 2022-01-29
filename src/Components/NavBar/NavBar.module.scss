@@ -1,0 +1,110 @@
+.navBar {
+  width: 100%;
+  background-color: hsl(210deg 8% 98%);
+  border-top: 3px solid hsl(27deg 90% 55%);
+  height: 50px;
+  padding: 7px;
+  align-items: center;
+}
+.navBarContent {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.menuList {
+  display: flex;
+  // justify-content: space-evenly;
+  margin-left: 30px;
+  list-style: none;
+  flex: 1;
+  font-size: 13px;
+}
+
+.searchSection {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  color: hsl(210, 8%, 75%);
+
+  .searchBox {
+    padding-left: 35px;
+    height: 33px;
+  }
+
+  .iconSearch {
+    position: absolute;
+    pointer-events: none;
+    top: 8px;
+    left: 10px;
+    fill: hsl(210, 8%, 75%);
+  }
+}
+
+.buttonList {
+  width: 140px;
+  display: flex;
+  justify-content: space-evenly;
+  height: 33px;
+}
+.navBarButton {
+  width: 58px;
+  border: 1px solid;
+  font-size: 12px;
+  border-radius: 3px;
+  text-align: center;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loginButton {
+  border-color: hsl(205deg 41% 63%);
+  background-color: hsl(205deg 46% 92%);
+  color: hsl(206deg 100% 52%);
+}
+
+.signupButton {
+  background-color: hsl(206deg 100% 52%);
+  color: white;
+  box-shadow: inset 0 1px 0 0 hsl(0deg 0% 100% / 40%);
+}
+
+.logo {
+  display: flex;
+  width: 167px;
+  height: 49px;
+  padding-left: 3px;
+  cursor: pointer;
+  align-items: center;
+
+  &:hover {
+    background-color: rgba(227, 230, 233, 0.924);
+  }
+
+  .logoImage {
+    width: 40px;
+    height: 40px;
+    margin: 0;
+  }
+
+  label {
+    position: relative;
+    top: -10px;
+  }
+}
+
+.profileContainer {
+  display: flex;
+  align-items: center;
+  .profile {
+    overflow: hidden;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+  }
+}

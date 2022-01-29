@@ -1,0 +1,19 @@
+.profileButtons {
+  position: absolute;
+  display: flex;
+  right: 24px;
+
+  .profileButton {
+    border-radius: 3px;
+    line-height: 1.15384615;
+    padding: 0.8em;
+    font-size: 12px;
+    background-color: white;
+    cursor: pointer;
+    border: 1px solid #c9c9c9;
+
+    &:hover {
+      background-color: #c9c9c9;
+    }
+  }
+}

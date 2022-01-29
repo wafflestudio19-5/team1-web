@@ -1,0 +1,15 @@
+.numberAndKeyword {
+  display: flex;
+  flex-direction: column;
+  margin: 8px;
+  width: 50%;
+
+  .number {
+    font-size: 17px;
+    color: hsl(210deg 8% 5%);
+  }
+  .keyword {
+    font-size: 14px;
+    color: #6a737c;
+  }
+}

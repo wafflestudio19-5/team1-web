@@ -1,0 +1,35 @@
+.imageInputBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  width: 680px;
+  height: 390px;
+
+  padding: 30px;
+
+  background-color: white;
+
+  .close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .previewImg {
+    width: 200px;
+    height: 200px;
+  }
+
+  .buttonLine {
+    button {
+      margin: 0;
+      width: 120px;
+    }
+  }
+}

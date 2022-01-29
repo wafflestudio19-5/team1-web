@@ -1,0 +1,28 @@
+.SettingsMenu {
+  list-style: none;
+  font-size: 11px;
+  white-space: nowrap;
+  margin-right: 20px;
+  li {
+    padding: 8px;
+    margin: 2px;
+    border-radius: 100px;
+
+    cursor: pointer;
+    &.header {
+      font-weight: bold;
+    }
+    &.item {
+      color: rgb(82, 89, 96);
+      &.selected {
+        background-color: hsl(27deg 90% 55%);
+        color: white;
+
+        cursor: default;
+        &:hover {
+          background-color: hsl(25, 48%, 46%);
+        }
+      }
+    }
+  }
+}

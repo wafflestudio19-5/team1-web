@@ -1,0 +1,19 @@
+.loginBox {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%),
+    0 1px 4px rgb(0 0 0 / 10%);
+  padding: 24px;
+  border-radius: 7px;
+  margin-top: 10px;
+
+  .buttonBox {
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+
+    button {
+      width: 100%;
+    }
+  }
+}

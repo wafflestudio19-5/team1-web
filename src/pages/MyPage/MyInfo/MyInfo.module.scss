@@ -1,0 +1,48 @@
+.userInfo {
+  display: flex;
+  align-items: center;
+  height: 144px;
+
+  .profileImg {
+    margin-right: 16px;
+  }
+
+  .infoDetail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .userName {
+      font-size: 34px;
+    }
+    .userTitle {
+      font-size: 21px;
+      color: rgb(106, 115, 124);
+    }
+    .userMisc {
+      color: rgb(106, 115, 124);
+      .userMiscItem {
+        img {
+          margin-right: 2px;
+        }
+        margin-right: 10px;
+        display: inline-flex;
+        align-items: center;
+      }
+    }
+    .dayInfos {
+      display: flex;
+      font-size: 13px;
+      color: #6a737c;
+      li {
+        &::after {
+          content: "/";
+          margin: 4px;
+        }
+        &:last-child::after {
+          content: none;
+        }
+      }
+    }
+  }
+}

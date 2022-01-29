@@ -1,0 +1,51 @@
+.leftBar {
+  display: flex;
+  flex-direction: column;
+  width: 167px;
+  border-right: 1px solid #e9e9e9;
+  height: 100%;
+  font-size: 11px;
+  padding-top: 24px;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu {
+  margin: 16px 0 4px 8px;
+  cursor: pointer;
+  &:hover {
+    font-weight: bold;
+  }
+  &.hasSub:hover {
+    font-weight: normal;
+    cursor: default;
+  }
+}
+
+.menuText {
+  height: 14px;
+}
+
+.subMenuList {
+  display: flex;
+  flex-direction: column;
+}
+
+.subMenu {
+  display: flex;
+  padding: 8px 6px 8px 8px;
+  cursor: pointer;
+
+  &:hover {
+    font-weight: bold;
+  }
+
+  &.selected {
+    background-color: hsl(210deg 8% 95%);
+    font-weight: bold;
+    border-right: 3px solid hsl(27deg 90% 55%);
+  }
+}
